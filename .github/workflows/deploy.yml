@@ -50,7 +50,7 @@ jobs:
       - name: Deploy to Netlify
         uses: nwtgck/actions-netlify@v2
         with:
-          publish-dir: './.output/public' # Standard Nuxt 3 output directory
+          publish-dir: ./.output/public # Standard Nuxt 3 output directory
           production-branch: main
           # Optional: Specify a deploy message
           # deploy-message: "Deploy from GitHub Actions: ${{ github.sha }}"
