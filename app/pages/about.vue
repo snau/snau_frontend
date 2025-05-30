@@ -45,6 +45,8 @@ setPage(page!)
         <section class="column text" style="--columns: 4">
           <h3>{{ t('about.email') }}</h3>
           <p v-html="page?.email" />
+          <h1>{{ t('about.phone') }}</h1>
+          <h2>{{ t('about.phone') }}</h2>
           <h3>{{ t('about.phone') }}</h3>
           <p v-html="page?.phone" />
         </section>
