@@ -13,7 +13,8 @@
     "format": "prettier \"**/*.{css,html,json,md,mjs,ts,vue,yml}\" --write",
     "format:check": "prettier \"**/*.{css,html,json,md,mjs,ts,vue,yml}\" --check",
     "test:types": "vue-tsc --noEmit",
-    "prepare": "nuxi prepare"
+    "prepare": "nuxi prepare",
+    "check:all": "pnpm run lint && pnpm run format:check && pnpm run test:types"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^4.13.2",
