@@ -46,6 +46,7 @@ setPage(page!)
           <h3>{{ t('about.email') }}</h3>
           <p v-html="page?.email" />
           <h3>{{ t('about.phone') }}</h3>
+          <h3 class="staging">{{ t('about.phone') }}</h3>
           <p v-html="page?.phone" />
         </section>
 
