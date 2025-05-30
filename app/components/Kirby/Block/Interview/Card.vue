@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useRouter } from '#imports'
-import gsap from 'gsap'
+import { gsap } from 'gsap'
 import { Flip } from 'gsap/Flip'
 import { computed, ref } from 'vue'
 
