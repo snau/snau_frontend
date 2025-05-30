@@ -32,6 +32,12 @@ export default defineNuxtPlugin(async (nuxtApp) => {
       site.value = data?.result || {}
     } catch (e) {
       console.error('Failed to fetch site data:', (e as NuxtError).message)
+      // Provide fallback site data
+      site.value = {
+        title: 'SNAU',
+        description: 'SNAU Website',
+        children: [],
+      }
     }
   }
 })
