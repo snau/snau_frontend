@@ -1,4 +1,4 @@
-name: Deploy to Netlify
+name: Deploy to Netlify (Static Site)
 
 on:
   push:
@@ -44,14 +44,14 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
         env:
-          # These secrets are assumed to be the same for both main and staging
+          # These secrets are needed for build-time API calls to Kirby CMS
           KIRBY_BASE_URL: ${{ secrets.KIRBY_BASE_URL }}
           KIRBY_API_TOKEN: ${{ secrets.KIRBY_API_TOKEN }}
 
-      - name: Build Nuxt application
-        run: pnpm run build
+      - name: Generate static site
+        run: pnpm run generate
         env:
-          # NITRO_PRESET: netlify # Usually auto-detected by Nuxt for Netlify
+          # Environment variables for static generation - content fetched at build time
           KIRBY_BASE_URL: ${{ secrets.KIRBY_BASE_URL }}
           KIRBY_API_TOKEN: ${{ secrets.KIRBY_API_TOKEN }}
           # Add any other build-time environment variables
@@ -62,7 +62,7 @@ jobs:
           publish-dir: ./.output/public
           production-branch: main # Tells Netlify its primary production branch is 'main'
           production-deploy: ${{ steps.deploy_type.outputs.IS_PRODUCTION_NETLIFY_DEPLOY == 'true' }} # Key change: true for main, false for staging
-          deploy-message: 'Deploy ${{ steps.deploy_type.outputs.BRANCH_NAME }} from GitHub Actions: ${{ github.sha }}'
+          deploy-message: 'Deploy static site (${{ steps.deploy_type.outputs.BRANCH_NAME }}) from GitHub Actions: ${{ github.sha }}'
           # enable-pull-request-comment: false
           # enable-commit-comment: true
         env:

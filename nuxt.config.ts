@@ -16,6 +16,14 @@ export default defineNuxtConfig({
     enabled: true,
   },
 
+  // Static site generation configuration
+  nitro: {
+    prerender: {
+      routes: ['/'],
+      crawlLinks: true, // Automatically discover routes from links
+    },
+  },
+
   runtimeConfig: {
     public: {
       siteUrl: '',
