@@ -4,60 +4,68 @@ on:
   push:
     branches:
       - main
+      - staging # Added staging branch
 
 jobs:
-  deploy-to-netlify: # Renamed job for clarity
+  deploy-to-netlify:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-        # fetch-depth: 0 is usually not needed for simple deploys,
-        # but harmless if you have a specific reason for it.
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v3
-        # You can specify a pnpm version if needed:
         # with:
         #   version: 8
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '22' # Keep your desired Node.js version
-          # registry-url is usually not needed unless publishing packages
+          node-version: '22'
           cache: pnpm
 
+      # Step to determine if this is a production deploy for Netlify's perspective
+      - name: Determine Deployment Type
+        id: deploy_type
+        run: |
+          if [[ "${{ github.ref_name }}" == "main" ]]; then
+            echo "BRANCH_NAME=production" >> $GITHUB_OUTPUT
+            echo "IS_PRODUCTION_NETLIFY_DEPLOY=true" >> $GITHUB_OUTPUT
+          elif [[ "${{ github.ref_name }}" == "staging" ]]; then
+            echo "BRANCH_NAME=staging" >> $GITHUB_OUTPUT
+            echo "IS_PRODUCTION_NETLIFY_DEPLOY=false" >> $GITHUB_OUTPUT
+          else
+            # This case should ideally not be hit if branches are restricted in 'on.push.branches'
+            echo "::warning::Branch ${{ github.ref_name }} is not explicitly configured for production/staging deploy type."
+            echo "BRANCH_NAME=${{ github.ref_name }}" >> $GITHUB_OUTPUT
+            echo "IS_PRODUCTION_NETLIFY_DEPLOY=false" >> $GITHUB_OUTPUT # Default to non-production for other branches
+          fi
+
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile # Use --frozen-lockfile for CI
+        run: pnpm install --frozen-lockfile
         env:
-          # These are needed if your 'pnpm install' (e.g., postinstall scripts)
-          # or 'nuxi prepare' (which runs implicitly with Nuxt) requires them.
+          # These secrets are assumed to be the same for both main and staging
           KIRBY_BASE_URL: ${{ secrets.KIRBY_BASE_URL }}
           KIRBY_API_TOKEN: ${{ secrets.KIRBY_API_TOKEN }}
 
       - name: Build Nuxt application
         run: pnpm run build
         env:
-          # NITRO_PRESET for Nuxt 3:
-          # For Netlify, Nuxt will typically auto-detect or you can explicitly set it.
-          # If Nuxt doesn't auto-detect correctly, you might use 'netlify' or 'netlify-static'.
-          # Often, you don't need to set NITRO_PRESET manually for Netlify as Nuxt is good at detection.
-          # NITRO_PRESET: netlify # or netlify-static, try without first
+          # NITRO_PRESET: netlify # Usually auto-detected by Nuxt for Netlify
           KIRBY_BASE_URL: ${{ secrets.KIRBY_BASE_URL }}
           KIRBY_API_TOKEN: ${{ secrets.KIRBY_API_TOKEN }}
-          # Add any other build-time environment variables your Nuxt app needs
+          # Add any other build-time environment variables
 
       - name: Deploy to Netlify
         uses: nwtgck/actions-netlify@v2
         with:
-          publish-dir: ./.output/public # Standard Nuxt 3 output directory
-          production-branch: main
-          # Optional: Specify a deploy message
-          # deploy-message: "Deploy from GitHub Actions: ${{ github.sha }}"
-          # Optional: Control comments on PRs/commits
+          publish-dir: ./.output/public
+          production-branch: main # Tells Netlify its primary production branch is 'main'
+          production-deploy: ${{ steps.deploy_type.outputs.IS_PRODUCTION_NETLIFY_DEPLOY == 'true' }} # Key change: true for main, false for staging
+          deploy-message: 'Deploy ${{ steps.deploy_type.outputs.BRANCH_NAME }} from GitHub Actions: ${{ github.sha }}'
           # enable-pull-request-comment: false
           # enable-commit-comment: true
         env:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
-          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
-        timeout-minutes: 5 # Optional: Adjust deploy timeout
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }} # Assumed to be the same Netlify site ID for both
+        timeout-minutes: 5
