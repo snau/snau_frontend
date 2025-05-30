@@ -1,4 +1,3 @@
-import process from 'node:process'
 import { watch } from 'vue'
 
 export function useInvert() {
@@ -8,7 +7,7 @@ export function useInvert() {
   watch(
     () => page.value?.invert,
     (newValue) => {
-      if (process.client) {
+      if (import.meta.client) {
         // Remove existing invert classes
         document.body.classList.remove('nav-light', 'nav-dark')
 
