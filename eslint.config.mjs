@@ -3,7 +3,7 @@ import antfu from '@antfu/eslint-config'
 
 export default antfu({
   stylistic: false,
-  unocss: true,
+  unocss: false,
 }).append({
   rules: {
     // Ignore rules clashing with Prettier

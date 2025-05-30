@@ -1,0 +1,64 @@
+---
+description: SNAU - Kirby - Nuxt - Headless
+globs: 
+alwaysApply: false
+---
+# Cursor Rule for Cacao Kit Project
+
+## Semantic Description:
+This rule provides context and instructions for working on a Cacao Kit project. Cacao Kit is a modern web development stack using Nuxt.js for the frontend and Kirby CMS (headless) for the backend.  It's important to understand this architecture and the key technologies involved.  **Crucially, this project uses Nuxt UI as the primary UI framework, built on top of Tailwind CSS, to provide pre-built and styled components.** This rule is especially helpful for junior developers new to the stack and Nuxt UI.
+
+## Focus Areas and Important Information:
+
+**1. Tech Stack Awareness:**
+
+* **Frontend Framework:** This project uses **Nuxt.js (v3)**, a Vue.js framework.  When working on frontend files (especially `.vue` files in `components/`, `pages/`, `layouts/`), remember you are in a Nuxt.js environment.  Understand Vue.js component structure and the Nuxt.js conventions for routing and data fetching. Always use **pnpm** instead of npm.
+* **Frontend Language:**  **TypeScript** is used for the frontend. Pay attention to types and use them to improve code quality.
+* **Frontend UI Framework:** **Nuxt UI** is the primary UI framework. **This means you should primarily use Nuxt UI components for building the user interface.** Nuxt UI provides a set of pre-styled and accessible Vue.js components. Refer to the Nuxt UI documentation to find and utilize these components.
+* **Underlying Styling:** **Tailwind CSS** is the underlying styling framework for Nuxt UI. While you'll mainly use Nuxt UI components, understanding Tailwind CSS can be helpful for customization and deeper styling needs. Nuxt UI components are built with Tailwind CSS.
+* **Frontend State Management:** **Pinia** is used for state management. If you are working with application-wide data or complex interactions, look into Pinia stores (likely in `stores/` folder).
+* **Data Fetching Library:** **`nuxt-kql`** is crucial for fetching data from the Kirby CMS backend.  You will primarily use the `useKql` composable provided by `nuxt-kql` in your Nuxt.js components and pages to query data.
+
+* **Backend CMS:** The backend is **Kirby CMS (headless mode)**. Content is managed in Kirby, and the frontend retrieves content via API calls.  Kirby is file-based and written in **PHP**.
+* **Backend Data Querying:** **Kirby Query Language (KQL)** is used to query data from Kirby. Understand how to construct KQL queries to fetch the necessary content.
+
+**2. Headless CMS Architecture:**
+
+* **Frontend and Backend Separation:** Recognize that the frontend (Nuxt.js) and backend (Kirby CMS) are distinct parts of the application. Changes in the frontend code are separate from content management in Kirby.
+* **API Communication:** The frontend fetches data from the Kirby backend API.  `nuxt-kql` simplifies this communication. Understand that data displayed on the frontend comes from Kirby via API calls.
+
+**3. Key Project Areas to Focus On (For Development Tasks):**
+
+* **Frontend Components (`components/`):**  This is where you'll build reusable UI elements. **Prioritize using Nuxt UI components where possible.**  If a Nuxt UI component doesn't meet your needs, you might need to create custom components, potentially still leveraging Tailwind CSS for styling. Pay attention to how components fetch data using `useKql`.
+* **Pages (`pages/`):**  These define the routes and structure of your website's pages. Understand how pages are created and how they fetch data to display content.  **Use Nuxt UI components to build the UI within your pages.**
+* **Layouts (`layouts/`):**  These define the overall structure of your website (header, footer, etc.). **Consider using Nuxt UI components for layout elements as well.**
+* **Kirby Blueprints (`cacao-kit-backend/site/blueprints/`):**  These define the structure of content in Kirby. Understanding blueprints helps you understand how content is organized and what data is available via the API.
+* **KQL Queries (within Nuxt.js components):**  Learn how to write and modify KQL queries within your Nuxt.js components to fetch the specific data you need from Kirby. Refer to the `nuxt-kql` and Kirby KQL documentation.
+
+**4. Important Resources and Documentation:**
+
+* **Nuxt UI Documentation:** [https://ui3.nuxt.dev/](mdc:https:/ui3.nuxt.dev) - **The most important UI documentation for this project.  Learn how to use Nuxt UI components.**
+* **Nuxt.js Documentation:** [https://nuxt.com/docs/](mdc:https:/nuxt.com/docs) - Essential for frontend development in general.
+* **Kirby CMS Documentation:** [https://getkirby.com/docs](mdc:https:/getkirby.com/docs) and [https://kirby.tools/docs/headless](mdc:https:/kirby.tools/docs/headless) - Crucial for understanding the backend and content management.
+* **`nuxt-kql` Documentation:** [https://nuxt-kql.byjohann.dev/](mdc:https:/nuxt-kql.byjohann.dev) - Specifically for data fetching between Nuxt.js and Kirby.
+* **Tailwind CSS Documentation:** [https://tailwindcss.com/docs](mdc:https:/tailwindcss.com/docs) - Useful for understanding the underlying styling of Nuxt UI and for custom styling if needed.
+* **Vue.js Documentation:** [https://vuejs.org/guide/](mdc:https:/vuejs.org/guide) - Foundation for Nuxt.js frontend.
+
+**5. Junior Developer Tips:**
+
+* **Start with Nuxt UI Components:** When building UI, first explore if Nuxt UI offers a suitable component.  This will ensure consistency and save development time.
+* **Component-Based Thinking:**  Break down UI into reusable components.
+* **Data Flow Understanding:** Trace how data flows from Kirby CMS to the Nuxt.js frontend through `nuxt-kql` and KQL queries.
+* **Documentation is Key:**  Refer to the official documentation frequently, **especially the Nuxt UI documentation.**
+* **Debugging Tools:** Use browser developer tools for frontend debugging and explore Kirby's debugging options if needed.
+* **Ask Questions:** Don't hesitate to ask for help when you are stuck. Utilize online communities and resources.
+
+## File Pattern Matching (Optional - can be added if needed):
+
+# Example: Apply specific rules to Vue.js files
+# **/*.vue {
+#   # Framework: Nuxt.js/Vue.js
+#   # UI Framework: Nuxt UI
+#   # Styling: Tailwind CSS (via Nuxt UI)
+#   # Data Fetching: useKql from nuxt-kql
+# }

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { KirbyBlock } from '#nuxt-kql'
-import type { ResolvedKirbyImage } from '#shared/types/kirby'
+import type { ResolvedKirbyImage } from '../../../../shared/types/kirby'
 
 defineProps<{
   block: KirbyBlock<
@@ -30,6 +30,7 @@ defineProps<{
     >
       <div v-if="item.image">
         <figure class="column" style="aspect-ratio: 1/1">
+          {{ item.link }}
           <img
             :srcset="item.image.srcset"
             :width="item.image.width"

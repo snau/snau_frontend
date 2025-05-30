@@ -35,7 +35,7 @@ export function setPage<T extends KirbySharedPageData & Record<string, any>>(
     : site.value.title
   const description = page.description || site.value.description
   const url = joinURL(siteUrl, useRoute().path)
-  const image = page?.cover?.url || site.value.cover?.url
+  const image = page?.cover?.url
 
   // Build alternate URL
   const alternateUrls = Object.entries(page.i18nMeta).map(([lang, meta]) => {

@@ -7,7 +7,20 @@ export const siteQuery: KirbyQuerySchema = {
     description: true,
     children: {
       query: 'site.children',
-      select: ['uri', 'title', 'isListed'],
+      select: {
+        uri: true,
+        title: true,
+        isListed: true,
+        // IMPORTANT: Fetch sub-children for each child page
+        children: {
+          query: 'page.children',
+          select: {
+            uri: true,
+            title: true,
+            isListed: true,
+          },
+        },
+      },
     },
     cover: {
       query: 'site.cover.toFile?.resize(1200)',

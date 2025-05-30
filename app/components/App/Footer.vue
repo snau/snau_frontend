@@ -36,11 +36,7 @@ const translatedUris = computed(() =>
         <dd v-for="code in localeCodes" :key="code">
           <component
             :is="code === locale ? 'span' : NuxtLink"
-            :to="`/${code}${
-              translatedUris[code] && translatedUris[code] !== 'home'
-                ? `/${translatedUris[code]}`
-                : ''
-            }`"
+            :to="`/${code}${translatedUris[code] && translatedUris[code] !== 'home' ? `/${translatedUris[code]}` : ''}`"
           >
             {{ t(`language.${code}`) }}
           </component>

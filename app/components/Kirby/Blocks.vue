@@ -2,16 +2,27 @@
 import type { KirbyBlock } from '#nuxt-kql'
 import type { Component } from 'vue'
 import {
+  LazyKirbyBlockAccordion,
   LazyKirbyBlockHeading,
+  LazyKirbyBlockHero,
   LazyKirbyBlockImage,
+  LazyKirbyBlockInfo,
+  LazyKirbyBlockInterviewFooter,
+  LazyKirbyBlockInterviewHeader,
+  LazyKirbyBlockInterviewsGrid,
   LazyKirbyBlockIntro,
+  LazyKirbyBlockLatest,
   LazyKirbyBlockLine,
   LazyKirbyBlockList,
-  LazyKirbyBlockNoteHeader,
-  LazyKirbyBlockNotesGrid,
+  LazyKirbyBlockParcours,
   LazyKirbyBlockQuote,
+  LazyKirbyBlockScrollingStory,
+  LazyKirbyBlockStoreLinks,
+  LazyKirbyBlockStorystart,
   LazyKirbyBlockTeamStructure,
+  LazyKirbyBlockTeaser,
   LazyKirbyBlockText,
+  LazyKirbyBlockVideo,
 } from '#components'
 
 defineProps<{
@@ -27,9 +38,20 @@ const blockComponents: Record<string, Component> = {
   quote: LazyKirbyBlockQuote,
   text: LazyKirbyBlockText,
   // Custom blocks
+  accordion: LazyKirbyBlockAccordion,
+  hero: LazyKirbyBlockHero,
+  latest: LazyKirbyBlockLatest,
   intro: LazyKirbyBlockIntro,
-  'note-header': LazyKirbyBlockNoteHeader,
-  'notes-grid': LazyKirbyBlockNotesGrid,
+  storystart: LazyKirbyBlockStorystart,
+  parcours: LazyKirbyBlockParcours,
+  teaser: LazyKirbyBlockTeaser,
+  info: LazyKirbyBlockInfo,
+  video: LazyKirbyBlockVideo,
+  'interview-footer': LazyKirbyBlockInterviewFooter,
+  'interviews-grid': LazyKirbyBlockInterviewsGrid,
+  'interview-header': LazyKirbyBlockInterviewHeader,
+  'scrolling-story': LazyKirbyBlockScrollingStory,
+  'store-links': LazyKirbyBlockStoreLinks,
   'team-structure': LazyKirbyBlockTeamStructure,
 }
 

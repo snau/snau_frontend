@@ -4,7 +4,9 @@ import { prefetchQuery, siteQuery } from './app/queries'
 export default defineNuxtConfig({
   // If you project doesn't require i18n, use the `without-i18n` branch instead:
   // https://github.com/johannschopplich/cacao-kit-frontend/tree/chore/without-i18n
-  modules: ['@nuxtjs/i18n', '@unocss/nuxt', '@vueuse/nuxt', 'nuxt-kql'],
+  modules: ['@nuxtjs/i18n', '@nuxt/ui', '@vueuse/nuxt', 'nuxt-kql'],
+
+  css: ['~/assets/css/main.css'],
 
   compatibilityDate: '2025-01-01',
 

@@ -1,0 +1,126 @@
+# SNAU - Kirby - Nuxt - Headless
+
+## Project Structure
+
+### Terminology
+- **Blocks**: Content components managed in Kirby CMS and rendered in Nuxt
+- **KQL**: Kirby Query Language, used for communication between Kirby and Nuxt
+- **Cacao Kit**: The framework upon which this project is built
+
+### Directory Structure Conventions
+- `components/Kirby/Block/`: Contains components for rendering Kirby blocks
+- `components/App/`: Contains application-specific components
+- `queries/`: Contains KQL query definitions
+- `pages/`: Contains Nuxt pages, including the catch-all route
+
+## Architecture Patterns
+
+### Block-First Architecture
+Content is structured as blocks in Kirby that are rendered by corresponding components in Nuxt.
+
+### Catch-All Routing
+The `pages/[...slug].vue` file handles routing for all pages, determining content based on the URL path.
+
+### Component Naming
+- `KirbyBlock[Type]`: Components for specific Kirby block types
+- `App[Name]`: Application-specific components
+
+## Code Conventions
+
+### Typescript
+- Use proper typing for all variables, props, and functions
+- Leverage Vue 3's typed Composition API
+- Define interfaces for all data structures
+
+### Component Structure
+```vue
+<script setup lang="ts">
+// Imports
+import { ref, computed } from 'vue'
+
+// Props
+const props = defineProps<{
+  block: BlockType
+}>()
+
+// Composables
+const { someFunction } = useSomeComposable()
+
+// Computed properties
+const someComputed = computed(() => {
+  // logic
+})
+
+// Methods
+function handleSomething() {
+  // logic
+}
+</script>
+
+<template>
+  <div class="component-wrapper">
+    <!-- Component template -->
+  </div>
+</template>
+```
+
+### Internationalization
+- Use `useI18n()` composable for translations
+- Use t('key') for translating text
+- Language files are in `i18n/` directory
+
+## Development Workflow
+
+### Environment Setup
+- Use `pnpm install` to install dependencies
+- Set required environment variables:
+  - `KIRBY_BASE_URL`: Base URL of the Kirby backend
+  - `KIRBY_API_TOKEN`: Token for bearer authentication
+- Use `pnpm run dev` for local development
+
+### Adding New Block Types
+1. Create a new block component in `components/Kirby/Block/`
+2. Register the block in `components/Kirby/Blocks.vue`
+
+### Styling
+- Use CSS for component styling
+- Consider using Tailwind CSS for utility classes
+- Follow responsive design principles
+
+## Best Practices
+
+### Performance
+- Use lazy loading for components where appropriate
+- Optimize images using @nuxt/image
+- Consider static generation for content that doesn't change frequently
+
+### Security
+- Sanitize HTML content using DOMPurify
+- Use proper authentication for API requests
+- Follow OWASP security guidelines
+
+### Accessibility
+- Ensure proper semantic HTML
+- Provide appropriate ARIA attributes
+- Test with screen readers
+- Maintain sufficient color contrast
+
+## Common Issues and Solutions
+
+### API Connection
+If facing issues with Kirby API connection:
+- Verify environment variables are set correctly
+- Check that CORS is properly configured in Kirby
+- Ensure the API token is valid
+
+### Block Rendering
+If blocks are not rendering correctly:
+- Check that the block component is registered in Blocks.vue
+- Verify the block data structure matches what the component expects
+- Check for errors in the browser console
+
+### Internationalization
+If i18n is not working as expected:
+- Verify language files are properly formatted
+- Check that the locale is being set correctly
+- Ensure routes are using the correct prefix 
