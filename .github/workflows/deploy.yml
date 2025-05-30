@@ -4,171 +4,68 @@ on:
   push:
     branches:
       - main
-      - staging
-  pull_request:
-    branches:
-      - main
-      - staging
-    types: [opened, synchronize, reopened]
-
-concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
-
-env:
-  NODE_VERSION: '22'
-  PNPM_VERSION: '9'
+      - staging # Added staging branch
 
 jobs:
   deploy-to-netlify:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0 # Get full history for better build context
 
       - name: Setup pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: ${{ env.PNPM_VERSION }}
+        uses: pnpm/action-setup@v3
+        # with:
+        #   version: 8
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: ${{ env.NODE_VERSION }}
-          cache: 'pnpm'
+          node-version: '22'
+          cache: pnpm
 
-      - name: Get pnpm store directory
-        shell: bash
+      # Step to determine if this is a production deploy for Netlify's perspective
+      - name: Determine Deployment Type
+        id: deploy_type
         run: |
-          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
-
-      - name: Setup pnpm cache
-        uses: actions/cache@v4
-        with:
-          path: ${{ env.STORE_PATH }}
-          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
-          restore-keys: |
-            ${{ runner.os }}-pnpm-store-
-
-      - name: Determine deployment context
-        id: deploy_context
-        run: |
-          if [[ "${{ github.event_name }}" == "pull_request" ]]; then
-            echo "DEPLOY_TYPE=deploy-preview" >> $GITHUB_OUTPUT
-            echo "DEPLOY_ALIAS=deploy-preview-${{ github.event.pull_request.number }}" >> $GITHUB_OUTPUT
-            echo "IS_PRODUCTION=false" >> $GITHUB_OUTPUT
-            echo "BRANCH_NAME=pr-${{ github.event.pull_request.number }}" >> $GITHUB_OUTPUT
-            echo "DEPLOY_MESSAGE=Deploy preview for PR #${{ github.event.pull_request.number }}: ${{ github.event.pull_request.title }}" >> $GITHUB_OUTPUT
-          elif [[ "${{ github.ref_name }}" == "main" ]]; then
-            echo "DEPLOY_TYPE=production" >> $GITHUB_OUTPUT
-            echo "DEPLOY_ALIAS=" >> $GITHUB_OUTPUT
-            echo "IS_PRODUCTION=true" >> $GITHUB_OUTPUT
-            echo "BRANCH_NAME=main" >> $GITHUB_OUTPUT
-            echo "DEPLOY_MESSAGE=Production deploy: ${{ github.event.head_commit.message }}" >> $GITHUB_OUTPUT
+          if [[ "${{ github.ref_name }}" == "main" ]]; then
+            echo "BRANCH_NAME=production" >> $GITHUB_OUTPUT
+            echo "IS_PRODUCTION_NETLIFY_DEPLOY=true" >> $GITHUB_OUTPUT
           elif [[ "${{ github.ref_name }}" == "staging" ]]; then
-            echo "DEPLOY_TYPE=branch-deploy" >> $GITHUB_OUTPUT
-            echo "DEPLOY_ALIAS=staging" >> $GITHUB_OUTPUT
-            echo "IS_PRODUCTION=false" >> $GITHUB_OUTPUT
             echo "BRANCH_NAME=staging" >> $GITHUB_OUTPUT
-            echo "DEPLOY_MESSAGE=Staging deploy: ${{ github.event.head_commit.message }}" >> $GITHUB_OUTPUT
+            echo "IS_PRODUCTION_NETLIFY_DEPLOY=false" >> $GITHUB_OUTPUT
           else
-            echo "DEPLOY_TYPE=branch-deploy" >> $GITHUB_OUTPUT
-            echo "DEPLOY_ALIAS=${{ github.ref_name }}" >> $GITHUB_OUTPUT
-            echo "IS_PRODUCTION=false" >> $GITHUB_OUTPUT
+            # This case should ideally not be hit if branches are restricted in 'on.push.branches'
+            echo "::warning::Branch ${{ github.ref_name }} is not explicitly configured for production/staging deploy type."
             echo "BRANCH_NAME=${{ github.ref_name }}" >> $GITHUB_OUTPUT
-            echo "DEPLOY_MESSAGE=Branch deploy (${{ github.ref_name }}): ${{ github.event.head_commit.message }}" >> $GITHUB_OUTPUT
+            echo "IS_PRODUCTION_NETLIFY_DEPLOY=false" >> $GITHUB_OUTPUT # Default to non-production for other branches
           fi
 
-          # Add commit info to deploy message
-          echo "COMMIT_SHA=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
-          echo "COMMIT_AUTHOR=${{ github.event.head_commit.author.name }}" >> $GITHUB_OUTPUT
-
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile --prefer-offline
+        run: pnpm install --frozen-lockfile
         env:
+          # These secrets are assumed to be the same for both main and staging
           KIRBY_BASE_URL: ${{ secrets.KIRBY_BASE_URL }}
           KIRBY_API_TOKEN: ${{ secrets.KIRBY_API_TOKEN }}
-
-      - name: Cache Nuxt build
-        uses: actions/cache@v4
-        with:
-          path: |
-            .nuxt
-            .output
-          key: ${{ runner.os }}-nuxt-${{ hashFiles('**/pnpm-lock.yaml') }}-${{ hashFiles('**/*.vue', '**/*.ts', '**/*.js', 'nuxt.config.ts') }}
-          restore-keys: |
-            ${{ runner.os }}-nuxt-${{ hashFiles('**/pnpm-lock.yaml') }}-
-            ${{ runner.os }}-nuxt-
 
       - name: Build Nuxt application
         run: pnpm run build
         env:
+          # NITRO_PRESET: netlify # Usually auto-detected by Nuxt for Netlify
           KIRBY_BASE_URL: ${{ secrets.KIRBY_BASE_URL }}
           KIRBY_API_TOKEN: ${{ secrets.KIRBY_API_TOKEN }}
-          NETLIFY_DEPLOY_CONTEXT: ${{ steps.deploy_context.outputs.DEPLOY_TYPE }}
-          # Add any other build-time environment variables here
+          # Add any other build-time environment variables
 
       - name: Deploy to Netlify
-        uses: nwtgck/actions-netlify@v3
+        uses: nwtgck/actions-netlify@v2
         with:
           publish-dir: ./.output/public
-          production-branch: main
-          production-deploy: ${{ steps.deploy_context.outputs.IS_PRODUCTION }}
-          deploy-message: |
-            ${{ steps.deploy_context.outputs.DEPLOY_MESSAGE }}
-
-            📋 Deploy Details:
-            • Branch: ${{ steps.deploy_context.outputs.BRANCH_NAME }}
-            • Commit: ${{ steps.deploy_context.outputs.COMMIT_SHA }}
-            • Author: ${{ steps.deploy_context.outputs.COMMIT_AUTHOR }}
-            • Context: ${{ steps.deploy_context.outputs.DEPLOY_TYPE }}
-            • Workflow: ${{ github.workflow }} #${{ github.run_number }}
-          alias: ${{ steps.deploy_context.outputs.DEPLOY_ALIAS }}
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          enable-pull-request-comment: true
-          enable-commit-comment: false
-          enable-commit-status: true
-          overwrites-pull-request-comment: true
+          production-branch: main # Tells Netlify its primary production branch is 'main'
+          production-deploy: ${{ steps.deploy_type.outputs.IS_PRODUCTION_NETLIFY_DEPLOY == 'true' }} # Key change: true for main, false for staging
+          deploy-message: 'Deploy ${{ steps.deploy_type.outputs.BRANCH_NAME }} from GitHub Actions: ${{ github.sha }}'
+          # enable-pull-request-comment: false
+          # enable-commit-comment: true
         env:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
-          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
-        timeout-minutes: 10
-
-      - name: Generate deployment summary
-        if: always()
-        run: |
-          echo "## 🚀 Deployment Summary" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "| Field | Value |" >> $GITHUB_STEP_SUMMARY
-          echo "|-------|-------|" >> $GITHUB_STEP_SUMMARY
-          echo "| **Deploy Type** | ${{ steps.deploy_context.outputs.DEPLOY_TYPE }} |" >> $GITHUB_STEP_SUMMARY
-          echo "| **Branch** | ${{ steps.deploy_context.outputs.BRANCH_NAME }} |" >> $GITHUB_STEP_SUMMARY
-          echo "| **Commit** | \`${{ steps.deploy_context.outputs.COMMIT_SHA }}\` |" >> $GITHUB_STEP_SUMMARY
-          echo "| **Author** | ${{ steps.deploy_context.outputs.COMMIT_AUTHOR }} |" >> $GITHUB_STEP_SUMMARY
-          if [[ "${{ steps.deploy_context.outputs.DEPLOY_ALIAS }}" != "" ]]; then
-            echo "| **Deploy URL** | https://${{ steps.deploy_context.outputs.DEPLOY_ALIAS }}--${{ secrets.NETLIFY_SITE_NAME || 'your-site' }}.netlify.app |" >> $GITHUB_STEP_SUMMARY
-          fi
-          echo "| **Workflow Run** | [${{ github.workflow }} #${{ github.run_number }}](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}) |" >> $GITHUB_STEP_SUMMARY
-
-  # Optional: Add a job for Lighthouse performance testing on staging deploys
-  lighthouse-check:
-    needs: deploy-to-netlify
-    runs-on: ubuntu-latest
-    if: github.ref_name == 'staging' && github.event_name == 'push'
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Run Lighthouse CI
-        uses: treosh/lighthouse-ci-action@v12
-        with:
-          urls: |
-            https://staging--${{ secrets.NETLIFY_SITE_NAME || 'your-site' }}.netlify.app
-          configPath: './.lighthouserc.json'
-          uploadArtifacts: true
-          temporaryPublicStorage: true
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }} # Assumed to be the same Netlify site ID for both
+        timeout-minutes: 5
