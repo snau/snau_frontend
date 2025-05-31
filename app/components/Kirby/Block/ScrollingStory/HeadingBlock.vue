@@ -25,6 +25,6 @@ const getClasses = (block: HeadingBlockProps['block']) => {
 
 <template>
   <component :is="block.level || 'h2'" :class="getClasses(block)">
-    {{ block.content }}
+    <span v-html="block.content"></span>
   </component>
 </template>
