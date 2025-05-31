@@ -112,6 +112,7 @@ snau_frontend/
 - Inconsistent error handling patterns
 - Limited type definitions for CMS data
 - No testing infrastructure
+  - _Future plans may include implementing a testing strategy (e.g., using Vitest for unit/component testing) to improve code reliability._
 - Missing bundle optimization
 - Insufficient documentation
 
@@ -132,7 +133,7 @@ Create `.env` file:
 KIRBY_BASE_URL=https://your-kirby-backend.com
 KIRBY_API_TOKEN=your-bearer-token
 
-# Optional
+# Optional - Used for generating absolute URLs (e.g., for SEO, sitemaps)
 NUXT_PUBLIC_SITE_URL=https://your-frontend.com
 ```
 
@@ -173,6 +174,11 @@ pnpm check:all          # Run all checks
 pnpm prepare            # Nuxt preparation
 ```
 
+## 🌐 Deployment
+
+This project is configured for deployment on Netlify and Cloudflare Pages/Workers.
+Refer to `netlify.toml` and `wrangler.toml` respectively for platform-specific configurations.
+
 ## 🏗️ Development Guidelines
 
 ### Component Development
@@ -209,20 +215,21 @@ const blockComponents: Partial<Record<string, Component>> = {
 
 ## 🚀 Deployment
 
-### Static Generation
+This project uses **Static Site Generation (SSG)** for optimal performance and is deployed via **Netlify**.
+
+### Build for Production
 
 ```bash
+# Generate static site
 pnpm generate
-```
 
-### Server-Side Rendering
-
-```bash
-pnpm build
+# Preview the generated site locally
 pnpm preview
 ```
 
-### Netlify (Current Setup)
+### Netlify (Primary Deployment)
+
+The project is configured for static site generation and deployed via Netlify:
 
 - **Build Command**: `pnpm run generate`
 - **Output Directory**: `.output/public`
@@ -231,7 +238,7 @@ pnpm preview
 
 #### Netlify Configuration
 
-Create `netlify.toml` in project root:
+The `netlify.toml` file is already configured with:
 
 ```toml
 [build]
@@ -248,12 +255,6 @@ Create `netlify.toml` in project root:
   to = "/index.html"
   status = 200
 ```
-
-### Cloudflare Pages (Alternative)
-
-- **Build Command**: `pnpm build`
-- **Output Directory**: `.output/public`
-- **Node Version**: 18+
 
 ### Environment Variables (Production)
 
@@ -273,8 +274,8 @@ NUXT_PUBLIC_SITE_URL=https://snau.net
 
 ### Nuxt Configuration
 
-- **SSR**: Enabled by default
-- **Static Generation**: Configured for `/` route
+- **SSG**: Static Site Generation enabled
+- **Prerendering**: Configured for optimal static output
 - **i18n**: English/German support
 - **Image Optimization**: Enabled
 - **Dev Proxy**: Kirby backend proxy for development
