@@ -17,7 +17,6 @@ import {
   LazyKirbyBlockParcours,
   LazyKirbyBlockQuote,
   LazyKirbyBlockScrollingStory,
-  LazyKirbyBlockStoreLinks,
   LazyKirbyBlockStorystart,
   LazyKirbyBlockTeamStructure,
   LazyKirbyBlockTeaser,
@@ -51,7 +50,6 @@ const blockComponents: Record<string, Component> = {
   'interviews-grid': LazyKirbyBlockInterviewsGrid,
   'interview-header': LazyKirbyBlockInterviewHeader,
   'scrolling-story': LazyKirbyBlockScrollingStory,
-  'store-links': LazyKirbyBlockStoreLinks,
   'team-structure': LazyKirbyBlockTeamStructure,
 }
 

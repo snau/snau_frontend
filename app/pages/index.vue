@@ -1,18 +1,15 @@
 <script setup lang="ts">
 // This file handles the homepage route
 
-import { getPageQuery } from '~/queries'
 import type { KirbySharedPageData } from '~/queries'
+import { getPageQuery } from '~/queries'
 
 const { locale } = useI18n()
 
 // Fetch the home page data with error handling
 let pageData, pageError
 try {
-  const result = await useKql(
-    getPageQuery('home'),
-    { language: locale.value },
-  )
+  const result = await useKql(getPageQuery('home'), { language: locale.value })
   pageData = result.data
   pageError = result.error
 } catch (error) {

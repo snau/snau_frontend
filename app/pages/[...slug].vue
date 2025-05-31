@@ -1,8 +1,8 @@
 <script setup lang="ts">
 // This Nuxt page will render every Kirby page
 
-import { getPageQuery } from '~/queries'
 import type { KirbySharedPageData } from '~/queries'
+import { getPageQuery } from '~/queries'
 
 const { locale, localeCodes } = useI18n()
 const route = useRoute()
@@ -78,7 +78,9 @@ if (page) {
     <KirbyBlocks v-else-if="page?.blocks" :blocks="page.blocks" />
     <div v-else-if="fetchError" class="error-fallback">
       <h1>Page Not Found</h1>
-      <p>The requested page is currently unavailable. Please try again later.</p>
+      <p>
+        The requested page is currently unavailable. Please try again later.
+      </p>
     </div>
     <div v-else class="error-fallback">
       <h1>Content Unavailable</h1>

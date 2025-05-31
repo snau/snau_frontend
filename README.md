@@ -1,116 +1,364 @@
 [![Cacao Kit Frontend](./.github/og-image.png)](https://cacao-kit.byjohann.dev)
 
-# Cacao Kit (Frontend)
+# SNAU Frontend
 
-> [!TIP]
-> If internationalization is **not** a requirement for your project, you can check out the [🧱 branch without i18n](https://github.com/johannschopplich/cacao-kit-frontend/compare/main...chore/without-i18n).
->
-> If this is your first time building an application with Nuxt, I recommend taking a look into the [💚 Kirby Nuxt Starterkit](https://github.com/johannschopplich/kirby-nuxt-starterkit) first to get a basic understanding of this tech-stack. It is a port of the Kirby starter kit, built with Nuxt and KQL.
+A modern Nuxt 3 frontend application built for SNAU, featuring headless Kirby CMS integration with internationalization support.
 
-This repository provides a minimal but feature-rich Nuxt 3 starter kit. It fetches content from the [🍫 Cacao Kit backend](https://github.com/johannschopplich/cacao-kit-backend), a headless Kirby instance. It is the evolved version of the [Kirby Nuxt Starterkit](https://github.com/johannschopplich/kirby-nuxt-starterkit) and my best practice solution to build a Nuxt based frontend on top of Kirby CMS.
+## 🚀 Tech Stack
 
-You can harness every feature Nuxt provides to build a server-side rendered application or even pre-render the content using [Nuxt's static generation](https://nuxt.com/docs/getting-started/deployment#static-hosting).
+### Core Framework
 
-Key design decisions is a block-first approach. Meaning, you can use Kirby's page structure as the source of truth and don't have to replicate the page structure in Nuxt. All pages are rendered by the [catch-all route](./pages/[...slug].vue). Of course, you don't have to stick with the block-first architecture.
-If it doesn't speak to you or if you need custom Kirby page blueprints with custom fields, you can always create Nuxt pages and query the content using KQL. See the [`pages/about.vue`](./pages/about.vue) page for an example.
+- **[Nuxt 3](https://nuxt.com/)** (v3.17.4) - Vue.js framework with SSR/SSG
+- **[Vue 3](https://vuejs.org/)** - Progressive JavaScript framework
+- **[TypeScript](https://www.typescriptlang.org/)** (v5.8.3) - Type-safe JavaScript
 
-## Key Features
+### Styling & UI
 
-> [!NOTE]
-> If i18n is **not** a requirement for your project, you can check out the [🧱 branch without i18n](https://github.com/johannschopplich/cacao-kit-frontend/compare/main...chore/without-i18n).
+- **[Tailwind CSS](https://tailwindcss.com/)** - Utility-first CSS framework
+- **[Nuxt UI](https://ui.nuxt.com/)** (v3.1.3) - Vue component library
+- **[GSAP](https://greensock.com/gsap/)** (v3.12.7) - Animation library
 
-- 🌐 Internationalization with [`@nuxtjs/i18n`](https://github.com/nuxt-modules/i18n)
-- 🏆 Motto: [“Everything is a block”](./components/Kirby/Block/) – Kirby blocks define what to render for each page
-- 🛣️ All pages are rendered by the [catch-all route](./pages/[...slug].vue) by default (you can still create Nuxt pages)
-- 🌌 Use Kirby's page structure as the source of truth
-- 🫂 Kirby Query Language with [`nuxt-kql`](https://nuxt-kql.byjohann.dev)
-- 🏛 Global [site data](./plugins/site.ts) similar to Kirby's `$site`
-- 🔎 SSR generated SEO data
-- 📐 Prettier & ESLint
-- 🔢 Pre-configured [VSCode settings](./.vscode/settings.json)
+### CMS & Data
 
-## Usage
+- **[Kirby CMS](https://getkirby.com/)** - Headless CMS backend
+- **[nuxt-kql](https://nuxt-kql.byjohann.dev)** (v1.5.4) - Kirby Query Language integration
+- **[Nuxt Image](https://image.nuxt.com/)** (v1.10.0) - Image optimization
+
+### Internationalization
+
+- **[@nuxtjs/i18n](https://i18n.nuxtjs.org/)** (v9.5.4) - Multi-language support
+- **Languages**: English (default), German
+
+### Development Tools
+
+- **[ESLint](https://eslint.org/)** (v9.27.0) with [@antfu/eslint-config](https://github.com/antfu/eslint-config)
+- **[Prettier](https://prettier.io/)** (v3.5.3) - Code formatting
+- **[pnpm](https://pnpm.io/)** (v10.11.0) - Package manager
+
+### Additional Libraries
+
+- **[VueUse](https://vueuse.org/)** (v13.3.0) - Vue composition utilities
+- **[marked](https://marked.js.org/)** (v15.0.7) - Markdown parser
+- **[medium-zoom](https://medium-zoom.francoischalifour.com/)** (v1.1.0) - Image zoom functionality
+
+## 🏗️ Architecture
+
+### Project Structure
+
+```
+snau_frontend/
+├── app/
+│   ├── assets/css/          # Global styles
+│   ├── components/          # Vue components
+│   │   ├── App/            # Application-level components
+│   │   └── Kirby/          # CMS-specific components
+│   │       ├── Block/      # Content block components
+│   │       └── Layouts.vue # Layout renderer
+│   ├── composables/        # Vue composables
+│   ├── pages/              # Nuxt pages
+│   ├── plugins/            # Nuxt plugins
+│   ├── queries/            # KQL queries
+│   └── utils/              # Utility functions
+├── i18n/locales/           # Translation files
+├── public/                 # Static assets
+├── server/routes/          # Server API routes
+└── shared/types/           # TypeScript definitions
+```
+
+### Key Design Patterns
+
+- **Block-first Architecture**: Content is rendered through Kirby blocks
+- **Catch-all Routing**: Single `[...slug].vue` handles all dynamic pages
+- **Composable-driven Logic**: Reusable business logic in composables
+- **Type-safe CMS Integration**: Strong TypeScript integration with Kirby
+
+## 🚨 Critical Issues & Technical Debt
+
+### ✅ Resolved Issues
+
+#### 1. Performance Issues - FIXED ✅
+
+- **Base64 Images**: `StoreLinks.vue` has been removed
+  - **Status**: Component deleted, performance issue resolved
+
+#### 2. Repository Hygiene - FIXED ✅
+
+- **`.DS_Store` Files**: All macOS system files removed
+  - **Status**: Files deleted, `.gitignore` properly configured
+
+#### 3. Code Quality - FIXED ✅
+
+- **ESLint Errors**: Import sorting violations resolved
+  - **Status**: All linting and formatting issues fixed
+
+### High Priority
+
+#### 4. Component Complexity
+
+- **ScrollingStory.vue**: 580 lines - monolithic component
+- **InterviewsGrid.vue**: 328 lines
+- **Layouts.vue**: 325 lines
+- **Solution**: Break into smaller, focused components
+
+#### 5. Composable Complexity
+
+- **useInterviewFilters.ts**: 141 lines
+- **page.ts**: 130 lines
+- **Solution**: Split into single-purpose composables
+
+### Medium Priority
+
+- Inconsistent error handling patterns
+- Limited type definitions for CMS data
+- No testing infrastructure
+- Missing bundle optimization
+- Insufficient documentation
+
+## 🛠️ Development Setup
 
 ### Prerequisites
 
-1. Enable [Corepack](https://github.com/nodejs/corepack) using `corepack enable`
-2. Install dependencies using `pnpm install`
-3. Adapt the relevant environment variables:
+1. **Node.js** (v18+)
+2. **pnpm** (v10.11.0) - Enable with `corepack enable`
+3. **Kirby Backend** - Running instance required
+
+### Environment Variables
+
+Create `.env` file:
 
 ```bash
-# Base URL of the Kirby backend
-KIRBY_BASE_URL=
-# Token for bearer authentication
-# See https://github.com/johannschopplich/cacao-kit-backend#bearer-token
-KIRBY_API_TOKEN=
+# Kirby CMS Backend
+KIRBY_BASE_URL=https://your-kirby-backend.com
+KIRBY_API_TOKEN=your-bearer-token
+
+# Optional
+NUXT_PUBLIC_SITE_URL=https://your-frontend.com
 ```
 
-### Development
+### Installation
 
-1. Start the development server using `pnpm run dev`
-2. Visit [localhost:3000](http://localhost:3000/)
+```bash
+# Install dependencies
+pnpm install
 
-### Production
+# Start development server
+pnpm dev
 
-Build the application for production with `pnpm run build`.
+# Development with tunnel (for Kirby proxy)
+pnpm dev:tunnel
+```
 
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment).
+### Available Scripts
 
-## Cookbook
+```bash
+# Development
+pnpm dev                 # Start dev server
+pnpm dev:tunnel         # Start with tunnel for Kirby proxy
 
-### Static Hosting
+# Building
+pnpm build              # Build for production
+pnpm generate           # Static site generation
+pnpm preview            # Preview production build
 
-You can use Nuxt's [static generation](https://nuxt.com/docs/getting-started/deployment#static-hosting) to pre-render the content. This is especially useful if you want to host the application on a CDN or a static hosting service like [Netlify](https://www.netlify.com).
+# Code Quality
+pnpm lint               # Run ESLint
+pnpm lint:fix           # Fix ESLint issues
+pnpm format             # Format with Prettier
+pnpm format:check       # Check formatting
+pnpm test:types         # TypeScript type checking
+pnpm check:all          # Run all checks
 
-### How to Add a New Block
+# Preparation
+pnpm prepare            # Nuxt preparation
+```
 
-Given you have created the block in the Kirby backend, you can add it to the frontend by following these steps:
+## 🏗️ Development Guidelines
 
-- Create a new component in the [`components/Kirby/Block/`](./components/Kirby/Block/) directory.
-- Add the new block to the [`components/Kirby/Blocks.vue`](./components/Kirby/Blocks.vue) component to make it available when rendering the block's field JSON data.
+### Component Development
 
-For example, let's say you have created a new block called `NoteHeader` and want to render it with the `KirbyBlocks` component:
+1. **Block Components**: Place in `app/components/Kirby/Block/`
+2. **Register in Blocks.vue**: Add to component mapping
+3. **Follow Naming**: Use PascalCase, descriptive names
+4. **Keep Small**: Aim for <200 lines per component
 
-```diff
-<script setup lang="ts">
-import {
-+  LazyKirbyBlockNoteHeader,
-} from '#components'
+### Adding New Blocks
 
-const blockComponents: Partial<Record<string, Component> = {
-  // Custom blocks
-+  'note-header': LazyKirbyBlockNoteHeader,
+```typescript
+// In components/Kirby/Blocks.vue
+import { LazyKirbyBlockYourBlock } from '#components'
+
+const blockComponents: Partial<Record<string, Component>> = {
+  'your-block': LazyKirbyBlockYourBlock,
 }
-</script>
 ```
 
-### How to Bring Your Own Styling
+### Composables Best Practices
 
-This kit is written in semantic HTML and styled by the class-less CSS framework [new.css](https://newcss.net/). It is only used for the demo content. You can remove the framework by deleting the `<Link />` tag in the [`app.vue`](./app.vue) component and start over with your own styling.
+1. **Single Responsibility**: One concern per composable
+2. **Reactive Data**: Use `ref`/`reactive` appropriately
+3. **Error Handling**: Consistent error patterns
+4. **TypeScript**: Full type coverage
 
-### Deployment
+### Styling Guidelines
 
-Just like any other Nuxt application, the Cacao Kit can be deployed on a Node.js server, pre-rendered for static hosting, or deployed to serverless or edge (CDN) environments. Follow the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) to learn more.
+1. **Tailwind First**: Use utility classes
+2. **Component Scoped**: Avoid global styles
+3. **Responsive**: Mobile-first approach
+4. **Dark Mode**: Consider dark mode support
 
-This repository includes a [`netlify.toml`](./netlify.toml) file to deploy the application to [Netlify](https://www.netlify.com). The recommended deployment provider is [Cloudflare Pages](https://pages.cloudflare.com), which doesn't require any additional configuration.
+## 🚀 Deployment
 
-#### Deployment Previews
+### Static Generation
 
-- Cloudflare Pages 👉 [cacao-kit.byjohann.dev](https://cacao-kit.byjohann.dev) (recommended)
+```bash
+pnpm generate
+```
 
-## What's Kirby?
+### Server-Side Rendering
 
-- **[getkirby.com](https://getkirby.com)** – Get to know the CMS.
-- **[Try it](https://getkirby.com/try)** – Take a test ride with our online demo. Or download one of our kits to get started.
-- **[Documentation](https://getkirby.com/docs/guide)** – Read the official guide, reference and cookbook recipes.
-- **[Issues](https://github.com/getkirby/kirby/issues)** – Report bugs and other problems.
-- **[Feedback](https://feedback.getkirby.com)** – You have an idea for Kirby? Share it.
-- **[Forum](https://forum.getkirby.com)** – Whenever you get stuck, don't hesitate to reach out for questions and support.
-- **[Discord](https://chat.getkirby.com)** – Hang out and meet the community.
-- **[YouTube](https://youtube.com/kirbyCasts)** - Watch the latest video tutorials visually with Bastian.
-- **[Mastodon](https://mastodon.social/@getkirby)** – Spread the word.
-- **[Instagram](https://www.instagram.com/getkirby/)** – Share your creations: #madewithkirby.
+```bash
+pnpm build
+pnpm preview
+```
 
-## License
+### Netlify (Current Setup)
 
-[MIT](./LICENSE) License © 2023-PRESENT [Johann Schopplich](https://github.com/johannschopplich)
+- **Build Command**: `pnpm run generate`
+- **Output Directory**: `.output/public`
+- **Node Version**: 22
+- **Deployment Type**: Static Site Generation (SSG)
+
+#### Netlify Configuration
+
+Create `netlify.toml` in project root:
+
+```toml
+[build]
+  command = "pnpm run generate"
+  publish = ".output/public"
+
+[build.environment]
+  NODE_VERSION = "22"
+  NPM_FLAGS = "--version"
+  PNPM_VERSION = "10.11.0"
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+```
+
+### Cloudflare Pages (Alternative)
+
+- **Build Command**: `pnpm build`
+- **Output Directory**: `.output/public`
+- **Node Version**: 18+
+
+### Environment Variables (Production)
+
+```bash
+KIRBY_BASE_URL=https://backend.snau.net
+KIRBY_API_TOKEN=your-api-token-here
+NUXT_PUBLIC_SITE_URL=https://snau.net
+```
+
+#### Setting Environment Variables in Netlify
+
+1. Go to **Site settings** → **Environment variables**
+2. Add the variables above
+3. Redeploy the site
+
+## 🔧 Configuration
+
+### Nuxt Configuration
+
+- **SSR**: Enabled by default
+- **Static Generation**: Configured for `/` route
+- **i18n**: English/German support
+- **Image Optimization**: Enabled
+- **Dev Proxy**: Kirby backend proxy for development
+
+### ESLint Configuration
+
+- **Base**: @antfu/eslint-config
+- **Disabled Rules**: Vue formatting rules (conflicts with Prettier)
+- **TypeScript**: Full support
+
+### Tailwind Configuration
+
+- **Custom Config**: `tailwind.config.ts`
+- **Nuxt UI**: Integrated component system
+
+## 🧪 Testing (TODO)
+
+Currently no testing infrastructure. Recommended additions:
+
+- **Vitest**: Unit testing
+- **@vue/test-utils**: Component testing
+- **Playwright**: E2E testing
+
+## 📊 Performance Optimization
+
+### Current Issues
+
+1. Large base64 images in components
+2. No bundle analysis
+3. Missing code splitting optimization
+
+### Recommended Improvements
+
+1. **Image Optimization**: Use Nuxt Image module
+2. **Bundle Analysis**: Add webpack-bundle-analyzer
+3. **Code Splitting**: Implement dynamic imports
+4. **Caching**: Configure proper cache headers
+
+## 🔒 Security
+
+### Current Status
+
+- **CSP**: Not configured
+- **Security Headers**: Missing
+- **Environment Variables**: Properly handled
+
+### Recommended Additions
+
+1. Content Security Policy
+2. Security headers middleware
+3. Input validation
+4. Rate limiting
+
+## 📚 Resources
+
+### Documentation
+
+- [Nuxt 3 Documentation](https://nuxt.com/docs)
+- [Kirby CMS Documentation](https://getkirby.com/docs)
+- [nuxt-kql Documentation](https://nuxt-kql.byjohann.dev)
+- [Nuxt UI Documentation](https://ui.nuxt.com)
+
+### Community
+
+- [Kirby Discord](https://chat.getkirby.com)
+- [Nuxt Discord](https://discord.com/invite/ps2h6QT)
+
+## 📝 License
+
+MIT License - See [LICENSE](./LICENSE) file for details.
+
+---
+
+## 🚧 Remaining Action Items
+
+### ✅ Completed
+
+1. ~~**Fix base64 images** in `StoreLinks.vue`~~ - DONE
+2. ~~**Remove `.DS_Store` files** from repository~~ - DONE
+3. ~~**Fix ESLint errors** with `pnpm lint --fix`~~ - DONE
+
+### 🔄 Next Priority
+
+4. **Refactor large components** (ScrollingStory, InterviewsGrid)
+5. **Add testing infrastructure**
+6. **Implement bundle optimization**
+7. **Add security headers** (partially done via netlify.toml)
+8. **Expand type definitions**
