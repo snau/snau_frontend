@@ -27,8 +27,7 @@
 
 import type { KirbyBlock } from '#nuxt-kql'
 import type { ResolvedKirbyImage } from '../../../../shared/types/kirby'
-import { marked } from 'marked'
-import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
+import BlockRenderer from './ScrollingStory/BlockRenderer.vue'
 
 /**
  * Defines the structure for the left panel content items
@@ -65,332 +64,18 @@ interface BlockProps {
 
 const props = defineProps<BlockProps>()
 
-// Track the currently visible content section
-const currentMarkerIndex = ref(0)
-// Track which image should be displayed
-const currentImageId = ref<string | null>(null)
+// Use composables for complex logic
+const { currentMarkerIndex, currentImageId } = useScrollingStoryObserver(
+  props.block.content.leftcontent,
+  props.block.content.rightcontent,
+)
 
-// Compute dynamic background styles based on current content section
-const backgroundStyle = computed(() => {
-  const index = currentMarkerIndex.value
-  if (index === -1 || index >= props.block.content.rightcontent.length)
-    return {}
+const { backgroundStyle } = useScrollingStoryBackground(
+  currentMarkerIndex,
+  props.block.content.rightcontent,
+)
 
-  const content = props.block.content.rightcontent[index]
-  if (!content) return {}
-
-  const {
-    backgroundcolor = 'transparent',
-    secondarybackgroundcolor = '',
-    textcolor = 'inherit',
-  } = content
-
-  const hasGradient =
-    secondarybackgroundcolor && secondarybackgroundcolor.trim()
-
-  return {
-    ...(hasGradient
-      ? {
-          background: `linear-gradient(to bottom, ${backgroundcolor}, ${secondarybackgroundcolor})`,
-        }
-      : { backgroundColor: backgroundcolor }),
-    color: textcolor,
-    transition: 'background 0.5s ease-in-out, color 0.5s ease-in-out',
-  }
-})
-
-// Cache for parsed markdown to improve performance
-const markdownCache = new Map<string, string>()
-
-/**
- * Parses and caches markdown content to improve performance
- * Uses a Map to store previously parsed content and avoid redundant processing
- *
- * @param text - The markdown text to be parsed
- * @returns The parsed HTML string, or empty string if input is empty
- */
-const parseMarkdown = (text: string): string => {
-  if (!text) return ''
-  if (!markdownCache.has(text)) {
-    markdownCache.set(text, marked.parse(text) as string)
-  }
-  return markdownCache.get(text) || ''
-}
-
-// Intersection Observer instance
-let observer: IntersectionObserver | null = null
-
-/**
- * Sets up the Intersection Observer to track scroll position and trigger content updates
- * Handles the synchronization between scrolled content and displayed images
- *
- * Key functionality:
- * - Initializes observer with 50% visibility threshold
- * - Updates currentMarkerIndex and currentImageId when sections become visible
- * - Preloads images to prevent flickering during transitions
- * - Includes error handling for observer setup failures
- */
-onMounted(() => {
-  // Set initial image ID if available
-  if (props.block.content.rightcontent[0]?.markerReference) {
-    currentImageId.value = props.block.content.rightcontent[0].markerReference
-  }
-
-  // Preload images to prevent flickering during transitions
-  props.block.content.leftcontent.forEach(({ coverimage }) => {
-    if (coverimage?.url) {
-      const img = new Image()
-      img.src = coverimage.url
-    }
-  })
-
-  try {
-    // Initialize Intersection Observer to track scroll position
-    observer = new IntersectionObserver(
-      (entries) => {
-        for (const entry of entries) {
-          if (entry.isIntersecting) {
-            const marker = entry.target as HTMLElement
-            const indexAttr = marker.dataset.index
-            const markerContent = marker.dataset.markerContent
-
-            if (indexAttr !== undefined) {
-              // Update current section and corresponding image
-              const newIndex = Number.parseInt(indexAttr, 10)
-              if (currentMarkerIndex.value !== newIndex) {
-                currentMarkerIndex.value = newIndex
-                currentImageId.value = markerContent || null
-              }
-              break // Exit after finding first visible marker
-            }
-          }
-        }
-      },
-      {
-        rootMargin: '-20% 0px',
-        threshold: [0, 0.25, 0.5],
-      },
-    )
-
-    // Attach observer to all content markers
-    const markers = document.querySelectorAll<HTMLElement>('.contentMarker')
-    markers.forEach((marker, index) => {
-      marker.dataset.index = String(index)
-      observer?.observe(marker)
-    })
-  } catch (error) {
-    console.error('Error setting up intersection observer:', error)
-  }
-})
-
-// Clean up observer on component unmount
-onBeforeUnmount(() => {
-  if (observer) {
-    observer.disconnect()
-    observer = null
-  }
-})
-
-/**
- * Renders a heading block with customizable styling
- * Supports different heading levels, font sizes, and text alignment
- *
- * @param block - The heading block configuration object containing:
- *   - level: Heading level (h1-h6)
- *   - content: The heading text
- *   - font_size: Optional custom font size class
- *   - alignment: Optional text alignment
- *   - serif_sans: Optional font family selection
- * @returns HTML string of the formatted heading
- */
-const renderHeading = (block: any): string => {
-  if (!block?.content) return ''
-
-  const classes = [
-    'my-6',
-    block.font_size || '',
-    block.alignment ? `text-${block.alignment}` : '',
-    block.serif_sans || '',
-  ]
-    .filter(Boolean)
-    .join(' ')
-
-  return `<${block.level || 'h2'} class="${classes}">${block.content}</${block.level || 'h2'}>`
-}
-
-/**
- * Renders a text block with configurable font styles
- * @param block The text block configuration
- */
-const renderText = (block: any): string => {
-  if (!block?.content) return ''
-
-  const classes = [
-    'my-4',
-    block.font_size || 'text-base',
-    block.serif_sans || 'font-sans',
-  ]
-    .filter(Boolean)
-    .join(' ')
-
-  return `<div class="${classes}">${block.content}</div>`
-}
-
-/**
- * Renders an intro block with centered text
- * @param block The intro block configuration
- */
-const renderIntro = (block: any): string => {
-  if (!block?.content?.text) return ''
-
-  return `<div class="grid place-items-center w-full h-screen">
-    <h1 class="text-center ${block.content.font_size || ''} ${block.content.serif_sans || ''}">
-      ${block.content.text}
-    </h1>
-  </div>`
-}
-
-/**
- * Renders an image block with advanced features
- *
- * Supports:
- * - Responsive images with srcset
- * - Customizable aspect ratios
- * - Image cropping controls
- * - Focus point positioning
- * - Optional captions and copyright information
- * - Lazy loading for performance
- * - Optional linking of images
- *
- * @param block - The image block configuration
- * @returns HTML string of the formatted image with its container
- */
-const renderImage = (block: any): string => {
-  if (!block?.image?.url) return ''
-
-  const aspectRatio = block.ratio ? `aspect-ratio:${block.ratio};` : ''
-  const objectFit = `object-fit:${block.crop === false ? 'contain' : 'cover'};`
-  const imageStyle = `${aspectRatio}${objectFit}`
-  const objectPosition = block.image.focus?.value
-    ? `object-position:${block.image.focus.value};`
-    : ''
-
-  const imageHTML = `
-    <img 
-      src="${block.image.url}" 
-      srcset="${block.image.srcset || ''}" 
-      width="${block.image.width || ''}" 
-      height="${block.image.height || ''}"
-      alt="${block.alt || block.image.alt || ''}" 
-      class="w-full ${block.crop ? 'h-auto' : 'h-full'} object-cover"
-      style="${objectPosition}" 
-      loading="lazy" 
-    />`
-
-  const captionHTML = [
-    block.image.copyright
-      ? `<figcaption class="text-sm mt-2 text-gray-600">${block.image.copyright}</figcaption>`
-      : '',
-    block.caption || block.image.caption
-      ? `<figcaption class="text-sm mt-2 text-gray-600">${block.caption || block.image.caption}</figcaption>`
-      : '',
-  ]
-    .filter(Boolean)
-    .join('')
-
-  const figureHTML = `<figure class="my-6" style="${imageStyle}">${imageHTML}${captionHTML}</figure>`
-
-  return block.link
-    ? `<a rel="noopener noreferrer" target="_blank" href="${block.link}" class="block-image-link">${figureHTML}</a>`
-    : figureHTML
-}
-
-/**
- * Renders a quote block with optional author attribution
- * @param block The quote block configuration
- */
-const renderQuote = (block: any): string => {
-  if (!block?.text) return ''
-
-  const alignment = block.alignment ? `text-${block.alignment}` : 'text-left'
-  const fontSize = block.font_size || 'text-xl'
-  const fontFamily = block.serif_sans || 'font-sans'
-
-  return `<blockquote class="text-base mx-12 lg:my-24 ${alignment}">
-    <span class="${fontSize} ${fontFamily}">${block.text}</span>
-    ${block.author ? `<footer class="text-sm mt-2">— ${block.author}</footer>` : ''}
-  </blockquote>`
-}
-
-/**
- * Renders a gallery of images with configurable grid layout
- * @param block The gallery block configuration
- */
-const renderGallery = (block: any): string => {
-  if (!block?.images?.length) return ''
-
-  const aspectRatio = block.ratio ? `aspect-ratio:${block.ratio};` : ''
-  const objectFit = `object-fit:${block.crop === false ? 'contain' : 'cover'};`
-  const imageStyle = `${aspectRatio}${objectFit}`
-
-  const imagesHTML = block.images
-    .map(
-      (img: any) =>
-        `<figure style="${imageStyle}">
-      <img 
-        src="${img.url}" 
-        srcset="${img.srcset || ''}" 
-        width="${img.width || ''}" 
-        height="${img.height || ''}"
-        alt="${img.alt || ''}" 
-        class="w-full ${block.crop ? 'h-auto' : 'h-full'} object-cover" 
-        loading="lazy" 
-      />
-      ${img.copyright ? `<figcaption class="text-sm mt-2 text-gray-600">${img.copyright}</figcaption>` : ''}
-    </figure>`,
-    )
-    .join('')
-
-  const captionHTML = block.caption
-    ? `<figcaption class="text-center text-sm mt-2 text-gray-600">${block.caption}</figcaption>`
-    : ''
-
-  return `<div class="my-6">
-    <div class="grid grid-cols-2 lg:grid-cols-3 gap-4">${imagesHTML}</div>
-    ${captionHTML}
-  </div>`
-}
-
-/**
- * Main block renderer that dispatches to specific render functions
- * Includes error handling for unknown block types
- * @param block The block to render
- */
-const renderBlock = (block: any): string => {
-  if (!block?.type) return ''
-
-  try {
-    switch (block.type) {
-      case 'heading':
-        return renderHeading(block)
-      case 'text':
-        return renderText(block)
-      case 'intro':
-        return renderIntro(block)
-      case 'image':
-        return renderImage(block)
-      case 'quote':
-        return renderQuote(block)
-      case 'gallery':
-        return renderGallery(block)
-      default:
-        return `<div class="my-4">Block type: ${block.type}</div>`
-    }
-  } catch (error) {
-    console.error(`Error rendering block of type ${block.type}:`, error)
-    return `<div class="my-4 text-red-500">Error rendering block</div>`
-  }
-}
+const { parseMarkdown } = useMarkdownParser()
 
 /**
  * Ensures consistent handling of block content
@@ -512,10 +197,10 @@ const normalizeBlocks = (blocks: any): any[] => {
                 v-html="parseMarkdown(item.text)"
               />
               <div v-if="item.blocks" class="leading-normal mt-6 text-white">
-                <div
+                <BlockRenderer
                   v-for="(contentBlock, i) in normalizeBlocks(item.blocks)"
                   :key="i"
-                  v-html="renderBlock(contentBlock)"
+                  :block="contentBlock"
                 />
               </div>
             </div>
@@ -529,10 +214,10 @@ const normalizeBlocks = (blocks: any): any[] => {
               v-html="parseMarkdown(item.text)"
             />
             <div v-if="item.blocks" class="leading-normal mt-6">
-              <div
+              <BlockRenderer
                 v-for="(contentBlock, i) in normalizeBlocks(item.blocks)"
                 :key="i"
-                v-html="renderBlock(contentBlock)"
+                :block="contentBlock"
               />
             </div>
           </div>
@@ -567,10 +252,10 @@ const normalizeBlocks = (blocks: any): any[] => {
 
           <!-- Dynamic block content -->
           <div v-if="item.blocks" class="leading-normal mt-6">
-            <div
+            <BlockRenderer
               v-for="(contentBlock, i) in normalizeBlocks(item.blocks)"
               :key="i"
-              v-html="renderBlock(contentBlock)"
+              :block="contentBlock"
             />
           </div>
         </template>
