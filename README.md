@@ -80,6 +80,7 @@ snau_frontend/
 
 - **Base64 Images**: `StoreLinks.vue` has been removed
   - **Status**: Component deleted, performance issue resolved
+  - **Additional Fix**: Removed component references from `Blocks.vue` import mappings
 
 #### 2. Repository Hygiene - FIXED ✅
 
@@ -352,13 +353,16 @@ MIT License - See [LICENSE](./LICENSE) file for details.
 ### ✅ Completed
 
 1. ~~**Fix base64 images** in `StoreLinks.vue`~~ - DONE
+   - ~~Component deleted~~
+   - ~~Import references removed from `Blocks.vue`~~
 2. ~~**Remove `.DS_Store` files** from repository~~ - DONE
 3. ~~**Fix ESLint errors** with `pnpm lint --fix`~~ - DONE
+4. ~~**Fix development server errors**~~ - DONE
 
 ### 🔄 Next Priority
 
-4. **Refactor large components** (ScrollingStory, InterviewsGrid)
-5. **Add testing infrastructure**
-6. **Implement bundle optimization**
-7. **Add security headers** (partially done via netlify.toml)
-8. **Expand type definitions**
+5. **Refactor large components** (ScrollingStory, InterviewsGrid)
+6. **Add testing infrastructure**
+7. **Implement bundle optimization**
+8. **Add security headers** (partially done via netlify.toml)
+9. **Expand type definitions**
