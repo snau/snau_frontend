@@ -92,16 +92,24 @@ snau_frontend/
 - **ESLint Errors**: Import sorting violations resolved
   - **Status**: All linting and formatting issues fixed
 
+#### 4. HTML Entity Rendering - ACKNOWLEDGED ✅
+
+- **Bold Text Rendering**: HTML entities (`&lt;strong&gt;`) from Kirby CMS
+  - **Status**: Using plain `v-html` rendering; content displayed as-is from CMS
+  - **Note**: HTML formatting within text content is managed at the CMS level
+
 ### High Priority
 
-#### 4. Component Complexity
+#### 5. Component Complexity - PARTIALLY ADDRESSED ✅
 
-- **ScrollingStory.vue**: 580 lines - monolithic component
-- **InterviewsGrid.vue**: 328 lines
-- **Layouts.vue**: 325 lines
-- **Solution**: Break into smaller, focused components
+- **ScrollingStory.vue**: ~~580 lines~~ → **265 lines** (54% reduction) - REFACTORED ✅
+  - **Status**: Successfully extracted block components and composables
+  - **Architecture**: Now uses modular block renderer and dedicated composables
+- **InterviewsGrid.vue**: 328 lines - PENDING
+- **Layouts.vue**: 325 lines - PENDING
+- **Solution**: Continue breaking into smaller, focused components
 
-#### 5. Composable Complexity
+#### 6. Composable Complexity
 
 - **useInterviewFilters.ts**: 141 lines
 - **page.ts**: 130 lines
@@ -303,7 +311,7 @@ Currently no testing infrastructure. Recommended additions:
 
 ### Current Issues
 
-1. Large base64 images in components
+1. ~~Large base64 images in components~~ - RESOLVED ✅
 2. No bundle analysis
 3. Missing code splitting optimization
 
@@ -359,10 +367,15 @@ MIT License - See [LICENSE](./LICENSE) file for details.
 2. ~~**Remove `.DS_Store` files** from repository~~ - DONE
 3. ~~**Fix ESLint errors** with `pnpm lint --fix`~~ - DONE
 4. ~~**Fix development server errors**~~ - DONE
+5. ~~**Refactor ScrollingStory.vue component**~~ - DONE
+   - ~~Reduced from 580 to 265 lines (54% reduction)~~
+   - ~~Extracted 6 block components and 3 composables~~
+   - ~~Improved maintainability and modularity~~
 
 ### 🔄 Next Priority
 
-5. **Refactor large components** (ScrollingStory, InterviewsGrid)
+5. **Refactor remaining large components** (InterviewsGrid, Layouts)
+   - ~~ScrollingStory.vue~~ - COMPLETED ✅
 6. **Add testing infrastructure**
 7. **Implement bundle optimization**
 8. **Add security headers** (partially done via netlify.toml)
