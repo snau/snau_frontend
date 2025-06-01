@@ -125,7 +125,7 @@ const hasCoverImage = computed(() => Boolean(page.value?.cover?.url))
     class="block -mt-32 md:grid grid-cols-12 w-screen h-[100vh] md:h-[80vh] md:max-h-[100vh] md:w-full overflow-hidden md:-mt-12"
     :style="{
       ...interviewHeaderStyle,
-      'view-transition-name': `card-${route.path.replace(/^\/|\/$/g, '').replace(/\//g, '-')}`,
+      // 'view-transition-name': `card-${route.path.replace(/^\/|\/$/g, '').replace(/\//g, '-')}`,
     }"
     aria-labelledby="interview-title"
     role="banner"
@@ -144,7 +144,7 @@ const hasCoverImage = computed(() => Boolean(page.value?.cover?.url))
         sizes="(min-width: 768px) 50vw, 100vw"
         :style="{
           ...imageAttrs.style,
-          'view-transition-name': `image-${route.path.replace(/^\/|\/$/g, '').replace(/\//g, '-')}`,
+          // 'view-transition-name': `image-${route.path.replace(/^\/|\/$/g, '').replace(/\//g, '-')}`,
         }"
         v-bind="{ ...imageAttrs, style: undefined }"
       />
@@ -176,7 +176,7 @@ const hasCoverImage = computed(() => Boolean(page.value?.cover?.url))
           :class="[useDefaultTextColor ? 'text-white' : '']"
           :style="{
             ...textColorStyle,
-            'view-transition-name': `intro-${route.path.replace(/^\/|\/$/g, '').replace(/\//g, '-')}`,
+            // 'view-transition-name': `intro-${route.path.replace(/^\/|\/$/g, '').replace(/\//g, '-')}`,
           }"
         >
           <span class="backdrop-opacity-70" aria-hidden="true">»</span>
@@ -191,7 +191,7 @@ const hasCoverImage = computed(() => Boolean(page.value?.cover?.url))
           :class="[useDefaultTextColor ? 'text-white' : '']"
           :style="{
             ...textColorStyle,
-            'view-transition-name': `title-${route.path.replace(/^\/|\/$/g, '').replace(/\//g, '-')}`,
+            // 'view-transition-name': `title-${route.path.replace(/^\/|\/$/g, '').replace(/\//g, '-')}`,
           }"
         >
           {{ page.title }}

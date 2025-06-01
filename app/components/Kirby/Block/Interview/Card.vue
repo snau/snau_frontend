@@ -39,7 +39,7 @@ function navigateToInterview(): void {
   <div
     class="relative cursor-pointer rounded overflow-hidden"
     :style="{
-      'view-transition-name': `card-${props.interview.uri.replace(/\//g, '-')}`,
+      // 'view-transition-name': `card-${props.interview.uri.replace(/\//g, '-')}`,
     }"
     @click="navigateToInterview"
   >
@@ -48,7 +48,7 @@ function navigateToInterview(): void {
         :src="props.interview.cover?.url || ''"
         :alt="props.interview.cover?.alt"
         :style="{
-          'view-transition-name': `image-${props.interview.uri.replace(/\//g, '-')}`,
+          // 'view-transition-name': `image-${props.interview.uri.replace(/\//g, '-')}`,
         }"
         class="w-full h-full object-cover transition-all duration-1000 ease-out hover:scale-102"
       />
@@ -66,14 +66,14 @@ function navigateToInterview(): void {
       <h3
         class="text-white font-serif text-base font-bold italic quote-text"
         :style="{
-          'view-transition-name': `intro-${props.interview.uri.replace(/\//g, '-')}`,
+          // 'view-transition-name': `intro-${props.interview.uri.replace(/\//g, '-')}`,
         }"
         v-html="quotedIntro"
       />
       <div
         class="mt-1 text-small text-white opacity-75"
         :style="{
-          'view-transition-name': `title-${props.interview.uri.replace(/\//g, '-')}`,
+          // 'view-transition-name': `title-${props.interview.uri.replace(/\//g, '-')}`,
         }"
       >
         {{ props.interview.title }}
