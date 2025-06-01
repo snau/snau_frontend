@@ -21,7 +21,9 @@ const { data, error } = await useKql<KirbyAboutResponse>(aboutQuery, {
 
 // Store page data
 const page = data.value?.result
-setPage(page!)
+if (page) {
+  setPage(page)
+}
 </script>
 
 <template>
@@ -30,36 +32,46 @@ setPage(page!)
       <AppDebugHelper :error="error" />
     </DevOnly>
 
-    <KirbyLayouts v-if="page?.layouts?.length" :layouts="page.layouts as any" />
+    <div v-if="error || !page" class="error-state">
+      <h1>{{ t('errors.pageNotFound') || 'Page not found' }}</h1>
+      <p>{{ error?.message || 'Unable to load page content' }}</p>
+    </div>
 
-    <br />
+    <template v-else>
+      <KirbyLayouts
+        v-if="page?.layouts?.length"
+        :layouts="page.layouts as any"
+      />
 
-    <header>
-      <h2>{{ t('about.getInContact') }}</h2>
-      <div ref="content" class="grid" style="--gutter: 1.5rem">
-        <section class="column text" style="--columns: 4">
-          <h3>{{ t('about.address') }}</h3>
-          <div v-html="page?.address" />
-        </section>
+      <br />
 
-        <section class="column text" style="--columns: 4">
-          <h3>{{ t('about.email') }}</h3>
-          <p v-html="page?.email" />
-          <h3>{{ t('about.phone') }}</h3>
-          <p v-html="page?.phone" />
-        </section>
+      <header>
+        <h2>{{ t('about.getInContact') }}</h2>
+        <div ref="content" class="grid" style="--gutter: 1.5rem">
+          <section class="column text" style="--columns: 4">
+            <h3>{{ t('about.address') }}</h3>
+            <div v-html="page?.address" />
+          </section>
 
-        <section class="column text" style="--columns: 4">
-          <h3>{{ t('about.onTheWeb') }}</h3>
-          <ul>
-            <li v-for="(item, index) in page?.social" :key="index">
-              <a :href="item.url">
-                {{ item.platform }}
-              </a>
-            </li>
-          </ul>
-        </section>
-      </div>
-    </header>
+          <section class="column text" style="--columns: 4">
+            <h3>{{ t('about.email') }}</h3>
+            <p v-html="page?.email" />
+            <h3>{{ t('about.phone') }}</h3>
+            <p v-html="page?.phone" />
+          </section>
+
+          <section class="column text" style="--columns: 4">
+            <h3>{{ t('about.onTheWeb') }}</h3>
+            <ul>
+              <li v-for="(item, index) in page?.social" :key="index">
+                <a :href="item.url">
+                  {{ item.platform }}
+                </a>
+              </li>
+            </ul>
+          </section>
+        </div>
+      </header>
+    </template>
   </div>
 </template>
