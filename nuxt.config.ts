@@ -34,6 +34,11 @@ export default defineNuxtConfig({
       routes: ['/'],
       crawlLinks: false, // Disable automatic route discovery to avoid problematic routes
       failOnError: false, // Don't fail the build on prerender errors
+      ignore: ['/api/**'], // Ignore API routes during prerendering
+    },
+    // Additional Netlify optimizations
+    experimental: {
+      wasm: false,
     },
   },
 

@@ -1,10 +1,10 @@
 [build]
-  command = "pnpm run generate"
+  command = "pnpm install && pnpm run generate"
   publish = ".output/public"
 
 [build.environment]
   NODE_VERSION = "22"
-  NPM_FLAGS = "--version"
+  NPM_FLAGS = "--prefer-offline --no-audit --no-fund"
   PNPM_VERSION = "10.11.0"
 
 # SPA fallback for client-side routing
