@@ -40,6 +40,7 @@ const { locale: _locale } = useI18n()
     <AppFooter />
 
     <!-- Debug component for development -->
-    <DebugViewTransitions />
+    <!-- Temporarily disabled for Netlify testing -->
+    <!-- <DebugViewTransitions /> -->
   </UApp>
 </template>

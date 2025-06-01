@@ -12,9 +12,10 @@ export default defineNuxtConfig({
     '@nuxt/image',
   ],
 
-  experimental: {
-    viewTransition: true,
-  },
+  // Temporarily disabled for Netlify compatibility testing
+  // experimental: {
+  //   viewTransition: true,
+  // },
 
   css: ['~/assets/css/main.css'],
 
