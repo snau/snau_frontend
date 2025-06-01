@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 
 const debugInfo = ref({
   supported: false,
@@ -7,6 +7,8 @@ const debugInfo = ref({
   currentURL: '',
   viewTransitionNames: [] as string[],
 })
+
+const isDevelopment = computed(() => import.meta.env.DEV)
 
 onMounted(() => {
   // Check browser support
@@ -23,7 +25,7 @@ onMounted(() => {
   })
 
   // Log to console for debugging (development only)
-  if (import.meta.env.DEV) {
+  if (isDevelopment.value) {
     // eslint-disable-next-line no-console
     console.log('🔍 View Transitions Debug:', debugInfo.value)
   }
@@ -32,7 +34,7 @@ onMounted(() => {
 
 <template>
   <div
-    v-if="import.meta.env.DEV"
+    v-if="isDevelopment"
     class="fixed bottom-4 right-4 bg-black text-white p-4 rounded text-xs z-50 max-w-sm"
   >
     <h3 class="font-bold mb-2">View Transitions Debug</h3>
