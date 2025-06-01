@@ -30,16 +30,17 @@ const firstInterviewRef = ref<HTMLElement | null>(null)
 const { processedInterviews } = useInterviewData(props.block)
 
 // Handle interview filtering
+// Use destructuring to rename unused variables with underscore prefix
 const {
   selectedCategory,
   selectedTag,
-  showCategoryFilter,
-  showTagsFilter,
+  showCategoryFilter: _showCategoryFilter,
+  showTagsFilter: _showTagsFilter,
   filteredInterviews,
-  categoriesWithInterviews,
-  tagsWithInterviews,
-  mapCategory,
-  mapTag,
+  categoriesWithInterviews: _categoriesWithInterviews,
+  tagsWithInterviews: _tagsWithInterviews,
+  mapCategory: _mapCategory,
+  mapTag: _mapTag,
 } = useInterviewFilters(processedInterviews, props.block)
 
 // Determine which card layout to use based on the card_layout prop
