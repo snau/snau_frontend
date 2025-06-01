@@ -2,6 +2,9 @@ import process from 'node:process'
 import { prefetchQuery, siteQuery } from './app/queries'
 
 export default defineNuxtConfig({
+  app: {
+    baseURL: '/',
+  },
   // If you project doesn't require i18n, use the `without-i18n` branch instead:
   // https://github.com/johannschopplich/cacao-kit-frontend/tree/chore/without-i18n
   modules: [
@@ -37,7 +40,18 @@ export default defineNuxtConfig({
       publicDir: '.output/public',
     },
     prerender: {
-      routes: ['/'],
+      routes: [
+        '/',
+        '/portfolio',
+        '/wantalon',
+        '/interviews',
+        '/kontakt',
+        '/de',
+        '/de/portfolio',
+        '/de/wantalon',
+        '/de/interviews',
+        '/de/kontakt',
+      ],
       crawlLinks: false, // Disable automatic route discovery to avoid problematic routes
       failOnError: false, // Don't fail the build on prerender errors
       ignore: ['/api/**'], // Ignore API routes during prerendering
@@ -76,7 +90,7 @@ export default defineNuxtConfig({
     ],
     defaultLocale: 'en',
     lazy: true,
-    strategy: 'prefix',
+    strategy: 'prefix_except_default',
     compilation: {
       strictMessage: false,
     },
@@ -91,6 +105,10 @@ export default defineNuxtConfig({
   },
 
   vite: {
+    base: '/',
+    build: {
+      assetsDir: '_nuxt',
+    },
     server: {
       // This is only required for the `pnpm dev:tunnel` command
       // to proxy Kirby requests, especially images
