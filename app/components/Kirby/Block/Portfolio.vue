@@ -201,49 +201,28 @@ watch([selectedCategory, selectedTag], () => {
         v-for="(interview, index) in visibleInterviews"
         :key="interview.uri"
       >
+        <!-- Content for masonry grid items -->
         <div
           :ref="
             (el) => {
               if (index === 0) {
                 firstInterviewRef = el as HTMLElement
-                if (el) (el as HTMLElement).style.scrollMarginTop = '12rem'
+                if (el) (el as HTMLElement).style.scrollMarginTop = '8rem'
               }
               el && handleItemVisibility(el as HTMLElement, interview.uri)
             }
           "
-          class="transition-opacity duration-500"
+          class="masonry-item transition-opacity duration-500"
           :class="{
             'opacity-0': !isItemVisible(interview.uri),
             'opacity-100': isItemVisible(interview.uri),
-            'md:col-span-2': index % 5 === 0,
-            'md:col-span-1': index % 5 !== 0,
-            'md:translate-y-2': index % 4 === 0,
-            'md:translate-y-4': index % 4 === 1,
-            'md:-translate-y-2': index % 4 === 2,
-            'md:-translate-y-4': index % 4 === 3,
-            'md:translate-x-2': index % 3 === 0,
-            'md:translate-x-4': index % 3 === 1,
-            'md:-translate-x-2': index % 3 === 2,
           }"
         >
-          <div
-            class="h-full"
-            :class="{
-              'md:px-6': index % 3 === 0,
-              'md:px-4': index % 3 === 1,
-              'md:px-2': index % 3 === 2,
-            }"
-          >
-            <InterviewPhoto
-              :interview="interview"
-              :format-date="formatDateShort"
-              :index="
-                Math.floor(index / 3) +
-                (index % 3) * Math.ceil(visibleInterviews.length / 3)
-              "
-              @image-loaded="handleImageLoaded"
-            />
-          </div>
+          <InterviewPhoto
+            :interview="interview"
+            :format-date="formatDateShort"
+            @image-loaded="handleImageLoaded"
+          />
         </div>
       </template>
 
@@ -251,7 +230,7 @@ watch([selectedCategory, selectedTag], () => {
       <div
         v-if="hasMore"
         ref="loaderRef"
-        class="flex flex-col items-center py-4 w-full gap-2"
+        class="col-span-full flex flex-col items-center py-4 gap-2"
       >
         <div
           v-if="isLoading"
@@ -260,67 +239,6 @@ watch([selectedCategory, selectedTag], () => {
         <div class="text-sm text-stone-500">
           Showing {{ visibleInterviews.length }} of
           {{ filteredInterviews.length }} interviews
-        </div>
-      </div>
-    </div>
-
-    <!-- Fixed filter container at bottom -->
-    <div
-      v-if="showCategoryFilter || showTagsFilter"
-      class="fixed bottom-0 left-0 right-0 bg-white border-t border-stone-200 shadow-lg z-50"
-    >
-      <div class="max-w-screen-4xl mx-auto px-8 py-4">
-        <!-- Desktop filters -->
-        <div class="hidden md:flex items-center justify-between">
-          <div v-if="showCategoryFilter" class="tabmenu flex gap-x-2">
-            <button
-              v-for="cat in categoriesWithInterviews"
-              :key="cat"
-              class="border border-stone-300 rounded px-4 py-2 text-xs uppercase text-stone-700"
-              :class="{
-                'active bg-stone-100 text-black': selectedCategory === cat,
-              }"
-              @click="selectedCategory = cat"
-            >
-              {{ mapCategory(cat) }}
-            </button>
-          </div>
-          <div v-if="showTagsFilter" class="tabmenu flex gap-x-2">
-            <button
-              v-for="tag in tagsWithInterviews"
-              :key="tag"
-              class="border border-stone-300 rounded px-4 py-2 text-xs uppercase text-stone-700"
-              :class="{ 'active bg-stone-100 text-black': selectedTag === tag }"
-              @click="selectedTag = tag"
-            >
-              {{ mapTag(tag) }}
-            </button>
-          </div>
-        </div>
-        <!-- Mobile filters -->
-        <div class="md:hidden space-y-2">
-          <select
-            v-if="showCategoryFilter"
-            v-model="selectedCategory"
-            class="w-full rounded px-4 py-2 text-stone-700 shadow"
-          >
-            <option
-              v-for="cat in categoriesWithInterviews"
-              :key="cat"
-              :value="cat"
-            >
-              {{ mapCategory(cat) }}
-            </option>
-          </select>
-          <select
-            v-if="showTagsFilter"
-            v-model="selectedTag"
-            class="w-full rounded px-4 py-2 text-stone-700 shadow"
-          >
-            <option v-for="tag in tagsWithInterviews" :key="tag" :value="tag">
-              {{ mapTag(tag) }}
-            </option>
-          </select>
         </div>
       </div>
     </div>
