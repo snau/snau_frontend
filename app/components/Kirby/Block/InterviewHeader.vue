@@ -15,8 +15,8 @@ import { computed, onMounted, onUnmounted, ref } from 'vue'
 // Get the current page data from the Kirby CMS
 const page = usePage<KirbyPageData>()
 
-// Get the current route to create matching view transition names
-const route = useRoute()
+// Get the current route to create matching view transition names (currently disabled)
+// const route = useRoute()
 
 // Determine if we're in SSR mode to avoid window reference errors
 const isSSR = typeof window === 'undefined'

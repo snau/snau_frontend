@@ -31,6 +31,11 @@ export default defineNuxtConfig({
 
   // Static site generation configuration
   nitro: {
+    preset: 'static',
+    output: {
+      dir: '.output',
+      publicDir: '.output/public',
+    },
     prerender: {
       routes: ['/'],
       crawlLinks: false, // Disable automatic route discovery to avoid problematic routes
