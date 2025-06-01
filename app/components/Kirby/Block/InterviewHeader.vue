@@ -15,6 +15,9 @@ import { computed, onMounted, onUnmounted, ref } from 'vue'
 // Get the current page data from the Kirby CMS
 const page = usePage<KirbyPageData>()
 
+// Get the current route to create matching view transition names
+const route = useRoute()
+
 // Determine if we're in SSR mode to avoid window reference errors
 const isSSR = typeof window === 'undefined'
 
@@ -120,7 +123,10 @@ const hasCoverImage = computed(() => Boolean(page.value?.cover?.url))
   <section
     id="interview-header"
     class="block -mt-32 md:grid grid-cols-12 w-screen h-[100vh] md:h-[80vh] md:max-h-[100vh] md:w-full overflow-hidden md:-mt-12"
-    :style="interviewHeaderStyle"
+    :style="{
+      ...interviewHeaderStyle,
+      'view-transition-name': `card-${route.path.replace(/\//g, '-')}`,
+    }"
     aria-labelledby="interview-title"
     role="banner"
   >
@@ -136,7 +142,11 @@ const hasCoverImage = computed(() => Boolean(page.value?.cover?.url))
         decoding="async"
         class="w-full h-full object-cover"
         sizes="(min-width: 768px) 50vw, 100vw"
-        v-bind="imageAttrs"
+        :style="{
+          ...imageAttrs.style,
+          'view-transition-name': `image-${route.path.replace(/\//g, '-')}`,
+        }"
+        v-bind="{ ...imageAttrs, style: undefined }"
       />
 
       <!-- Gradient overlay for text on mobile - only visible below md breakpoint -->
@@ -164,7 +174,10 @@ const hasCoverImage = computed(() => Boolean(page.value?.cover?.url))
         <h1
           class="transition-colors duration-300 px-2 text-lg font-bold font-sans italic md:max-w-[22ch] lg:text-3xl xl:text-4xl"
           :class="[useDefaultTextColor ? 'text-white' : '']"
-          :style="textColorStyle"
+          :style="{
+            ...textColorStyle,
+            'view-transition-name': `intro-${route.path.replace(/\//g, '-')}`,
+          }"
         >
           <span class="backdrop-opacity-70" aria-hidden="true">»</span>
           <span>{{ page.intro }}</span>
@@ -176,7 +189,10 @@ const hasCoverImage = computed(() => Boolean(page.value?.cover?.url))
           id="interview-title"
           class="transition-colors duration-300 opacity-85 mt-4 text-base font-bold tracking-wider font-sans"
           :class="[useDefaultTextColor ? 'text-white' : '']"
-          :style="textColorStyle"
+          :style="{
+            ...textColorStyle,
+            'view-transition-name': `title-${route.path.replace(/\//g, '-')}`,
+          }"
         >
           {{ page.title }}
         </h2>

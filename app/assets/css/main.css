@@ -221,6 +221,32 @@ blockquote.text-center {
   @apply px-4 lg:px-8;
 }
 
+/* View Transitions */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 0.5s;
+}
+
+::view-transition-old(*),
+::view-transition-new(*) {
+  animation-duration: 0.8s;
+}
+
+::view-transition-old(image-*),
+::view-transition-new(image-*) {
+  animation-duration: 1s;
+}
+
+::view-transition-old(intro-*),
+::view-transition-new(intro-*) {
+  animation-duration: 0.6s;
+}
+
+::view-transition-old(title-*),
+::view-transition-new(title-*) {
+  animation-duration: 0.7s;
+}
+
 /* @style screen and (max-width: 500px) {
   .layout-container {
     overflow: hidden;

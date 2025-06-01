@@ -12,6 +12,10 @@ export default defineNuxtConfig({
     '@nuxt/image',
   ],
 
+  experimental: {
+    viewTransition: true,
+  },
+
   css: ['~/assets/css/main.css'],
 
   compatibilityDate: '2025-01-01',

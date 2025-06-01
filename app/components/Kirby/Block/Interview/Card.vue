@@ -4,8 +4,6 @@ import { computed } from 'vue'
 
 const props = defineProps<Props>()
 
-
-
 interface Cover {
   url: string
   alt: string
@@ -25,7 +23,6 @@ interface Props {
   formatDate: (date: Date) => string
 }
 
-
 const router = useRouter()
 
 const quotedIntro = computed(() => {
@@ -41,15 +38,19 @@ function navigateToInterview(): void {
 <template>
   <div
     class="relative cursor-pointer rounded overflow-hidden"
+    :style="{
+      'view-transition-name': `card-${props.interview.uri.replace(/\//g, '-')}`,
+    }"
     @click="navigateToInterview"
   >
     <div class="aspect-[4/6] overflow-hidden">
       <img
-       
         :src="props.interview.cover?.url || ''"
         :alt="props.interview.cover?.alt"
+        :style="{
+          'view-transition-name': `image-${props.interview.uri.replace(/\//g, '-')}`,
+        }"
         class="w-full h-full object-cover transition-all duration-1000 ease-out hover:scale-102"
-       
       />
     </div>
 
@@ -64,9 +65,17 @@ function navigateToInterview(): void {
     <div class="absolute bottom-0 left-0 right-0 px-4 pb-3">
       <h3
         class="text-white font-serif text-base font-bold italic quote-text"
+        :style="{
+          'view-transition-name': `intro-${props.interview.uri.replace(/\//g, '-')}`,
+        }"
         v-html="quotedIntro"
       />
-      <div class="mt-1 text-small text-white opacity-75">
+      <div
+        class="mt-1 text-small text-white opacity-75"
+        :style="{
+          'view-transition-name': `title-${props.interview.uri.replace(/\//g, '-')}`,
+        }"
+      >
         {{ props.interview.title }}
       </div>
     </div>
