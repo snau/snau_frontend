@@ -38,5 +38,8 @@ const { locale: _locale } = useI18n()
     </main>
 
     <AppFooter />
+
+    <!-- Debug component for development -->
+    <DebugViewTransitions />
   </UApp>
 </template>
