@@ -1,12 +1,10 @@
 <script setup lang="ts">
 import { useRouter } from '#imports'
-import { gsap } from 'gsap'
-import { Flip } from 'gsap/Flip'
-import { computed, ref } from 'vue'
+import { computed } from 'vue'
 
 const props = defineProps<Props>()
 
-gsap.registerPlugin(Flip)
+
 
 interface Cover {
   url: string
@@ -27,7 +25,7 @@ interface Props {
   formatDate: (date: Date) => string
 }
 
-const imageEl = ref<HTMLImageElement | null>(null)
+
 const router = useRouter()
 
 const quotedIntro = computed(() => {
@@ -35,45 +33,23 @@ const quotedIntro = computed(() => {
   return `„${props.interview.intro}"`
 })
 
-function handleCardClick(): void {
-  if (!imageEl.value) return
-
-  const state = Flip.getState(imageEl.value)
-  imageEl.value.classList.add(
-    'fixed',
-    'inset-0',
-    'w-screen',
-    'h-screen',
-    'm-0',
-    'object-cover',
-    'z-[9999]',
-  )
-
-  Flip.from(state, {
-    duration: 0.8,
-    ease: 'power4.inOut',
-    absolute: true,
-    onComplete: () => {
-      // Remove the image element before navigation
-      imageEl.value?.remove()
-      router.push(`/${props.interview.uri}`)
-    },
-  })
+function navigateToInterview(): void {
+  router.push(`/${props.interview.uri}`)
 }
 </script>
 
 <template>
   <div
     class="relative cursor-pointer rounded overflow-hidden"
-    @click="handleCardClick"
+    @click="navigateToInterview"
   >
     <div class="aspect-[4/6] overflow-hidden">
       <img
-        ref="imageEl"
+       
         :src="props.interview.cover?.url || ''"
         :alt="props.interview.cover?.alt"
         class="w-full h-full object-cover transition-all duration-1000 ease-out hover:scale-102"
-        @load="imageEl?.style.removeProperty('visibility')"
+       
       />
     </div>
 
