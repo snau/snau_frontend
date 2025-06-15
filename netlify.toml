@@ -1,19 +1,26 @@
+# Corrected netlify.toml for Static Site Generation (SSG)
+
 [build]
-  command = "pnpm install && pnpm run generate"
+  # Use 'generate' for SSG, not 'build'
+  command = "pnpm run generate"
+  # The output directory for a Nuxt 3 SSG build is .output/public
   publish = ".output/public"
 
 [build.environment]
   NODE_VERSION = "22"
-  NPM_FLAGS = "--prefer-offline --no-audit --no-fund"
+  # Using PNPM as defined in your package.json
   PNPM_VERSION = "10.11.0"
+  # This flag is not needed for `pnpm install`
+  # NPM_FLAGS = "--prefer-offline --no-audit --no-fund"
 
-# SPA fallback for client-side routing
+# This redirect rule is crucial for single-page applications (SPA)
+# It ensures that direct visits to sub-pages (e.g., /about) work correctly.
 [[redirects]]
   from = "/*"
   to = "/index.html"
   status = 200
 
-# Security headers
+# Security headers (these are good, we'll keep them)
 [[headers]]
   for = "/*"
   [headers.values]
@@ -23,13 +30,8 @@
     Referrer-Policy = "strict-origin-when-cross-origin"
     Permissions-Policy = "camera=(), microphone=(), geolocation=()"
 
-# Cache static assets
-[[headers]]
-  for = "/assets/*"
-  [headers.values]
-    Cache-Control = "public, max-age=31536000, immutable"
-
+# Cache static assets (good practice)
 [[headers]]
   for = "/_nuxt/*"
   [headers.values]
-    Cache-Control = "public, max-age=31536000, immutable" 
+    Cache-Control = "public, max-age=31536000, immutable"

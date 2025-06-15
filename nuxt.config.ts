@@ -32,31 +32,35 @@ export default defineNuxtConfig({
     enabled: true,
   },
 
-  // Static site generation configuration
+  // SSR is the default, remove static site generation configuration
   nitro: {
-    preset: 'static',
-    output: {
-      dir: '.output',
-      publicDir: '.output/public',
-    },
-    prerender: {
-      routes: [
-        '/',
-        '/portfolio',
-        '/wantalon',
-        '/interviews',
-        '/kontakt',
-        '/de',
-        '/de/portfolio',
-        '/de/wantalon',
-        '/de/interviews',
-        '/de/kontakt',
-      ],
-      crawlLinks: false, // Disable automatic route discovery to avoid problematic routes
-      failOnError: false, // Don't fail the build on prerender errors
-      ignore: ['/api/**'], // Ignore API routes during prerendering
-    },
-    // Additional Netlify optimizations
+    // preset: 'static', // Removed for SSR
+    // output: { // Output configuration is usually not needed for Netlify SSR
+    //   dir: '.output',
+    //   publicDir: '.output/public',
+    // },
+    // prerender: { // Removed for SSR
+    //   routes: [
+    //     '/',
+    //     '/portfolio',
+    //     '/wantalon',
+    //     '/interviews',
+    //     '/kontakt',
+    //     '/interviews/reiner-eckel',
+    //     '/portfolio/beat-toniolo',
+    //     '/de',
+    //     '/de/portfolio',
+    //     '/de/wantalon',
+    //     '/de/interviews',
+    //     '/de/kontakt',
+    //     '/de/interviews/reiner-eckel',
+    //     '/de/portfolio/beat-toniolo',
+    //   ],
+    //   crawlLinks: false,
+    //   failOnError: false,
+    //   ignore: ['/api/**'],
+    // },
+    // Additional Netlify optimizations (can be kept if they don't conflict)
     experimental: {
       wasm: false,
     },
@@ -105,10 +109,10 @@ export default defineNuxtConfig({
   },
 
   vite: {
-    base: '/',
-    build: {
-      assetsDir: '_nuxt',
-    },
+    // base: '/', // Removed, less relevant for SSR default
+    // build: { // Removed, less relevant for SSR default
+    //   assetsDir: '_nuxt',
+    // },
     server: {
       // This is only required for the `pnpm dev:tunnel` command
       // to proxy Kirby requests, especially images
