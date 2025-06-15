@@ -51,11 +51,13 @@ export default defineNuxtConfig({
 
   kql: {
     auth: 'bearer',
+    // TEMPORARILY COMMENT OUT THIS BLOCK FOR DEBUGGING
+    /*
     prefetch: {
       kirbyStatic: prefetchQuery,
-      // Currently only used to infer the type of the `site` query
       kirbySite: siteQuery,
     },
+    */
   },
 
   i18n: {
