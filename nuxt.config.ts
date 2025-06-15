@@ -15,11 +15,6 @@ export default defineNuxtConfig({
     '@nuxt/image',
   ],
 
-  // Temporarily disabled for Netlify compatibility testing
-  // experimental: {
-  //   viewTransition: true,
-  // },
-
   css: ['~/assets/css/main.css'],
 
   compatibilityDate: '2025-01-01',
@@ -40,9 +35,9 @@ export default defineNuxtConfig({
 
   kql: {
     auth: 'bearer',
-    // Make sure this is UNCOMMENTED
     prefetch: {
       kirbyStatic: prefetchQuery,
+      // Currently only used to infer the type of the `site` query
       kirbySite: siteQuery,
     },
   },
@@ -60,7 +55,7 @@ export default defineNuxtConfig({
     ],
     defaultLocale: 'en',
     lazy: true,
-    strategy: 'prefix_except_default',
+    strategy: 'prefix',
     compilation: {
       strictMessage: false,
     },
@@ -75,10 +70,6 @@ export default defineNuxtConfig({
   },
 
   vite: {
-    // base: '/', // Removed, less relevant for SSR default
-    // build: { // Removed, less relevant for SSR default
-    //   assetsDir: '_nuxt',
-    // },
     server: {
       // This is only required for the `pnpm dev:tunnel` command
       // to proxy Kirby requests, especially images
