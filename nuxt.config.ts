@@ -28,7 +28,7 @@ export default defineNuxtConfig({
   // Make sure there are no SSG-specific settings here.
   // The default Nitro preset for Cloudflare Pages will be used automatically.
   nitro: {
-    // REMOVE any `preset: 'static'` or `prerender` blocks you may have.
+    // REMOVE any `preset: 'static'` or `prerender` blocks you may have..
   },
 
   runtimeConfig: {
