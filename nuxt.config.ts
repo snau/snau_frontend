@@ -32,38 +32,15 @@ export default defineNuxtConfig({
     enabled: true,
   },
 
-  // SSR is the default, remove static site generation configuration
   nitro: {
-    // preset: 'static', // Removed for SSR
-    // output: { // Output configuration is usually not needed for Netlify SSR
-    //   dir: '.output',
-    //   publicDir: '.output/public',
-    // },
-    // prerender: { // Removed for SSR
-    //   routes: [
-    //     '/',
-    //     '/portfolio',
-    //     '/wantalon',
-    //     '/interviews',
-    //     '/kontakt',
-    //     '/interviews/reiner-eckel',
-    //     '/portfolio/beat-toniolo',
-    //     '/de',
-    //     '/de/portfolio',
-    //     '/de/wantalon',
-    //     '/de/interviews',
-    //     '/de/kontakt',
-    //     '/de/interviews/reiner-eckel',
-    //     '/de/portfolio/beat-toniolo',
-    //   ],
-    //   crawlLinks: false,
-    //   failOnError: false,
-    //   ignore: ['/api/**'],
-    // },
-    // Additional Netlify optimizations (can be kept if they don't conflict)
-    experimental: {
-      wasm: false,
+    // THIS IS THE TEMPORARY CHANGE FOR DEBUGGING
+    prerender: {
+      // Disable the crawler
+      crawlLinks: false,
+      // Prerender NO routes, just the basic app shell
+      routes: [],
     },
+    // ... any other existing nitro settings
   },
 
   runtimeConfig: {
