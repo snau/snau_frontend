@@ -32,17 +32,6 @@ export default defineNuxtConfig({
     enabled: true,
   },
 
-  nitro: {
-    // THIS IS THE TEMPORARY CHANGE FOR DEBUGGING
-    prerender: {
-      // Disable the crawler
-      crawlLinks: false,
-      // Prerender NO routes, just the basic app shell
-      routes: [],
-    },
-    // ... any other existing nitro settings
-  },
-
   runtimeConfig: {
     public: {
       siteUrl: '',
@@ -51,13 +40,11 @@ export default defineNuxtConfig({
 
   kql: {
     auth: 'bearer',
-    // TEMPORARILY COMMENT OUT THIS BLOCK FOR DEBUGGING
-    /*
+    // Make sure this is UNCOMMENTED
     prefetch: {
       kirbyStatic: prefetchQuery,
       kirbySite: siteQuery,
     },
-    */
   },
 
   i18n: {

@@ -1,7 +1,7 @@
 # Corrected netlify.toml for Static Site Generation (SSG)
 
 [build]
-  command = "echo 'KIRBY_BASE_URL is $KIRBY_BASE_URL' && pnpm run generate"
+  command = "pnpm run generate"
   publish = ".output/public"
 
 [build.environment]
