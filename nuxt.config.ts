@@ -5,8 +5,6 @@ export default defineNuxtConfig({
   app: {
     baseURL: '/',
   },
-  // If you project doesn't require i18n, use the `without-i18n` branch instead:
-  // https://github.com/johannschopplich/cacao-kit-frontend/tree/chore/without-i18n
   modules: [
     '@nuxtjs/i18n',
     '@nuxt/ui',
@@ -15,16 +13,22 @@ export default defineNuxtConfig({
     '@nuxt/image',
   ],
 
+  // Ensure ssr is true (this is the default, but explicit is good)
+  ssr: true,
+
   css: ['~/assets/css/main.css'],
-
   compatibilityDate: '2025-01-01',
-
   future: {
     compatibilityVersion: 4,
   },
-
   devtools: {
     enabled: true,
+  },
+
+  // Make sure there are no SSG-specific settings here.
+  // The default Nitro preset for Cloudflare Pages will be used automatically.
+  nitro: {
+    // REMOVE any `preset: 'static'` or `prerender` blocks you may have.
   },
 
   runtimeConfig: {
@@ -35,9 +39,9 @@ export default defineNuxtConfig({
 
   kql: {
     auth: 'bearer',
+    // The prefetch is fine for SSR too, it will run on the server.
     prefetch: {
       kirbyStatic: prefetchQuery,
-      // Currently only used to infer the type of the `site` query
       kirbySite: siteQuery,
     },
   },
