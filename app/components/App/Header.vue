@@ -97,23 +97,14 @@ const menuItems = computed(() => {
 <template>
   <header class="fixed top-8 left-0 right-0 z-50 w-full mx-auto">
     <nav
-      class="flex bg-[var(--ui-nav-color-bg)] md:bg-transparent items-center justify-between py-2 mx-4 px-4 border border-[var(--ui-border-nav)] md:border-none sm:max-w-[60vw] sm:mx-auto md:max-w-full transition-opacity duration-300"
+      class="flex bg-[var(--ui-nav-color-bg)] md:bg-transparent items-center justify-center py-2 mx-4 px-4 border border-[var(--ui-border-nav)] md:border-none sm:max-w-[60vw] sm:mx-auto md:max-w-full transition-opacity duration-300"
       :class="{ 'opacity-0': !isHeaderVisible, 'opacity-100': isHeaderVisible }"
     >
-      <!-- Logo stays visible -->
-      <Logo />
-
-      <!-- Desktop Navigation with Frosted Glass - only this fades out -->
-      <div
-        class="lg:px-8 hidden md:block transition-opacity duration-300 relative"
-        :class="{
-          'opacity-0': !isHeaderVisible,
-          'opacity-100': isHeaderVisible,
-        }"
-      >
-        <!-- Frosted Glass Background for Desktop Navigation -->
+      <!-- Centered Logo and Navigation Group with Frosted Glass -->
+      <div class="flex items-center gap-6 relative">
+        <!-- Frosted Glass Background for Logo and Navigation -->
         <div
-          class="absolute inset-0 transition-all duration-300 ease-out -mx-4 -my-2"
+          class="absolute inset-0 transition-all duration-300 ease-out -mx-4 -my-2 transform-gpu"
           :class="{
             'opacity-0 scale-95': !showFrostedBackground,
             'opacity-100 scale-100': showFrostedBackground,
@@ -122,34 +113,50 @@ const menuItems = computed(() => {
           <div class="absolute inset-0 bg-white/20 dark:bg-black/20 backdrop-blur-xl backdrop-saturate-150 border border-white/20 dark:border-white/10 rounded-xl shadow-lg"></div>
         </div>
 
-        <div class="relative z-10">
-          <UNavigationMenu
-            variant="pill"
-            orientation="horizontal"
-            :items="menuItems"
-            :ui="{
-              list: 'gap-6',
-              linkLabel: 'py-1',
-              childLink: 'hover:bg-opacity-20 hover:bg-gray-500',
-              link: [
-                'text-base transition-colors text-[var(--ui-nav-color-text)] relative px-0 tracking-wider',
-                'after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[3px] after:bg-[var(--ui-nav-color-text)]',
-                'after:transition-all after:duration-300 after:ease-in-out',
-                'before:inset-y-0 hover:before:bg-elevated/0',
-                'hover:after:w-full hover:text-[var(--ui-nav-color-text)]',
-                'data-[active]:after:w-full data-[active]:text-[var(--ui-nav-color-text)]',
-              ].join(' '),
+        <!-- Logo and Navigation Content -->
+        <div class="relative z-10 flex items-center gap-6 transform-gpu will-change-transform">
+          <!-- Logo -->
+          <Logo />
+
+          <!-- Desktop Navigation -->
+          <div
+            class="hidden md:block transition-opacity duration-300"
+            :class="{
+              'opacity-0': !isHeaderVisible,
+              'opacity-100': isHeaderVisible,
             }"
-          />
+          >
+            <div class="px-3">
+              <UNavigationMenu
+                variant="pill"
+                orientation="horizontal"
+                :items="menuItems"
+                :ui="{
+                  list: 'gap-6',
+                  linkLabel: 'py-1',
+                  childLink: 'hover:bg-opacity-20 hover:bg-gray-500',
+                  link: [
+                    'text-sm font-medium transition-colors text-[var(--ui-nav-color-text)] relative px-0 tracking-wider antialiased',
+                    'after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[3px] after:bg-[var(--ui-nav-color-text)]',
+                    'after:transition-all after:duration-300 after:ease-in-out',
+                    'before:inset-y-0 hover:before:bg-elevated/0',
+                    'hover:after:w-full hover:text-[var(--ui-nav-color-text)]',
+                    'data-[active]:after:w-full data-[active]:text-[var(--ui-nav-color-text)]',
+                    'transform-gpu will-change-transform',
+                  ].join(' '),
+                }"
+              />
+            </div>
+          </div>
         </div>
       </div>
 
-      <!-- Mobile Menu Toggle - also fades out -->
+      <!-- Mobile Menu Toggle - positioned absolutely -->
       <UButton
         aria-controls="mobile-nav"
         :aria-expanded="isOpen"
         aria-label="Mobile menu toggle"
-        class="scale-110 md:hidden transition-opacity duration-300"
+        class="absolute right-4 scale-110 md:hidden transition-opacity duration-300"
         :class="{
           'opacity-0': !isHeaderVisible,
           'opacity-100': isHeaderVisible,
@@ -190,7 +197,7 @@ const menuItems = computed(() => {
             childLink: 'hover:bg-opacity-20 hover:bg-gray-500',
             childList: 'border-none',
             link: [
-              'transition-colors text-base py-2 relative px-0',
+              'transition-colors text-sm font-medium py-2 relative px-0 antialiased',
               'after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[1px] after:bg-[var(--ui-nav-color-text)]',
               'after:transition-all after:duration-300 after:ease-in-out',
               'hover:after:w-full hover:text-[var(--ui-nav-color-text)]',
@@ -198,6 +205,7 @@ const menuItems = computed(() => {
               'focus-visible:outline',
               'focus-visible:outline-2',
               'focus-visible:outline-rounded',
+              'transform-gpu will-change-transform',
             ].join(' '),
           }"
         />

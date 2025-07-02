@@ -60,7 +60,7 @@ onBeforeUnmount(() => {
 
 <template>
   <NuxtLink to="/">
-    <div class="relative w-12 h-12 md:mx-10 md:my-8">
+    <div class="relative w-8 h-8 md:w-10 md:h-10">
       <!-- Background SVG 1 -->
       <svg
         width="60"
@@ -68,7 +68,7 @@ onBeforeUnmount(() => {
         viewBox="0 0 185 185"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
-        class="logo-bg-a absolute top-1/2 left-1/2 scale-70 md:scale-115 transform -translate-x-1/2 -translate-y-1/2 transition-transform duration-1000 text-black dark:text-white"
+        class="logo-bg-a absolute top-1/2 left-1/2 scale-50 md:scale-75 transform -translate-x-1/2 -translate-y-1/2 transition-transform duration-1000 text-black dark:text-white"
         :class="[
           {
             'rotate-11': rotation === 0,
@@ -90,7 +90,7 @@ onBeforeUnmount(() => {
         viewBox="0 0 185 185"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
-        class="scale-70 md:scale-115 logo-bg-b absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 opacity-50 transition-transform duration-1000 text-black dark:text-white"
+        class="scale-50 md:scale-75 logo-bg-b absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 opacity-50 transition-transform duration-1000 text-black dark:text-white"
         :class="[
           {
             'rotate-0': rotation === 0,
@@ -112,7 +112,7 @@ onBeforeUnmount(() => {
         viewBox="0 0 16 25"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
-        class="logo-snau scale-70 md:scale-115 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 transition-opacity duration-1000 text-white dark:text-black"
+        class="logo-snau scale-50 md:scale-75 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 transition-opacity duration-1000 text-white dark:text-black"
         :class="[
           {
             'opacity-100': currentLogo === 'snau',
@@ -133,7 +133,7 @@ onBeforeUnmount(() => {
         viewBox="0 0 18 25"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
-        class="logo-regentaucher scale-70 md:scale-115 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 transition-opacity duration-1000 text-white dark:text-black"
+        class="logo-regentaucher scale-50 md:scale-75 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 transition-opacity duration-1000 text-white dark:text-black"
         :class="[
           {
             'opacity-100': currentLogo === 'regentaucher',
@@ -154,7 +154,7 @@ onBeforeUnmount(() => {
         viewBox="0 0 37 25"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
-        class="logo-wunderwesten scale-70 md:scale-115 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 transition-opacity duration-1000 text-white dark:text-black"
+        class="logo-wunderwesten scale-50 md:scale-75 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 transition-opacity duration-1000 text-white dark:text-black"
         :class="[
           {
             'opacity-100': currentLogo === 'wunderwesten',
