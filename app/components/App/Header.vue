@@ -118,6 +118,7 @@ const menuItems = computed(() => {
               'text-base transition-colors text-[var(--ui-nav-color-text)] relative px-0 tracking-wider',
               'after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[3px] after:bg-[var(--ui-nav-color-text)]',
               'after:transition-all after:duration-300 after:ease-in-out',
+              'before:inset-y-0 hover:before:bg-elevated/0',
               'hover:after:w-full hover:text-[var(--ui-nav-color-text)]',
               'data-[active]:after:w-full data-[active]:text-[var(--ui-nav-color-text)]',
             ].join(' '),
