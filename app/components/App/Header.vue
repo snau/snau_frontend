@@ -17,8 +17,8 @@ useInvert()
 
 // Add state for header visibility
 const isHeaderVisible = ref(true)
-// Add state for frosted glass background
-const showFrostedBackground = ref(false)
+// Add state for enhanced background when scrolled
+const hasScrolledBackground = ref(false)
 
 // Track previous scroll position
 let prevScrollY = 0
@@ -27,8 +27,8 @@ let prevScrollY = 0
 const handleScroll = () => {
   const currentScrollY = window.scrollY
 
-  // Show frosted background after scrolling past 50px
-  showFrostedBackground.value = currentScrollY > 50
+  // Show enhanced background after scrolling past 50px
+  hasScrolledBackground.value = currentScrollY > 50
 
   // Always show header when at the top of the page
   if (currentScrollY <= 0) {
@@ -102,16 +102,13 @@ const menuItems = computed(() => {
     >
       <!-- Centered Logo and Navigation Group with Frosted Glass -->
       <div class="flex items-center gap-6 relative">
-        <!-- Frosted Glass Background for Logo and Navigation -->
-        <div
-          class="absolute inset-0 transition-all duration-300 ease-out -mx-4 -my-2 transform-gpu"
-          :class="{
-            'opacity-0 scale-95': !showFrostedBackground,
-            'opacity-100 scale-100': showFrostedBackground,
-          }"
-        >
+        <!-- Default Frosted Glass Background -->
+        <div class="absolute inset-0 -mx-4 -my-2 transform-gpu">
           <div
-            class="absolute inset-0 bg-white/60 dark:bg-black/20 backdrop-blur-md backdrop-saturate-150 border border-white/20 dark:border-white/10 rounded-2xl shadow-lg"
+            class="absolute inset-0 bg-white/60 dark:bg-black/25 backdrop-blur-md backdrop-saturate-150 border border-white/25 dark:border-white/15 rounded-2xl shadow-lg transition-all duration-300 ease-out"
+            :class="{
+              'bg-white/30 dark:bg-black/10 backdrop-blur-sm backdrop-saturate-125 border-white/10 dark:border-white/5 shadow-md': hasScrolledBackground,
+            }"
           ></div>
         </div>
 
