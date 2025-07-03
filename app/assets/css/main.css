@@ -24,8 +24,9 @@
   --lg-max-font-size: 3.375rem;
   --lg-preferred-font-size: calc(1.739rem + 1.364vw);
 
-  --md-min-font-size: 1.5;
-  --md-max-font-size: 2.25;
+  /* FIX: Added 'rem' units to prevent ambiguous calculations and ensure consistency. */
+  --md-min-font-size: 1.5rem;
+  --md-max-font-size: 2.25rem;
   --md-preferred-font-size: calc(1.159rem + 0.909vw);
 
   --base-min-font-size: 0.9rem;
@@ -113,7 +114,6 @@ body {
 }
 
 .text-2xl {
-  font-size: clamp(2em, 1.5em + 2vw, 3.5em); /* 32px to 56px */
   font-size: clamp(
     var(--xxl-min-font-size),
     var(--xxl-preferred-font-size),
@@ -124,46 +124,55 @@ body {
 
 h1,
 .text-xl {
-  font-size: clamp(2em, 1.5em + 2vw, 3.5em); /* 32px to 56px */
   font-size: clamp(
     var(--xl-min-font-size),
     var(--xl-preferred-font-size),
     var(--xl-max-font-size)
   );
-  line-height: 1.1;
+  line-height: 1.1; /* TIGHT: Appropriate for the largest heading size. */
 }
+
 h2,
 .text-lg {
-  font-size: clamp(1.75em, 1.25em + 1.5vw, 2.75em); /* 28px to 44px */
   font-size: clamp(
     var(--lg-min-font-size),
     var(--lg-preferred-font-size),
     var(--lg-max-font-size)
   );
-  line-height: 1.1;
+  /* REFACTOR: Looser than h1, creating a clear progression. */
+  line-height: 1.2;
 }
+
 h3,
 .text-md {
-  font-size: clamp(1.5em, 1.15em + 1vw, 2.25em);
   font-size: clamp(
     var(--md-min-font-size),
     var(--md-preferred-font-size),
     var(--md-max-font-size)
-  ); /* 24px to 36px */
-  line-height: 1.2;
+  );
+  /* REFACTOR: Progressively looser, transitioning towards body copy. */
+  line-height: 1.3;
 }
+
 h4,
 h5,
 h6,
 p {
-  font-size: clamp(1em, 0.95em + 0.25vw, 1.325em);
   font-size: clamp(
     var(--base-min-font-size),
     var(--base-preferred-font-size),
     var(--base-max-font-size)
   );
+  /* OPEN: Optimal for readability in long-form text. */
   line-height: 1.5;
-  margin-bottom: 1em;
+
+  /*
+    KEY REFACTOR: Replaced inconsistent `1em` margin with a fixed `1.5rem`.
+    This ensures the vertical space after ANY text element is always the same,
+    creating a consistent and predictable rhythm down the page.
+  */
+  margin-bottom: 1.5rem;
+
   letter-spacing: 0.005em;
   overflow-wrap: break-word;
   word-wrap: break-word;
@@ -250,7 +259,6 @@ blockquote.text-center {
 ::view-transition-new(title-*) {
   animation-duration: 0.7s;
 }
-
 /* @style screen and (max-width: 500px) {
   .layout-container {
     overflow: hidden;

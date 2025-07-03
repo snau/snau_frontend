@@ -102,14 +102,14 @@ const currentYear = new Date().getFullYear()
 
           <!-- Magazin Section -->
           <div class="lg:col-span-1" v-if="magazinSection">
-            <h3 class="text-sm font-semibold text-gray-900 dark:text-gray-100 uppercase tracking-wider mb-6">
+            <h4 class="text-sm font-semibold text-gray-900 dark:text-gray-100 uppercase tracking-wider mb-6">
               <NuxtLink 
                 :to="magazinSection.to"
                 class="hover:text-gray-700 dark:hover:text-gray-300 transition-colors duration-200 hover:underline decoration-1 underline-offset-4"
               >
                 {{ magazinSection.label }}
               </NuxtLink>
-            </h3>
+            </h4>
             <ul class="space-y-4">
               <li v-for="child in magazinSection.children" :key="child.to">
                 <NuxtLink 
@@ -124,14 +124,14 @@ const currentYear = new Date().getFullYear()
 
           <!-- Portfolio Section -->
           <div class="lg:col-span-1" v-if="portfolioSection">
-            <h3 class="text-sm font-semibold text-gray-900 dark:text-gray-100 uppercase tracking-wider mb-6">
+            <h4 class="text-sm font-semibold text-gray-900 dark:text-gray-100 uppercase tracking-wider mb-6">
               <NuxtLink 
                 :to="portfolioSection.to"
                 class="hover:text-gray-700 dark:hover:text-gray-300 transition-colors duration-200 hover:underline decoration-1 underline-offset-4"
               >
                 {{ portfolioSection.label }}
               </NuxtLink>
-            </h3>
+            </h4>
             <ul class="space-y-4">
               <li v-for="child in portfolioSection.children" :key="child.to">
                 <NuxtLink 
@@ -146,14 +146,14 @@ const currentYear = new Date().getFullYear()
 
           <!-- Über Uns Section -->
           <div class="lg:col-span-1" v-if="uberUnsSection">
-            <h3 class="text-sm font-semibold text-gray-900 dark:text-gray-100 uppercase tracking-wider mb-6">
+            <h4 class="text-sm font-semibold text-gray-900 dark:text-gray-100 uppercase tracking-wider mb-6">
               <NuxtLink 
                 :to="uberUnsSection.to"
                 class="hover:text-gray-700 dark:hover:text-gray-300 transition-colors duration-200 hover:underline decoration-1 underline-offset-4"
               >
                 {{ uberUnsSection.label }}
               </NuxtLink>
-            </h3>
+            </h4>
             <ul class="space-y-4">
               <li v-for="child in uberUnsSection.children" :key="child.to">
                 <NuxtLink 
@@ -168,14 +168,14 @@ const currentYear = new Date().getFullYear()
 
           <!-- Kontakt Section -->
           <div class="lg:col-span-1" v-if="kontaktSection">
-            <h3 class="text-sm font-semibold text-gray-900 dark:text-gray-100 uppercase tracking-wider mb-6">
+            <h4 class="text-sm font-semibold text-gray-900 dark:text-gray-100 uppercase tracking-wider mb-6">
               <NuxtLink 
                 :to="kontaktSection.to"
                 class="hover:text-gray-700 dark:hover:text-gray-300 transition-colors duration-200 hover:underline decoration-1 underline-offset-4"
               >
                 {{ kontaktSection.label }}
               </NuxtLink>
-            </h3>
+            </h4>
             <ul class="space-y-4">
               <li v-for="child in kontaktSection.children" :key="child.to">
                 <NuxtLink 
