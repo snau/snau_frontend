@@ -1,13 +1,12 @@
 <script setup lang="ts">
-import { computed } from 'vue'
 import { useLocalePath } from '#imports'
+import { computed } from 'vue'
 
 const props = defineProps<Props>()
 const localePath = useLocalePath()
 
-// Log the generated path
-const fullPath = computed(() => localePath(`/${props.interview.uri}`));
-console.log('InterviewCard URI:', props.interview.uri, 'Generated Path:', fullPath.value);
+// Generate the full path for the interview
+const fullPath = computed(() => localePath(`/${props.interview.uri}`))
 
 interface Cover {
   url: string

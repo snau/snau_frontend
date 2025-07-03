@@ -110,11 +110,15 @@ const menuItems = computed(() => {
             'opacity-100 scale-100': showFrostedBackground,
           }"
         >
-          <div class="absolute inset-0 bg-white/70 dark:bg-black/20 backdrop-blur-xl backdrop-saturate-150 border border-white/20 dark:border-white/10 rounded-xl shadow-lg"></div>
+          <div
+            class="absolute inset-0 bg-white/70 dark:bg-black/20 backdrop-blur-xl backdrop-saturate-150 border border-white/20 dark:border-white/10 rounded-xs shadow-lg"
+          ></div>
         </div>
 
         <!-- Logo and Navigation Content -->
-        <div class="relative z-10 flex items-center gap-6 transform-gpu will-change-transform">
+        <div
+          class="relative z-10 flex items-center gap-6 transform-gpu will-change-transform"
+        >
           <!-- Logo -->
           <Logo />
 
@@ -133,11 +137,11 @@ const menuItems = computed(() => {
                 :items="menuItems"
                 :ui="{
                   list: 'gap-6',
-                  linkLabel: 'py-1',
+                  linkLabel: 'py-0',
                   childLink: 'hover:bg-opacity-20 hover:bg-gray-500',
                   link: [
                     'text-sm font-medium transition-colors text-[var(--ui-nav-color-text)] relative px-0 tracking-wider antialiased',
-                    'after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[3px] after:bg-[var(--ui-nav-color-text)]',
+                    'after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[2px] after:bg-[var(--ui-nav-color-text)]',
                     'after:transition-all after:duration-300 after:ease-in-out',
                     'before:inset-y-0 hover:before:bg-elevated/0',
                     'hover:after:w-full hover:text-[var(--ui-nav-color-text)]',

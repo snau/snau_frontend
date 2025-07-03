@@ -89,14 +89,16 @@ onMounted(() => {
 </script>
 
 <template>
-  <NuxtLink :to="localePath(`/${props.interview.uri}`) ">
+  <NuxtLink :to="localePath(`/${props.interview.uri}`)">
     <div
       class="relative cursor-pointer overflow-hidden group"
       :style="{
         transition: 'opacity 0.3s ease-out, transform 0.3s ease-out',
         'transition-delay': animationDelay,
         opacity: isVisible ? '1' : '0',
-        transform: isVisible ? 'translateY(0)' : `translateY(${randomOffset}px)`,
+        transform: isVisible
+          ? 'translateY(0)'
+          : `translateY(${randomOffset}px)`,
         'will-change': 'opacity, transform',
       }"
     >
