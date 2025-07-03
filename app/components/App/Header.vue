@@ -111,7 +111,7 @@ const menuItems = computed(() => {
           }"
         >
           <div
-            class="absolute inset-0 bg-white/70 dark:bg-black/20 backdrop-blur-xl backdrop-saturate-150 border border-white/20 dark:border-white/10 rounded-xs shadow-lg"
+            class="absolute inset-0 bg-white/60 dark:bg-black/20 backdrop-blur-md backdrop-saturate-150 border border-white/20 dark:border-white/10 rounded-2xl shadow-lg"
           ></div>
         </div>
 
