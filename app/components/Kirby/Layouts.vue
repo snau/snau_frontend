@@ -52,9 +52,30 @@ interface KirbyLayoutWithAttrs extends KirbyLayout {
 /**
  * Component props
  */
-const _props = defineProps<{
+const props = defineProps<{
   layouts: KirbyLayoutWithAttrs[] // Array of layout configurations
 }>()
+
+/**
+ * Check if a layout is the first one on the page
+ *
+ * @param layoutIndex - Index of the current layout
+ * @returns boolean indicating if this is the first layout
+ */
+const isFirstLayout = (layoutIndex: number): boolean => {
+  return layoutIndex === 0
+}
+
+/**
+ * Check if padding is enabled for a layout
+ *
+ * @param padding - The padding value from layout attributes
+ * @returns boolean indicating if padding is enabled
+ */
+const isPaddingEnabled = (padding?: string | boolean): boolean => {
+  // Padding is enabled when it's true, "true", or not explicitly set to false
+  return padding === true || padding === 'true' || (padding !== false && padding !== 'false')
+}
 
 /**
  * Calculates the column span based on a fraction string (e.g., "1/3")
@@ -209,14 +230,21 @@ const getGradientStyle = (
 
 /**
  * Returns the appropriate padding classes based on the layout's padding attribute
+ * Now includes special handling for first layout with padding enabled
  *
  * @param padding - The padding value from layout attributes
+ * @param isFirst - Whether this is the first layout on the page
  * @returns CSS class string for the specified padding
  */
-const getPaddingClass = (padding?: string | boolean): string => {
+const getPaddingClass = (padding?: string | boolean, isFirst: boolean = false): string => {
   // No padding when explicitly set to false
   if (padding === false || padding === 'false') {
     return 'py-0 px-0'
+  }
+
+  // Special handling for first layout with padding enabled
+  if (isFirst && isPaddingEnabled(padding)) {
+    return 'pt-20 pb-4 px-6 md:pt-32 md:pb-8 lg:pt-64'
   }
 
   // Default responsive padding
@@ -227,9 +255,10 @@ const getPaddingClass = (padding?: string | boolean): string => {
  * Combines all layout classes into a single array for the template
  *
  * @param layout - The layout configuration
+ * @param layoutIndex - Index of the current layout
  * @returns Array of CSS classes for the layout
  */
-const getLayoutClasses = (layout: KirbyLayoutWithAttrs) => {
+const getLayoutClasses = (layout: KirbyLayoutWithAttrs, layoutIndex: number) => {
   // Start with custom classes if provided
   const classes = []
 
@@ -239,7 +268,7 @@ const getLayoutClasses = (layout: KirbyLayoutWithAttrs) => {
 
   // Add functional classes
   classes.push(getAlignmentClass(layout.attrs.alignment))
-  classes.push(getPaddingClass(layout.attrs.padding))
+  classes.push(getPaddingClass(layout.attrs.padding, isFirstLayout(layoutIndex)))
 
   return classes
 }
@@ -283,7 +312,7 @@ const getColumnClasses = (width: string): string => {
 <template>
   <!-- Loop through each layout -->
   <section
-    v-for="layout in layouts"
+    v-for="(layout, layoutIndex) in layouts"
     :id="layout.id"
     :key="layout.id"
     :class="getBackgroundClass(layout)"
@@ -292,7 +321,7 @@ const getColumnClasses = (width: string): string => {
   >
     <!-- Layout container with width control -->
     <div
-      :class="[getWidthClass(layout.attrs.width), ...getLayoutClasses(layout)]"
+      :class="[getWidthClass(layout.attrs.width), ...getLayoutClasses(layout, layoutIndex)]"
       class="layout-container"
     >
       <!-- Grid for columns -->
