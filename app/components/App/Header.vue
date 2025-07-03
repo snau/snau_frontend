@@ -110,7 +110,7 @@ const menuItems = computed(() => {
             'opacity-100 scale-100': showFrostedBackground,
           }"
         >
-          <div class="absolute inset-0 bg-white/20 dark:bg-black/20 backdrop-blur-xl backdrop-saturate-150 border border-white/20 dark:border-white/10 rounded-xl shadow-lg"></div>
+          <div class="absolute inset-0 bg-white/70 dark:bg-black/20 backdrop-blur-xl backdrop-saturate-150 border border-white/20 dark:border-white/10 rounded-xl shadow-lg"></div>
         </div>
 
         <!-- Logo and Navigation Content -->
