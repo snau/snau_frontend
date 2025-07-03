@@ -191,9 +191,9 @@ const currentYear = new Date().getFullYear()
       </div>
 
       <!-- Bottom section with copyright and legal links -->
-      <div class="border-t border-gray-200/30 dark:border-gray-800/30 py-8">
+      <div class="border-t border-gray-200/30 dark:border-gray-800/30 py-8 mb-24">
         <div
-          class="flex flex-col md:flex-row md:items-center md:justify-between gap-4"
+          class="flex flex-col md:flex-row md:items-center md:justify-center gap-4"
         >
           <!-- Copyright -->
           <span class="text-sm text-gray-500 dark:text-gray-500">
