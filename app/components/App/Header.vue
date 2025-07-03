@@ -141,7 +141,7 @@ const menuItems = computed(() => {
                     'after:transition-all after:duration-300 after:ease-in-out',
                     'before:inset-y-0 hover:before:bg-elevated/0',
                     'hover:after:w-full hover:text-[var(--ui-nav-color-text)]',
-                    'data-[active]:after:w-full data-[active]:text-[var(--ui-nav-color-text)]',
+                    'data-[active]:after:w-full data-[active]:text-[var(--ui-nav-color-text)] data-[active]:bg-transparent data-[active]:before:bg-transparent',
                     'transform-gpu will-change-transform',
                   ].join(' '),
                 }"
@@ -201,7 +201,7 @@ const menuItems = computed(() => {
               'after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[1px] after:bg-[var(--ui-nav-color-text)]',
               'after:transition-all after:duration-300 after:ease-in-out',
               'hover:after:w-full hover:text-[var(--ui-nav-color-text)]',
-              'data-[active]:after:w-full data-[active]:text-[var(--ui-nav-color-text)] data-[active]:text-[var(--ui-nav-color-text-active)]',
+              'data-[active]:after:w-full data-[active]:text-[var(--ui-nav-color-text)] data-[active]:text-[var(--ui-nav-color-text-active)] data-[active]:bg-transparent data-[active]:before:bg-transparent',
               'focus-visible:outline',
               'focus-visible:outline-2',
               'focus-visible:outline-rounded',
