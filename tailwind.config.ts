@@ -1,4 +1,5 @@
 module.exports = {
+  safelist: ['col-span-4', 'col-span-8', 'col-span-12'],
   theme: {
     extend: {
       transitionProperty: {

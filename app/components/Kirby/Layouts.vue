@@ -52,7 +52,7 @@ interface KirbyLayoutWithAttrs extends KirbyLayout {
 /**
  * Component props
  */
-const props = defineProps<{
+const _props = defineProps<{
   layouts: KirbyLayoutWithAttrs[] // Array of layout configurations
 }>()
 
@@ -244,7 +244,7 @@ const getPaddingClass = (padding?: string | boolean, isFirst: boolean = false): 
 
   // Special handling for first layout with padding enabled
   if (isFirst && isPaddingEnabled(padding)) {
-    return 'pt-20 pb-4 px-6 md:pt-32 md:pb-8 lg:pt-64'
+    return 'pb-4 px-6 md:pb-8'
   }
 
   // Default responsive padding
@@ -307,6 +307,18 @@ const getColumnClasses = (width: string): string => {
   const colSpan = calculateColumnSpan(width as `${string}/${string}`)
   return `column col-span-${colSpan} relative`
 }
+
+/**
+ * Check if a layout contains a ScrollingStory block
+ *
+ * @param layout - The layout configuration
+ * @returns boolean indicating if the layout contains a ScrollingStory block
+ */
+const hasScrollingStoryBlock = (layout: KirbyLayoutWithAttrs): boolean => {
+  return layout.columns.some(column => 
+    column.blocks.some(block => (block.type as string) === 'scrolling-story')
+  )
+}
 </script>
 
 <template>
@@ -325,11 +337,18 @@ const getColumnClasses = (width: string): string => {
       class="layout-container"
     >
       <!-- Grid for columns -->
+      <!-- Special spacing applied when:
+           1. This is the first layout on the page (layoutIndex === 0)
+           2. The layout has fullscreen attribute set to true
+           3. The layout contains a ScrollingStory block -->
       <div
         id="inner-container"
         class="grid grid-cols-12 gap-6"
         :class="{
-          '-mt-20 lg:-mt-64 mb-64': layout.attrs.fullscreen,
+          '-mt-20 lg:-mt-64 mb-64': 
+            layout.attrs.fullscreen && 
+            isFirstLayout(layoutIndex) && 
+            hasScrollingStoryBlock(layout),
         }"
       >
         <!-- Loop through each column in the layout -->
