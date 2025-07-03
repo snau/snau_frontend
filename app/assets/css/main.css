@@ -54,25 +54,25 @@
   --ui-itemsize-large: 700;
 
   --ui-easing: cubic-bezier(0.4, 0, 0.2, 1);
-  --ui-color-bg: var(--color-stone-50);
+  --ui-color-bg: var(--color-neutral-50);
   --ui-color-text-light: var(--color-neutral-600);
-  --ui-color-text: var(--color-neutral-700);
-  --ui-color-text-strong: var(--color-neutral-900);
+  --ui-color-text: var(--color-neutral-800);
+  --ui-color-text-strong: var(--color-neutral-800);
   --ui-color-primary: var(--color-red-500);
   --ui-color-light: hsla(100, 100%, 100%, 0.7);
-  --ui-color-dark: var(--color-stone-900);
+  --ui-color-dark: var(--color-neutral-800);
 
-  --ui-nav-color-text: var(--color-stone-900);
+  --ui-nav-color-text: var(--color-neutral-800);
   --ui-nav-color-text-active: var(--ui-nav-color-text);
-  --ui-nav-color-text-inv: var(--color-stone-300);
+  --ui-nav-color-text-inv: var(--color-neutral-300);
   --ui-nav-color-text-inv-active: var(--ui-nav-color-text-inv);
-  --ui-nav-color-hover: var(--color-stone-100);
+  --ui-nav-color-hover: var(--color-neutral-100);
   --ui-nav-color-bg: var(--color-white);
-  --ui-border-nav: var(--color-stone-300);
+  --ui-border-nav: var(--color-neutral-300);
 
   --ui-accordion-color-text: var(--ui-color-text);
   --ui-accordion-color-closed: var(--ui-color-nav-hover);
-  --ui-accordion-color-hover: var(--color-stone-200);
+  --ui-accordion-color-hover: var(--color-neutral-200);
   --ui-accordion-color-open: var(--color-orange-100);
 }
 
