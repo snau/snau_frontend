@@ -25,7 +25,7 @@ const getFontFamily = (block: QuoteBlockProps['block']) => {
 </script>
 
 <template>
-  <blockquote class="text-base mx-12 lg:my-24" :class="getAlignment(block)">
+  <blockquote class="text-sm mx-12 lg:my-24" :class="getAlignment(block)">
     <span
       :class="[getFontSize(block), getFontFamily(block)]"
       v-html="block.text"

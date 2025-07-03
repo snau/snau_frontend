@@ -28,9 +28,9 @@
   --md-max-font-size: 2.25;
   --md-preferred-font-size: calc(1.159rem + 0.909vw);
 
-  --base-min-font-size: 1.063rem;
-  --base-max-font-size: 1.5rem;
-  --base-preferred-font-size: calc(0.864rem + 0.53vw);
+  --base-min-font-size: 0.9rem;
+  --base-max-font-size: 1.25rem;
+  --base-preferred-font-size: calc(0.75rem + 0.45vw);
 
   --sm-min-font-size: 0.875rem;
   --sm-max-font-size: 0.95rem;
@@ -140,7 +140,7 @@ h2,
     var(--lg-preferred-font-size),
     var(--lg-max-font-size)
   );
-  line-height: 1.2;
+  line-height: 1.1;
 }
 h3,
 .text-md {
@@ -150,7 +150,7 @@ h3,
     var(--md-preferred-font-size),
     var(--md-max-font-size)
   ); /* 24px to 36px */
-  line-height: 1.3;
+  line-height: 1.2;
 }
 h4,
 h5,
@@ -162,7 +162,7 @@ p {
     var(--base-preferred-font-size),
     var(--base-max-font-size)
   );
-  line-height: 1.7;
+  line-height: 1.5;
   margin-bottom: 1em;
   letter-spacing: 0.005em;
   overflow-wrap: break-word;
@@ -173,7 +173,7 @@ p {
 }
 
 .text-base {
-  font-size: clamp(1em, 0.95em + 0.25vw, 1.125em); /* 16px to 18px */
+  font-size: clamp(0.85em, 0.8em + 0.2vw, 1em); /* Smaller base text */
 }
 
 p > strong {
@@ -185,8 +185,8 @@ p > strong {
 }
 
 .text-small {
-  font-size: clamp(0.875em, 0.85em + 0.125vw, 0.95em);
-  line-height: 1.6;
+  font-size: clamp(0.75em, 0.7em + 0.1vw, 0.85em);
+  line-height: 1.4;
 }
 /* p {
   font-size: clamp(1.125rem, 1.085rem + 0.2vw, 1.25rem);
