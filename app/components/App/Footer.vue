@@ -196,12 +196,10 @@ const currentYear = new Date().getFullYear()
           class="flex flex-col md:flex-row md:items-center md:justify-between gap-4"
         >
           <!-- Copyright -->
-          <div class="text-sm text-gray-500 dark:text-gray-500">
-            <p>
-              &copy; {{ currentYear }} {{ site.title }}.
-              {{ t('footer.copyright') }}
-            </p>
-          </div>
+          <span class="text-sm text-gray-500 dark:text-gray-500">
+            &copy; {{ currentYear }} {{ site.title }}.
+            {{ t('footer.copyright') }}
+          </span>
 
           <!-- Legal links -->
           <div class="flex flex-wrap items-center gap-6">
