@@ -54,10 +54,10 @@ let scrollHandler: (() => void) | null = null
 // Add and remove scroll event listener with immediate execution
 onMounted(() => {
   let ticking = false
-  
+
   // Immediate execution for initial state
   handleScroll()
-  
+
   scrollHandler = () => {
     if (!ticking) {
       // Execute immediately without waiting for rAF for better responsiveness
@@ -68,9 +68,9 @@ onMounted(() => {
       ticking = true
     }
   }
-  
+
   window.addEventListener('scroll', scrollHandler, { passive: true })
-  
+
   // Initialize prevScrollY with the current scroll position
   prevScrollY = window.scrollY
 })
@@ -119,9 +119,10 @@ const menuItems = computed(() => {
         <div class="absolute inset-0 -mx-4 -my-2 transform-gpu">
           <div
             class="absolute inset-0 bg-white/60 dark:bg-black/25 backdrop-blur-md backdrop-saturate-150 border border-white/25 dark:border-white/15 rounded-2xl transition-[background-color,border-color,box-shadow,backdrop-filter] duration-150 ease-out will-change-[background,border,box-shadow,backdrop-filter] transform-gpu"
-            style="contain: layout style paint;"
+            style="contain: layout style paint"
             :class="{
-              'bg-white/30 dark:bg-black/10 !backdrop-blur-sm !backdrop-saturate-125 border-white/10 dark:border-white/5 shadow-md': hasScrolledBackground,
+              'bg-white/30 dark:bg-black/10 !backdrop-blur-sm !backdrop-saturate-125 border-white/10 dark:border-white/5 shadow-md':
+                hasScrolledBackground,
             }"
           ></div>
         </div>

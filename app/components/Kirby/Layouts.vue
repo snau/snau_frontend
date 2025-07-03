@@ -74,7 +74,11 @@ const isFirstLayout = (layoutIndex: number): boolean => {
  */
 const isPaddingEnabled = (padding?: string | boolean): boolean => {
   // Padding is enabled when it's true, "true", or not explicitly set to false
-  return padding === true || padding === 'true' || (padding !== false && padding !== 'false')
+  return (
+    padding === true ||
+    padding === 'true' ||
+    (padding !== false && padding !== 'false')
+  )
 }
 
 /**
@@ -236,7 +240,10 @@ const getGradientStyle = (
  * @param isFirst - Whether this is the first layout on the page
  * @returns CSS class string for the specified padding
  */
-const getPaddingClass = (padding?: string | boolean, isFirst: boolean = false): string => {
+const getPaddingClass = (
+  padding?: string | boolean,
+  isFirst: boolean = false,
+): string => {
   // No padding when explicitly set to false
   if (padding === false || padding === 'false') {
     return 'py-0 px-0'
@@ -258,7 +265,10 @@ const getPaddingClass = (padding?: string | boolean, isFirst: boolean = false): 
  * @param layoutIndex - Index of the current layout
  * @returns Array of CSS classes for the layout
  */
-const getLayoutClasses = (layout: KirbyLayoutWithAttrs, layoutIndex: number) => {
+const getLayoutClasses = (
+  layout: KirbyLayoutWithAttrs,
+  layoutIndex: number,
+) => {
   // Start with custom classes if provided
   const classes = []
 
@@ -268,7 +278,9 @@ const getLayoutClasses = (layout: KirbyLayoutWithAttrs, layoutIndex: number) => 
 
   // Add functional classes
   classes.push(getAlignmentClass(layout.attrs.alignment))
-  classes.push(getPaddingClass(layout.attrs.padding, isFirstLayout(layoutIndex)))
+  classes.push(
+    getPaddingClass(layout.attrs.padding, isFirstLayout(layoutIndex)),
+  )
 
   return classes
 }
@@ -315,8 +327,8 @@ const getColumnClasses = (width: string): string => {
  * @returns boolean indicating if the layout contains a ScrollingStory block
  */
 const hasScrollingStoryBlock = (layout: KirbyLayoutWithAttrs): boolean => {
-  return layout.columns.some(column => 
-    column.blocks.some(block => (block.type as string) === 'scrolling-story')
+  return layout.columns.some((column) =>
+    column.blocks.some((block) => (block.type as string) === 'scrolling-story'),
   )
 }
 </script>
@@ -333,7 +345,10 @@ const hasScrollingStoryBlock = (layout: KirbyLayoutWithAttrs): boolean => {
   >
     <!-- Layout container with width control -->
     <div
-      :class="[getWidthClass(layout.attrs.width), ...getLayoutClasses(layout, layoutIndex)]"
+      :class="[
+        getWidthClass(layout.attrs.width),
+        ...getLayoutClasses(layout, layoutIndex),
+      ]"
       class="layout-container"
     >
       <!-- Grid for columns -->
@@ -345,9 +360,9 @@ const hasScrollingStoryBlock = (layout: KirbyLayoutWithAttrs): boolean => {
         id="inner-container"
         class="grid grid-cols-12 gap-6"
         :class="{
-          '-mt-20 lg:-mt-64 mb-64': 
-            layout.attrs.fullscreen && 
-            isFirstLayout(layoutIndex) && 
+          '-mt-20 lg:-mt-64 mb-64':
+            layout.attrs.fullscreen &&
+            isFirstLayout(layoutIndex) &&
             hasScrollingStoryBlock(layout),
         }"
       >

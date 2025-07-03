@@ -4,6 +4,7 @@ import antfu from '@antfu/eslint-config'
 export default antfu({
   stylistic: false,
   unocss: false,
+  ignores: ['docs/**/*'],
 }).append({
   rules: {
     // Ignore rules clashing with Prettier
