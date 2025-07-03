@@ -105,7 +105,7 @@ const menuItems = computed(() => {
         <!-- Default Frosted Glass Background -->
         <div class="absolute inset-0 -mx-4 -my-2 transform-gpu">
           <div
-            class="absolute inset-0 bg-white/60 dark:bg-black/25 backdrop-blur-md backdrop-saturate-150 border border-white/25 dark:border-white/15 rounded-2xl shadow-lg transition-all duration-300 ease-out"
+            class="absolute inset-0 bg-white/60 dark:bg-black/25 backdrop-blur-md backdrop-saturate-150 border border-white/25 dark:border-white/15 rounded-2xl transition-all duration-300 ease-out"
             :class="{
               'bg-white/30 dark:bg-black/10 backdrop-blur-sm backdrop-saturate-125 border-white/10 dark:border-white/5 shadow-md': hasScrolledBackground,
             }"

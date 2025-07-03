@@ -60,7 +60,7 @@ onBeforeUnmount(() => {
 
 <template>
   <NuxtLink to="/">
-    <div class="relative w-6 h-6 md:w-8 md:h-8">
+    <div class="relative w-8 h-8 md:w-10 md:h-10">
       <!-- Background SVG 1 -->
       <svg
         width="60"
@@ -68,7 +68,7 @@ onBeforeUnmount(() => {
         viewBox="0 0 185 185"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
-        class="logo-bg-a absolute top-1/2 left-1/2 scale-[0.35] md:scale-50 transform -translate-x-1/2 -translate-y-1/2 transition-transform duration-1000 text-black dark:text-white"
+        class="logo-bg-a absolute top-1/2 left-1/2 scale-[0.5] md:scale-[0.65] transform -translate-x-1/2 -translate-y-1/2 transition-transform duration-1000 text-black dark:text-white"
         :class="[
           {
             'rotate-11': rotation === 0,
@@ -90,7 +90,7 @@ onBeforeUnmount(() => {
         viewBox="0 0 185 185"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
-        class="scale-[0.35] md:scale-50 logo-bg-b absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 opacity-50 transition-transform duration-1000 text-black dark:text-white"
+        class="scale-[0.5] md:scale-[0.65] logo-bg-b absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 opacity-50 transition-transform duration-1000 text-black dark:text-white"
         :class="[
           {
             'rotate-0': rotation === 0,
@@ -112,7 +112,7 @@ onBeforeUnmount(() => {
         viewBox="0 0 16 25"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
-        class="logo-snau scale-[0.35] md:scale-50 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 transition-opacity duration-1000 text-white dark:text-black"
+        class="logo-snau scale-[0.5] md:scale-[0.65] absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 transition-opacity duration-1000 text-white dark:text-black"
         :class="[
           {
             'opacity-100': currentLogo === 'snau',
@@ -121,7 +121,7 @@ onBeforeUnmount(() => {
         ]"
       >
         <path
-          d="M14.578 6.45L13.606 6.774C12.58 3.696 10.636 1.428 7.882 1.428C5.83 1.428 4.372 2.994 4.372 5.208C4.372 7.746 6.586 9.096 8.854 10.068C12.958 11.796 15.496 13.74 15.496 17.304C15.496 22.11 11.068 24.648 6.856 24.648C4.156 24.648 1.834 23.676 0.97 22.974C0.592 22.218 0.106 18.546 0.0520001 16.71L1.078 16.494C2.05 20.004 4.534 23.19 7.828 23.19C9.826 23.19 11.662 21.732 11.662 19.302C11.662 16.872 10.096 15.522 7.342 14.226C4.264 12.768 0.862 10.932 0.862 6.936C0.862 3.156 4.048 0.0239981 8.854 0.0239981C11.014 0.0239981 12.418 0.455999 13.498 0.941999C13.876 2.13 14.416 5.208 14.578 6.45Z"
+          d="M14.578 6.45L13.606 6.774C12.58 3.696 10.636 1.428 7.882 1.428C5.83 1.428 4.372 2.994 4.372 5.208C4.372 7.746 6.586 9.096 8.854 10.068C12.958 11.796 15.496 13.74 15.496 17.304C15.496 22.11 11.068 24.648 6.856 24.648C4.156 24.648 1.834 23.676 0.97 22.974C0.592 22.218 0.106 18.546 0.0520001 16.71L1.078 16.494C2.05 20.004 4.534 23.19 7.828 23.19C9.826 23.19 11.662 21.732 11.662 19.302C11.662 16.872 10.096 15.522 7.342 14.226C4.264 12.768 0.862 10.932 0.862 6.936C0.862 3.156 4.048 0.0239981 8.854 0.0239981C11.014 0.0239981 12.418 0.55999 13.498 0.941999C13.876 2.13 14.416 5.208 14.578 6.45Z"
           fill="currentColor"
         />
       </svg>
@@ -133,7 +133,7 @@ onBeforeUnmount(() => {
         viewBox="0 0 18 25"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
-        class="logo-regentaucher scale-[0.35] md:scale-50 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 transition-opacity duration-1000 text-white dark:text-black"
+        class="logo-regentaucher scale-[0.5] md:scale-[0.65] absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 transition-opacity duration-1000 text-white dark:text-black"
         :class="[
           {
             'opacity-100': currentLogo === 'regentaucher',
@@ -154,7 +154,7 @@ onBeforeUnmount(() => {
         viewBox="0 0 37 25"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
-        class="logo-wunderwesten scale-[0.35] md:scale-50 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 transition-opacity duration-1000 text-white dark:text-black"
+        class="logo-wunderwesten scale-[0.5] md:scale-[0.65] absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 transition-opacity duration-1000 text-white dark:text-black"
         :class="[
           {
             'opacity-100': currentLogo === 'wunderwesten',
