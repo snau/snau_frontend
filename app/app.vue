@@ -3,6 +3,16 @@ import { useMobileMenu } from '~/composables/useMobileMenu'
 import '~/assets/css/main.css'
 const { isOpen } = useMobileMenu()
 const { locale: _locale } = useI18n()
+
+// Add EB Garamond font from Bunny Fonts
+useHead({
+  link: [
+    {
+      rel: 'stylesheet',
+      href: 'https://fonts.bunny.net/css?family=eb-garamond:400,400i,500,500i,600,600i,700,700i',
+    },
+  ],
+})
 </script>
 
 <template>
