@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { KirbyBlock } from '#nuxt-kql'
-import type { ResolvedKirbyImage } from '../../../../shared/types/kirby'
+import type { ResolvedKirbyImage } from '#shared/types/kirby'
 
 defineProps<{
   block: KirbyBlock<
@@ -28,21 +28,39 @@ defineProps<{
       class="column"
       style="--columns: 6"
     >
-      <div v-if="item.image">
-        <figure class="column" style="aspect-ratio: 1/1">
-          {{ item.link }}
-          <img
-            :srcset="item.image.srcset"
-            :width="item.image.width"
-            :height="item.image.height"
-            :alt="item.image.alt || undefined"
-            style="object-fit: cover; width: 100%; height: 100%"
-          />
+      <NuxtLink v-if="item.link" :to="item.link">
+        <div v-if="item.image">
+          <figure class="column" style="aspect-ratio: 1/1">
+            <img
+              :srcset="item.image.srcset"
+              :width="item.image.width"
+              :height="item.image.height"
+              :alt="item.image.alt || undefined"
+              style="object-fit: cover; width: 100%; height: 100%"
+            />
 
-          <figcaption>
-            <strong>{{ item.name }}</strong>
-          </figcaption>
-        </figure>
+            <figcaption>
+              <strong>{{ item.name }}</strong>
+            </figcaption>
+          </figure>
+        </div>
+      </NuxtLink>
+      <div v-else>
+        <div v-if="item.image">
+          <figure class="column" style="aspect-ratio: 1/1">
+            <img
+              :srcset="item.image.srcset"
+              :width="item.image.width"
+              :height="item.image.height"
+              :alt="item.image.alt || undefined"
+              style="object-fit: cover; width: 100%; height: 100%"
+            />
+
+            <figcaption>
+              <strong>{{ item.name }}</strong>
+            </figcaption>
+          </figure>
+        </div>
       </div>
     </div>
   </div>
