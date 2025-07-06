@@ -14,6 +14,8 @@ defineProps<{
         image: ResolvedKirbyImage | null
         // Contains the resolved page URI
         link: string | null
+        subtitle?: string
+        image_ratio?: string
       }[]
     }
   >
@@ -30,7 +32,8 @@ defineProps<{
       >
         <figure
           v-if="item.image"
-          class="overflow-hidden rounded-lg aspect-square"
+          class="overflow-hidden rounded-lg"
+          :style="{ aspectRatio: item.image_ratio || '1/1' }"
         >
           <img
             :srcset="item.image.srcset"
@@ -41,11 +44,15 @@ defineProps<{
           />
         </figure>
         <p class="mt-4 font-bold">{{ item.name }}</p>
+        <p v-if="item.subtitle" class="text-sm text-gray-500">
+          {{ item.subtitle }}
+        </p>
       </NuxtLink>
       <div v-else class="text-center">
         <figure
           v-if="item.image"
-          class="overflow-hidden rounded-lg aspect-square"
+          class="overflow-hidden rounded-lg"
+          :style="{ aspectRatio: item.image_ratio || '1/1' }"
         >
           <img
             :srcset="item.image.srcset"
@@ -56,6 +63,9 @@ defineProps<{
           />
         </figure>
         <p class="mt-4 font-bold">{{ item.name }}</p>
+        <p v-if="item.subtitle" class="text-sm text-gray-500">
+          {{ item.subtitle }}
+        </p>
       </div>
     </div>
   </div>
