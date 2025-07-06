@@ -21,46 +21,41 @@ defineProps<{
 </script>
 
 <template>
-  <div class="grid" style="--gutter: 1.5rem">
-    <div
-      v-for="(item, index) in block.content.team"
-      :key="index"
-      class="column"
-      style="--columns: 6"
-    >
-      <NuxtLink v-if="item.link" :to="item.link">
-        <div v-if="item.image">
-          <figure class="column" style="aspect-ratio: 1/1">
-            <img
-              :srcset="item.image.srcset"
-              :width="item.image.width"
-              :height="item.image.height"
-              :alt="item.image.alt || undefined"
-              style="object-fit: cover; width: 100%; height: 100%"
-            />
-
-            <figcaption>
-              <strong>{{ item.name }}</strong>
-            </figcaption>
-          </figure>
-        </div>
+  <div class="grid grid-cols-1 gap-x-6 gap-y-12 sm:grid-cols-2 lg:grid-cols-3">
+    <div v-for="item in block.content.team" :key="item.name">
+      <NuxtLink
+        v-if="item.link"
+        :to="item.link"
+        class="group block text-center"
+      >
+        <figure
+          v-if="item.image"
+          class="overflow-hidden rounded-lg aspect-square"
+        >
+          <img
+            :srcset="item.image.srcset"
+            :width="item.image.width"
+            :height="item.image.height"
+            :alt="item.image.alt || ''"
+            class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+          />
+        </figure>
+        <p class="mt-4 font-bold">{{ item.name }}</p>
       </NuxtLink>
-      <div v-else>
-        <div v-if="item.image">
-          <figure class="column" style="aspect-ratio: 1/1">
-            <img
-              :srcset="item.image.srcset"
-              :width="item.image.width"
-              :height="item.image.height"
-              :alt="item.image.alt || undefined"
-              style="object-fit: cover; width: 100%; height: 100%"
-            />
-
-            <figcaption>
-              <strong>{{ item.name }}</strong>
-            </figcaption>
-          </figure>
-        </div>
+      <div v-else class="text-center">
+        <figure
+          v-if="item.image"
+          class="overflow-hidden rounded-lg aspect-square"
+        >
+          <img
+            :srcset="item.image.srcset"
+            :width="item.image.width"
+            :height="item.image.height"
+            :alt="item.image.alt || ''"
+            class="w-full h-full object-cover"
+          />
+        </figure>
+        <p class="mt-4 font-bold">{{ item.name }}</p>
       </div>
     </div>
   </div>
