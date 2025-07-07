@@ -13,6 +13,7 @@ import {
   LazyKirbyBlockLatest,
   LazyKirbyBlockLine,
   LazyKirbyBlockList,
+  LazyKirbyBlockMarkdown,
   LazyKirbyBlockParcours,
   LazyKirbyBlockPortfolio,
   LazyKirbyBlockQuote,
@@ -34,6 +35,7 @@ const blockComponents: Record<string, Component> = {
   image: LazyKirbyBlockImage,
   line: LazyKirbyBlockLine,
   list: LazyKirbyBlockList,
+  markdown: LazyKirbyBlockMarkdown,
   quote: LazyKirbyBlockQuote,
   text: LazyKirbyBlockText,
   // Custom blocks
