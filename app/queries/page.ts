@@ -24,8 +24,12 @@ export interface KirbySharedPageData {
   secondarybackgroundcolor: string
   textcolor: string
   secondarytextcolor: string
+  colors: string
   intro: string
   role: string
+  gradient: any[]
+  gradient_alignment: string
+  customtextcolor: string
   blocks: KirbyBlock<string>[]
   layouts: KirbyLayout[]
   invert?: 'light' | 'dark' // Add invert field with specific values
@@ -81,6 +85,9 @@ export function getPageQuery(pageId: string): KirbyQuerySchema {
       colors: true,
       intro: true,
       role: true,
+      gradient: 'page.gradient.toStructure',
+      gradient_alignment: true,
+      customtextcolor: true,
       invert: true, // Add invert field to query
       cover: {
         query: 'page.cover.toFile',

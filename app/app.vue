@@ -1,11 +1,56 @@
 <script setup lang="ts">
+import { computed } from 'vue'
+import { usePage } from '~/composables/page'
 import { useMobileMenu } from '~/composables/useMobileMenu'
 import '~/assets/css/main.css'
+
 const { isOpen } = useMobileMenu()
 const { locale: _locale } = useI18n()
+const page = usePage()
 
-// Add EB Garamond font from Bunny Fonts
+const gradientDirectionMap = {
+  up: 'to top',
+  'right-up': 'to top right',
+  right: 'to right',
+  'right-down': 'to bottom right',
+  down: 'to bottom',
+  'left-down': 'to bottom left',
+  left: 'to left',
+  'left-up': 'to top left',
+} as const
+
+const bodyStyle = computed(() => {
+  const styles: Record<string, string> = {}
+  const gradientColors = page.value.gradient
+
+  if (Array.isArray(gradientColors) && gradientColors.length > 0) {
+    const alignment = page.value.gradient_alignment as keyof typeof gradientDirectionMap || 'down'
+    const direction = gradientDirectionMap[alignment] || 'to bottom'
+
+    const colorStops = gradientColors.length === 1
+      ? `${gradientColors[0].color}, ${gradientColors[0].color}`
+      : gradientColors.map((g: { color: string; position?: string }, index: number) => {
+        const position = g.position || (index / (gradientColors.length - 1)) * 100
+        return `${g.color} ${position}%`
+      }).join(', ')
+
+    // Use background-image for CSS string
+    styles['background-image'] = `linear-gradient(${direction}, ${colorStops})`
+  }
+
+  if (page.value.customtextcolor) {
+    styles.color = page.value.customtextcolor
+  }
+
+  // Convert object to CSS string for the style attribute
+  return Object.entries(styles).map(([key, value]) => `${key}: ${value}`).join(';')
+})
+
+// Add EB Garamond font from Bunny Fonts and apply dynamic styles to the body
 useHead({
+  bodyAttrs: {
+    style: bodyStyle,
+  },
   link: [
     {
       rel: 'stylesheet',
