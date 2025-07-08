@@ -42,7 +42,7 @@ defineProps<{
             />
           </figure>
           <div class="text-center mt-4">
-            <p class="font-bold">{{ item.headline }}</p>
+            <h3 class="font-bold uppercase tracking-wide">{{ item.headline }}</h3>
             <p v-if="item.subline" class="text-sm text-gray-500">
               {{ item.subline }}
             </p>
@@ -78,7 +78,7 @@ defineProps<{
             <div
               class="absolute bottom-0 left-0 right-0 p-4 text-white text-left"
             >
-              <p class="font-bold">{{ item.headline }}</p>
+              <h3 class="font-bold uppercase tracking-wide">{{ item.headline }}</h3>
               <p v-if="item.subline" class="text-sm opacity-80">
                 {{ item.subline }}
               </p>
@@ -89,7 +89,7 @@ defineProps<{
           </figure>
           <!-- Fallback for 'inside' text when there is no image -->
           <div v-else class="text-center">
-            <p class="font-bold">{{ item.headline }}</p>
+            <h3 class="font-bold uppercase tracking-wide">{{ item.headline }}</h3>
             <p v-if="item.subline" class="text-sm text-gray-500">
               {{ item.subline }}
             </p>
@@ -118,7 +118,7 @@ defineProps<{
             />
           </figure>
           <div class="text-center mt-4">
-            <p class="font-bold">{{ item.headline }}</p>
+            <h3 class="font-bold uppercase tracking-wide">{{ item.headline }}</h3>
             <p v-if="item.subline" class="text-sm text-gray-500">
               {{ item.subline }}
             </p>
@@ -154,7 +154,7 @@ defineProps<{
             <div
               class="absolute bottom-0 left-0 right-0 p-4 text-white text-left"
             >
-              <p class="font-bold">{{ item.headline }}</p>
+              <h3 class="font-bold uppercase tracking-wide">{{ item.headline }}</h3>
               <p v-if="item.subline" class="text-sm opacity-80">
                 {{ item.subline }}
               </p>
@@ -165,7 +165,7 @@ defineProps<{
           </figure>
           <!-- Fallback for 'inside' text when there is no image -->
           <div v-else class="text-center">
-            <p class="font-bold">{{ item.headline }}</p>
+            <h3 class="font-bold uppercase tracking-wide">{{ item.headline }}</h3>
             <p v-if="item.subline" class="text-sm text-gray-500">
               {{ item.subline }}
             </p>
