@@ -95,7 +95,7 @@ const currentYear = new Date().getFullYear()
             >
               <NuxtLink
                 :to="magazinSection.to"
-                class="hover:text-gray-700 dark:hover:text-gray-300 transition-colors duration-200 hover:underline decoration-1 underline-offset-4"
+                class="hover:text-red-500 dark:hover:white transition-colors duration-200 hover:underline decoration-1 underline-offset-4"
               >
                 {{ magazinSection.label }}
               </NuxtLink>
@@ -104,7 +104,7 @@ const currentYear = new Date().getFullYear()
               <li v-for="child in magazinSection.children" :key="child.to">
                 <NuxtLink
                   :to="child.to"
-                  class="text-sm text-black opacity-50 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 transition-colors duration-200 hover:underline decoration-1 underline-offset-4"
+                  class="text-sm text-black opacity-50 dark:text-white hover:text-black dark:hover:white transition-colors duration-200 hover:underline decoration-1 underline-offset-4"
                 >
                   {{ child.label }}
                 </NuxtLink>
@@ -115,11 +115,11 @@ const currentYear = new Date().getFullYear()
           <!-- Portfolio Section -->
           <div v-if="portfolioSection" class="lg:col-span-1">
             <h4
-              class="text-sm font-semibold text-gray-900 dark:text-gray-100 uppercase tracking-wider mb-6"
+              class="text-sm font-semibold text-black dark:white uppercase tracking-wider mb-6"
             >
               <NuxtLink
                 :to="portfolioSection.to"
-                class="hover:text-gray-700 dark:hover:text-gray-300 transition-colors duration-200 hover:underline decoration-1 underline-offset-4"
+                class="hover:text-red-500 dark:hover:white transition-colors duration-200 hover:underline decoration-1 underline-offset-4"
               >
                 {{ portfolioSection.label }}
               </NuxtLink>
@@ -128,7 +128,7 @@ const currentYear = new Date().getFullYear()
               <li v-for="child in portfolioSection.children" :key="child.to">
                 <NuxtLink
                   :to="child.to"
-                  class="text-sm text-black opacity-50 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 transition-colors duration-200 hover:underline decoration-1 underline-offset-4"
+                  class="text-sm text-black opacity-50 dark:text-white hover:text-black dark:hover:white transition-colors duration-200 hover:underline decoration-1 underline-offset-4"
                 >
                   {{ child.label }}
                 </NuxtLink>
@@ -139,11 +139,11 @@ const currentYear = new Date().getFullYear()
           <!-- Über Uns Section -->
           <div v-if="uberUnsSection" class="lg:col-span-1">
             <h4
-              class="text-sm font-semibold text-gray-900 dark:text-gray-100 uppercase tracking-wider mb-6"
+              class="text-sm font-semibold text-black dark:white uppercase tracking-wider mb-6"
             >
               <NuxtLink
                 :to="uberUnsSection.to"
-                class="hover:text-gray-700 dark:hover:text-gray-300 transition-colors duration-200 hover:underline decoration-1 underline-offset-4"
+                class="hover:text-red-500 dark:hover:white transition-colors duration-200 hover:underline decoration-1 underline-offset-4"
               >
                 {{ uberUnsSection.label }}
               </NuxtLink>
@@ -152,7 +152,7 @@ const currentYear = new Date().getFullYear()
               <li v-for="child in uberUnsSection.children" :key="child.to">
                 <NuxtLink
                   :to="child.to"
-                  class="text-sm text-black opacity-50 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 transition-colors duration-200 hover:underline decoration-1 underline-offset-4"
+                  class="text-sm text-black opacity-50 dark:text-white hover:text-black dark:hover:white transition-colors duration-200 hover:underline decoration-1 underline-offset-4"
                 >
                   {{ child.label }}
                 </NuxtLink>
@@ -163,11 +163,11 @@ const currentYear = new Date().getFullYear()
           <!-- Kontakt Section -->
           <div v-if="kontaktSection" class="lg:col-span-1">
             <h4
-              class="text-sm font-semibold text-gray-900 dark:text-gray-100 uppercase tracking-wider mb-6"
+              class="text-sm font-semibold text-black dark:white uppercase tracking-wider mb-6"
             >
               <NuxtLink
                 :to="kontaktSection.to"
-                class="hover:text-gray-700 dark:hover:text-gray-300 transition-colors duration-200 hover:underline decoration-1 underline-offset-4"
+                class="hover:text-red-500 dark:hover:white transition-colors duration-200 hover:underline decoration-1 underline-offset-4"
               >
                 {{ kontaktSection.label }}
               </NuxtLink>
@@ -176,7 +176,7 @@ const currentYear = new Date().getFullYear()
               <li v-for="child in kontaktSection.children" :key="child.to">
                 <NuxtLink
                   :to="child.to"
-                  class="text-sm text-black opacity-50 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 transition-colors duration-200 hover:underline decoration-1 underline-offset-4"
+                  class="text-sm text-black opacity-50 dark:text-white hover:text-black dark:hover:white transition-colors duration-200 hover:underline decoration-1 underline-offset-4"
                 >
                   {{ child.label }}
                 </NuxtLink>
@@ -194,7 +194,7 @@ const currentYear = new Date().getFullYear()
           class="flex flex-col md:flex-row md:items-center md:justify-center gap-4"
         >
           <!-- Copyright -->
-          <span class="text-sm text-gray-500 dark:text-gray-500">
+          <span class="text-sm text-black dark:text-white opacity-50">
             &copy; {{ currentYear }} {{ site.title }}.
             {{ t('footer.copyright') }}
           </span>
@@ -205,7 +205,7 @@ const currentYear = new Date().getFullYear()
               v-for="link in legalLinks"
               :key="link.to"
               :to="link.to"
-              class="text-sm text-gray-500 dark:text-gray-500 hover:text-gray-700 dark:hover:text-gray-300 transition-colors duration-200 hover:underline decoration-1 underline-offset-4"
+              class="text-sm opacity-50 text-black dark:text-white transition-colors duration-200 hover:underline decoration-1 underline-offset-4"
             >
               {{ link.label }}
             </NuxtLink>
