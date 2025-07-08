@@ -68,11 +68,11 @@ const currentYear = new Date().getFullYear()
 
 <template>
   <footer
-    class="relative bg-white/50 dark:bg-black/50 backdrop-blur-md border-t border-gray-200/20 dark:border-gray-800/30 mt-24"
+    class="relative  backdrop-blur-md border-t border-gray-200/20 dark:border-gray-800/30 mt-24"
   >
     <!-- Gradient overlay for visual depth -->
     <div
-      class="absolute inset-0 bg-gradient-to-t from-gray-50/30 to-transparent dark:from-gray-900/30 pointer-events-none"
+      class="absolute inset-0 pointer-events-none"
     ></div>
 
     <div class="relative max-w-7xl mx-auto px-6 lg:px-8">
@@ -91,7 +91,7 @@ const currentYear = new Date().getFullYear()
           <!-- Magazin Section -->
           <div v-if="magazinSection" class="lg:col-span-1">
             <h4
-              class="text-sm font-semibold text-gray-900 dark:text-gray-100 uppercase tracking-wider mb-6"
+              class="text-sm font-semibold text-black text-opacity-50 dark:text-white uppercase tracking-wider mb-6"
             >
               <NuxtLink
                 :to="magazinSection.to"
@@ -104,7 +104,7 @@ const currentYear = new Date().getFullYear()
               <li v-for="child in magazinSection.children" :key="child.to">
                 <NuxtLink
                   :to="child.to"
-                  class="text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 transition-colors duration-200 hover:underline decoration-1 underline-offset-4"
+                  class="text-sm text-black opacity-50 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 transition-colors duration-200 hover:underline decoration-1 underline-offset-4"
                 >
                   {{ child.label }}
                 </NuxtLink>
@@ -128,7 +128,7 @@ const currentYear = new Date().getFullYear()
               <li v-for="child in portfolioSection.children" :key="child.to">
                 <NuxtLink
                   :to="child.to"
-                  class="text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 transition-colors duration-200 hover:underline decoration-1 underline-offset-4"
+                  class="text-sm text-black opacity-50 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 transition-colors duration-200 hover:underline decoration-1 underline-offset-4"
                 >
                   {{ child.label }}
                 </NuxtLink>
@@ -152,7 +152,7 @@ const currentYear = new Date().getFullYear()
               <li v-for="child in uberUnsSection.children" :key="child.to">
                 <NuxtLink
                   :to="child.to"
-                  class="text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 transition-colors duration-200 hover:underline decoration-1 underline-offset-4"
+                  class="text-sm text-black opacity-50 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 transition-colors duration-200 hover:underline decoration-1 underline-offset-4"
                 >
                   {{ child.label }}
                 </NuxtLink>
@@ -176,7 +176,7 @@ const currentYear = new Date().getFullYear()
               <li v-for="child in kontaktSection.children" :key="child.to">
                 <NuxtLink
                   :to="child.to"
-                  class="text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 transition-colors duration-200 hover:underline decoration-1 underline-offset-4"
+                  class="text-sm text-black opacity-50 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 transition-colors duration-200 hover:underline decoration-1 underline-offset-4"
                 >
                   {{ child.label }}
                 </NuxtLink>
