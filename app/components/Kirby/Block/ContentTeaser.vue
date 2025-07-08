@@ -22,7 +22,10 @@ defineProps<{
 </script>
 
 <template>
-  <div class="grid grid-cols-1 gap-x-6 gap-y-12 sm:grid-cols-2 lg:grid-cols-3">
+  <div
+    class="grid gap-x-6 gap-y-12"
+    style="grid-template-columns: repeat(auto-fit, minmax(300px, 1fr))"
+  >
     <div v-for="(item, index) in block.content.team" :key="index">
       <!-- Case 1: Has a link -->
       <NuxtLink v-if="item.link" :to="item.link" class="group block h-full">
