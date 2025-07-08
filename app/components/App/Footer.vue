@@ -93,7 +93,7 @@ const currentYear = new Date().getFullYear()
             >
               <NuxtLink
                 :to="magazinSection.to"
-                class="hover:text-red-500 dark:hover:white transition-colors duration-200 hover:underline decoration-1 underline-offset-4"
+                class="hover:text-black dark:hover:white transition-colors duration-200 hover:underline decoration-1 underline-offset-4"
               >
                 {{ magazinSection.label }}
               </NuxtLink>
@@ -117,7 +117,7 @@ const currentYear = new Date().getFullYear()
             >
               <NuxtLink
                 :to="portfolioSection.to"
-                class="hover:text-red-500 dark:hover:white transition-colors duration-200 hover:underline decoration-1 underline-offset-4"
+                class="hover:text-black dark:hover:white transition-colors duration-200 hover:underline decoration-1 underline-offset-4"
               >
                 {{ portfolioSection.label }}
               </NuxtLink>
@@ -141,7 +141,7 @@ const currentYear = new Date().getFullYear()
             >
               <NuxtLink
                 :to="uberUnsSection.to"
-                class="hover:text-red-500 dark:hover:white transition-colors duration-200 hover:underline decoration-1 underline-offset-4"
+                class="hover:text-black dark:hover:white transition-colors duration-200 hover:underline decoration-1 underline-offset-4"
               >
                 {{ uberUnsSection.label }}
               </NuxtLink>
@@ -165,7 +165,7 @@ const currentYear = new Date().getFullYear()
             >
               <NuxtLink
                 :to="kontaktSection.to"
-                class="hover:text-red-500 dark:hover:white transition-colors duration-200 hover:underline decoration-1 underline-offset-4"
+                class="hover:text-black dark:hover:white transition-colors duration-200 hover:underline decoration-1 underline-offset-4"
               >
                 {{ kontaktSection.label }}
               </NuxtLink>
