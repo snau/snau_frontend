@@ -46,9 +46,7 @@ defineProps<{
             <p v-if="item.subline" class="text-sm text-gray-500">
               {{ item.subline }}
             </p>
-            <p v-if="item.meta" class="text-xs text-gray-400 mt-1">
-              {{ item.meta }}
-            </p>
+            <span v-if="item.meta" class="text-xs text-gray-400 mt-1 block">{{ item.meta }}</span>
           </div>
         </template>
 
@@ -82,9 +80,7 @@ defineProps<{
               <p v-if="item.subline" class="text-sm opacity-80">
                 {{ item.subline }}
               </p>
-              <p v-if="item.meta" class="text-xs opacity-70 mt-1">
-                {{ item.meta }}
-              </p>
+              <span v-if="item.meta" class="text-xs text-gray-400 mt-1 block">{{ item.meta }}</span>
             </div>
           </figure>
           <!-- Fallback for 'inside' text when there is no image -->
@@ -93,9 +89,7 @@ defineProps<{
             <p v-if="item.subline" class="text-sm text-gray-500">
               {{ item.subline }}
             </p>
-            <p v-if="item.meta" class="text-xs text-gray-400 mt-1">
-              {{ item.meta }}
-            </p>
+            <span v-if="item.meta" class="text-xs text-gray-400 mt-1 block">{{ item.meta }}</span>
           </div>
         </template>
       </NuxtLink>
@@ -122,9 +116,7 @@ defineProps<{
             <p v-if="item.subline" class="text-sm text-gray-500">
               {{ item.subline }}
             </p>
-            <p v-if="item.meta" class="text-xs text-gray-400 mt-1">
-              {{ item.meta }}
-            </p>
+            <span v-if="item.meta" class="text-xs text-gray-400 mt-1 block">{{ item.meta }}</span>
           </div>
         </template>
 
@@ -158,9 +150,7 @@ defineProps<{
               <p v-if="item.subline" class="text-sm opacity-80">
                 {{ item.subline }}
               </p>
-              <p v-if="item.meta" class="text-xs opacity-70 mt-1">
-                {{ item.meta }}
-              </p>
+              <span v-if="item.meta" class="text-xs text-gray-400 mt-1 block">{{ item.meta }}</span>
             </div>
           </figure>
           <!-- Fallback for 'inside' text when there is no image -->
@@ -169,9 +159,7 @@ defineProps<{
             <p v-if="item.subline" class="text-sm text-gray-500">
               {{ item.subline }}
             </p>
-            <p v-if="item.meta" class="text-xs text-gray-400 mt-1">
-              {{ item.meta }}
-            </p>
+            <span v-if="item.meta" class="text-xs text-gray-400 mt-1 block">{{ item.meta }}</span>
           </div>
         </template>
       </div>
