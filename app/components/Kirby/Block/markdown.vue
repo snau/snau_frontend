@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { computed, onMounted, ref } from 'vue'
-import { marked } from 'marked'
 import type { KirbyBlock } from '#nuxt-kql'
+import { marked } from 'marked'
+import { computed, onMounted, ref } from 'vue'
 
 const props = defineProps<{
   block: KirbyBlock<'markdown'>
@@ -21,9 +21,10 @@ onMounted(async () => {
   if (process.client) {
     try {
       const DOMPurify = (await import('dompurify')).default
-      html.value = DOMPurify.sanitize(marked.parse(props.block.content.text || ''))
-    }
-    finally {
+      html.value = DOMPurify.sanitize(
+        marked.parse(props.block.content.text || ''),
+      )
+    } finally {
       isLoading.value = false
     }
   }
@@ -32,9 +33,9 @@ onMounted(async () => {
 
 <template>
   <div
-    v-html="html"
     class="transition-opacity duration-300"
     :class="{ 'opacity-0': isLoading }"
     :style="{ minHeight: isLoading ? estimatedHeight : 'auto' }"
+    v-html="html"
   />
 </template>

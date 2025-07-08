@@ -68,12 +68,10 @@ const currentYear = new Date().getFullYear()
 
 <template>
   <footer
-    class="relative  backdrop-blur-md border-t border-gray-200/20 dark:border-gray-800/30 mt-24"
+    class="relative backdrop-blur-md border-t border-gray-200/20 dark:border-gray-800/30 mt-24"
   >
     <!-- Gradient overlay for visual depth -->
-    <div
-      class="absolute inset-0 pointer-events-none"
-    ></div>
+    <div class="absolute inset-0 pointer-events-none"></div>
 
     <div class="relative max-w-7xl mx-auto px-6 lg:px-8">
       <!-- Main footer content -->

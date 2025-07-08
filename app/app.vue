@@ -24,15 +24,21 @@ const bodyStyle = computed(() => {
   const gradientColors = page.value.gradient
 
   if (Array.isArray(gradientColors) && gradientColors.length > 0) {
-    const alignment = page.value.gradient_alignment as keyof typeof gradientDirectionMap || 'down'
+    const alignment =
+      (page.value.gradient_alignment as keyof typeof gradientDirectionMap) ||
+      'down'
     const direction = gradientDirectionMap[alignment] || 'to bottom'
 
-    const colorStops = gradientColors.length === 1
-      ? `${gradientColors[0].color}, ${gradientColors[0].color}`
-      : gradientColors.map((g: { color: string; position?: string }, index: number) => {
-        const position = g.position || (index / (gradientColors.length - 1)) * 100
-        return `${g.color} ${position}%`
-      }).join(', ')
+    const colorStops =
+      gradientColors.length === 1
+        ? `${gradientColors[0].color}, ${gradientColors[0].color}`
+        : gradientColors
+            .map((g: { color: string; position?: string }, index: number) => {
+              const position =
+                g.position || (index / (gradientColors.length - 1)) * 100
+              return `${g.color} ${position}%`
+            })
+            .join(', ')
 
     // Use background-image for CSS string
     styles['background-image'] = `linear-gradient(${direction}, ${colorStops})`
@@ -43,7 +49,9 @@ const bodyStyle = computed(() => {
   }
 
   // Convert object to CSS string for the style attribute
-  return Object.entries(styles).map(([key, value]) => `${key}: ${value}`).join(';')
+  return Object.entries(styles)
+    .map(([key, value]) => `${key}: ${value}`)
+    .join(';')
 })
 
 // Add EB Garamond font from Bunny Fonts and apply dynamic styles to the body

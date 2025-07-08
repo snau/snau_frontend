@@ -3,6 +3,7 @@ import type { KirbyBlock } from '#nuxt-kql'
 import type { Component } from 'vue'
 import {
   LazyKirbyBlockAccordion,
+  LazyKirbyBlockContentTeaser,
   LazyKirbyBlockHeading,
   LazyKirbyBlockHero,
   LazyKirbyBlockImage,
@@ -19,7 +20,6 @@ import {
   LazyKirbyBlockQuote,
   LazyKirbyBlockScrollingStory,
   LazyKirbyBlockStorystart,
-  LazyKirbyBlockContentTeaser,
   LazyKirbyBlockTeaser,
   LazyKirbyBlockText,
   LazyKirbyBlockVideo,
