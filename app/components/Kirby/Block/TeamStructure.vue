@@ -32,7 +32,7 @@ defineProps<{
       >
         <figure
           v-if="item.image"
-          class="overflow-hidden rounded-lg"
+          class="overflow-hidden rounded-sm"
           :style="{ aspectRatio: item.image_ratio || '1/1' }"
         >
           <img
@@ -51,7 +51,7 @@ defineProps<{
       <div v-else class="text-center">
         <figure
           v-if="item.image"
-          class="overflow-hidden rounded-lg"
+          class="overflow-hidden rounded-sm"
           :style="{ aspectRatio: item.image_ratio || '1/1' }"
         >
           <img
