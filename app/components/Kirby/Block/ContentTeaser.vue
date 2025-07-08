@@ -62,7 +62,7 @@ defineProps<{
           >
             <span
               v-if="item.badge"
-              class="absolute top-2 right-2 z-10 bg-primary-500 text-white text-xs font-semibold px-2 py-1 rounded"
+              class="absolute top-2 left-2 z-10 bg-black text-white uppercase tracking-wider text-xs font-semibold px-2 py-2"
             >
               {{ item.badge }}
             </span>
@@ -83,7 +83,7 @@ defineProps<{
               <p v-if="item.subline" class="text-sm opacity-80">
                 {{ item.subline }}
               </p>
-              <span v-if="item.meta" class="text-xs text-gray-400 mt-1 block">{{ item.meta }}</span>
+              <span v-if="item.meta" class="text-xs text-white/70 mt-1 block">{{ item.meta }}</span>
             </div>
           </figure>
           <!-- Fallback for 'inside' text when there is no image -->
@@ -130,12 +130,7 @@ defineProps<{
             class="relative overflow-hidden rounded-sm h-full"
             :style="{ aspectRatio: item.image_ratio || '1/1' }"
           >
-            <span
-              v-if="item.badge"
-              class="absolute top-2 right-2 z-10 bg-primary-500 text-white text-xs font-semibold px-2 py-1 rounded"
-            >
-              {{ item.badge }}
-            </span>
+  
             <img
               :srcset="item.image.srcset"
               :width="item.image.width"
