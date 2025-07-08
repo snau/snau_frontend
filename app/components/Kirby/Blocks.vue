@@ -19,7 +19,7 @@ import {
   LazyKirbyBlockQuote,
   LazyKirbyBlockScrollingStory,
   LazyKirbyBlockStorystart,
-  LazyKirbyBlockTeamStructure,
+  LazyKirbyBlockContentTeaser,
   LazyKirbyBlockTeaser,
   LazyKirbyBlockText,
   LazyKirbyBlockVideo,
@@ -52,7 +52,7 @@ const blockComponents: Record<string, Component> = {
   'interviews-grid': LazyKirbyBlockPortfolio,
   'interview-header': LazyKirbyBlockInterviewHeader,
   'scrolling-story': LazyKirbyBlockScrollingStory,
-  'team-structure': LazyKirbyBlockTeamStructure,
+  contentTeaser: LazyKirbyBlockContentTeaser,
 }
 
 const content = ref<HTMLElement | undefined>()

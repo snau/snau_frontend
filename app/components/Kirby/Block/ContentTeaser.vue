@@ -4,7 +4,7 @@ import type { ResolvedKirbyImage } from '#shared/types/kirby'
 
 defineProps<{
   block: KirbyBlock<
-    'team-structure',
+    'contentTeaser',
     {
       team: {
         headline?: string | null
@@ -165,4 +165,4 @@ defineProps<{
       </div>
     </div>
   </div>
-</template>
+</template> 

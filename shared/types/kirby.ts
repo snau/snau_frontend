@@ -4,6 +4,7 @@ export interface ResolvedKirbyImage {
   height: number
   srcset: string
   alt: string | null
+  colors?: string
   focus?: string
   focusX?: number
   focusY?: number
