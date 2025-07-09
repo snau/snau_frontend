@@ -558,7 +558,6 @@ p {
 ### Phase 1: Foundation (Week 1-2)
 
 1. **Font Integration**
-
    - Add Inter Variable and Crimson Pro Variable
    - Update CSS custom properties
    - Implement font loading strategy
@@ -571,7 +570,6 @@ p {
 ### Phase 2: Component Updates (Week 3-4)
 
 1. **Core Text Components**
-
    - Update TextBlock, HeadingBlock, QuoteBlock
    - Implement enhanced typography classes
    - Add smart quote processing
@@ -584,7 +582,6 @@ p {
 ### Phase 3: Advanced Features (Week 5-6)
 
 1. **Typography Enhancements**
-
    - Add drop cap functionality
    - Implement hanging punctuation where supported
    - Create enhanced figure caption styling
@@ -597,7 +594,6 @@ p {
 ### Phase 4: Polish & Testing (Week 7-8)
 
 1. **Cross-browser Testing**
-
    - Test font rendering across browsers
    - Verify accessibility compliance
    - Performance optimization

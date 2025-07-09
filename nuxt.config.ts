@@ -11,6 +11,7 @@ export default defineNuxtConfig({
     '@vueuse/nuxt',
     'nuxt-kql',
     '@nuxt/image',
+    '@nuxtjs/mdc',
   ],
 
   // Ensure ssr is true (this is the default, but explicit is good)
@@ -23,6 +24,17 @@ export default defineNuxtConfig({
   },
   devtools: {
     enabled: true,
+  },
+
+  mdc: {
+    // These are components used to render standard markdown elements.
+    components: {
+      prose: {
+        // Here we map the 'img' tag to our custom component's name.
+        // The name must be PascalCase.
+        img: 'ResponsiveImage',
+      },
+    },
   },
 
   // Make sure there are no SSG-specific settings here.

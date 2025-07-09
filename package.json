@@ -27,6 +27,7 @@
   "devDependencies": {
     "@antfu/eslint-config": "^4.16.2",
     "@nuxtjs/i18n": "^9.5.6",
+    "@nuxtjs/mdc": "^0.17.0",
     "@sindresorhus/slugify": "^2.2.1",
     "@types/dompurify": "^3.2.0",
     "@types/node": "^24.0.11",
