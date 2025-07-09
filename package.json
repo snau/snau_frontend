@@ -1,7 +1,7 @@
 {
   "type": "module",
   "private": true,
-  "packageManager": "pnpm@10.11.0",
+  "packageManager": "pnpm@10.13.1",
   "scripts": {
     "dev": "nuxi dev",
     "dev:tunnel": "nuxi dev --tunnel",
