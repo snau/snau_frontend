@@ -26,17 +26,6 @@ export default defineNuxtConfig({
     enabled: true,
   },
 
-  mdc: {
-    // These are components used to render standard markdown elements.
-    components: {
-      prose: {
-        // Here we map the 'img' tag to our custom component's name.
-        // The name must be PascalCase.
-        img: 'ResponsiveImage',
-      },
-    },
-  },
-
   // Make sure there are no SSG-specific settings here.
   // The default Nitro preset for Cloudflare Pages will be used automatically.
   nitro: {
