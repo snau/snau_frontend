@@ -26,6 +26,19 @@ export default defineNuxtConfig({
     enabled: true,
   },
 
+  ui: {
+    button: {
+      variants: {
+        primary: 'btn-primary',
+        secondary: 'btn-secondary',
+        tertiary: 'btn-tertiary',
+        quartiary: 'btn-quartiary',
+        white: 'btn-white',
+        black: 'btn-black',
+      },
+    },
+  },
+
   // Make sure there are no SSG-specific settings here.
   // The default Nitro preset for Cloudflare Pages will be used automatically.
   nitro: {
