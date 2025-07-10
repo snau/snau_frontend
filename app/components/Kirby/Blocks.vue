@@ -24,6 +24,7 @@ import {
   LazyKirbyBlockText,
   LazyKirbyBlockVideo,
   LazyKirbyBlockButtons,
+  LazyKirbyBlockSpacing,
 } from '#components'
 
 defineProps<{
@@ -45,6 +46,7 @@ const blockComponents: Record<string, Component> = {
   hero: LazyKirbyBlockHero,
   latest: LazyKirbyBlockLatest,
   intro: LazyKirbyBlockIntro,
+  spacing: LazyKirbyBlockSpacing,
   storystart: LazyKirbyBlockStorystart,
   parcours: LazyKirbyBlockParcours,
   teaser: LazyKirbyBlockTeaser,
