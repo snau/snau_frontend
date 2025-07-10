@@ -1,6 +1,9 @@
 <script setup lang="ts">
+import type {
+  SpacingBlock,
+  SpacingSize,
+} from '~~/shared/types/spacing'
 import { computed } from 'vue'
-import type { SpacingBlock, SpacingSize, MobileSpacing } from '~~/shared/types/spacing'
 
 const props = defineProps<{
   block: SpacingBlock
@@ -33,4 +36,4 @@ const spacingClasses = computed(() => {
 
 <template>
   <div :class="spacingClasses" aria-hidden="true" />
-</template> 
+</template>
