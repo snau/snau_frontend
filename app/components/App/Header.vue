@@ -92,7 +92,7 @@ watch(
 
 // Compute the home page and its listed status
 const homePage = computed(
-  () => site.value.children?.find((page) => page.uri === '') || null,
+  () => site.value.children?.find((page) => page.uri === 'home') || null,
 )
 const isHomeListed = computed(() => homePage.value?.isListed ?? false)
 

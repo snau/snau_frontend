@@ -37,7 +37,7 @@ export default defineNuxtPlugin(async (nuxtApp) => {
         title: 'SNAU',
         description: 'SNAU Website',
         children: [],
-      }
+      } as any
     }
   }
 })

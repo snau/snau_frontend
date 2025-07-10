@@ -1,8 +1,5 @@
 <script setup lang="ts">
-import type {
-  SpacingBlock,
-  SpacingSize,
-} from '~~/shared/types/spacing'
+import type { SpacingBlock, SpacingSize } from '~~/shared/types/spacing'
 import { computed } from 'vue'
 
 const props = defineProps<{

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { Button, ButtonsBlock } from '~~/shared/types/buttons'
 
-const props = defineProps<{
+defineProps<{
   block: ButtonsBlock
 }>()
 

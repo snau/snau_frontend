@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { KirbyBlock } from '#nuxt-kql'
 
-const props = defineProps<{
+defineProps<{
   block: KirbyBlock<'markdown'>
 }>()
 </script>

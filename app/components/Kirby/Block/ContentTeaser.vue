@@ -1,9 +1,8 @@
 <script setup lang="ts">
 import type { KirbyBlock } from '#nuxt-kql'
 import type { ResolvedKirbyImage } from '#shared/types/kirby'
-import { computed } from 'vue'
 
-const props = defineProps<{
+defineProps<{
   block: KirbyBlock<
     'contentTeaser',
     {
@@ -20,9 +19,6 @@ const props = defineProps<{
     }
   >
 }>()
-
-// Current style selection based on text_position
-const isInside = computed(() => props.block.content.text_position !== 'outside')
 </script>
 
 <template>
