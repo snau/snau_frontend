@@ -23,6 +23,7 @@ import {
   LazyKirbyBlockTeaser,
   LazyKirbyBlockText,
   LazyKirbyBlockVideo,
+  LazyKirbyBlockButtons,
 } from '#components'
 
 defineProps<{
@@ -40,6 +41,7 @@ const blockComponents: Record<string, Component> = {
   text: LazyKirbyBlockText,
   // Custom blocks
   accordion: LazyKirbyBlockAccordion,
+  buttons: LazyKirbyBlockButtons,
   hero: LazyKirbyBlockHero,
   latest: LazyKirbyBlockLatest,
   intro: LazyKirbyBlockIntro,

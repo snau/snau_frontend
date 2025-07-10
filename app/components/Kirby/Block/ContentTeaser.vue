@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import type { KirbyBlock } from '#nuxt-kql'
 import type { ResolvedKirbyImage } from '#shared/types/kirby'
+import { computed } from 'vue'
 
-defineProps<{
+const props = defineProps<{
   block: KirbyBlock<
     'contentTeaser',
     {
@@ -19,6 +20,9 @@ defineProps<{
     }
   >
 }>()
+
+// Current style selection based on text_position
+const isInside = computed(() => props.block.content.text_position !== 'outside')
 </script>
 
 <template>
@@ -44,16 +48,21 @@ defineProps<{
               class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
             />
           </figure>
-          <div class="text-center mt-4">
-            <h3 class="font-bold uppercase tracking-wide">
+          <div class="text-left mt-4">
+            <h3 class="content-teaser-heading-outside">
               {{ item.headline }}
             </h3>
-            <p v-if="item.subline" class="text-sm text-gray-500">
+            <h4
+              v-if="item.subline"
+              class="content-teaser-subline-outside block"
+            >
               {{ item.subline }}
-            </p>
-            <span v-if="item.meta" class="text-xs text-gray-400 mt-1 block">{{
-              item.meta
-            }}</span>
+            </h4>
+            <span
+              v-if="item.meta"
+              class="content-teaser-meta-outside mt-1 block"
+              >{{ item.meta }}</span
+            >
           </div>
         </template>
 
@@ -64,10 +73,7 @@ defineProps<{
             class="relative overflow-hidden rounded-sm h-full"
             :style="{ aspectRatio: item.image_ratio || '1/1' }"
           >
-            <span
-              v-if="item.badge"
-              class="absolute top-2 left-2 z-10 bg-black text-white uppercase tracking-wider text-xs font-semibold px-2 py-2"
-            >
+            <span v-if="item.badge" class="content-teaser-badge">
               {{ item.badge }}
             </span>
             <img
@@ -83,28 +89,32 @@ defineProps<{
             <div
               class="absolute bottom-0 left-0 right-0 p-4 text-white text-left"
             >
-              <h3 class="font-bold uppercase tracking-wide">
+              <h3 class="content-teaser-heading-inside">
                 {{ item.headline }}
               </h3>
-              <p v-if="item.subline" class="text-sm opacity-80">
+              <p class="content-teaser-subline-inside">
                 {{ item.subline }}
               </p>
-              <span v-if="item.meta" class="text-xs text-white/70 mt-1 block">{{
-                item.meta
-              }}</span>
+              <span
+                v-if="item.meta"
+                class="content-teaser-meta-inside mt-1 block"
+                >{{ item.meta }}</span
+              >
             </div>
           </figure>
           <!-- Fallback for 'inside' text when there is no image -->
           <div v-else class="text-center">
-            <h3 class="font-bold uppercase tracking-wide">
+            <h3 class="content-teaser-heading-inside">
               {{ item.headline }}
             </h3>
-            <p v-if="item.subline" class="text-sm text-gray-500">
+            <p v-if="item.subline" class="content-teaser-subline-inside">
               {{ item.subline }}
             </p>
-            <span v-if="item.meta" class="text-xs text-gray-400 mt-1 block">{{
-              item.meta
-            }}</span>
+            <span
+              v-if="item.meta"
+              class="content-teaser-meta-inside mt-1 block"
+              >{{ item.meta }}</span
+            >
           </div>
         </template>
       </NuxtLink>
@@ -127,15 +137,17 @@ defineProps<{
             />
           </figure>
           <div class="text-center mt-4">
-            <h3 class="font-bold uppercase tracking-wide">
+            <h3 class="content-teaser-heading-outside">
               {{ item.headline }}
             </h3>
-            <p v-if="item.subline" class="text-sm text-gray-500">
+            <p v-if="item.subline" class="content-teaser-subline-outside">
               {{ item.subline }}
             </p>
-            <span v-if="item.meta" class="text-xs text-gray-400 mt-1 block">{{
-              item.meta
-            }}</span>
+            <span
+              v-if="item.meta"
+              class="content-teaser-meta-outside mt-1 block"
+              >{{ item.meta }}</span
+            >
           </div>
         </template>
 
@@ -159,28 +171,32 @@ defineProps<{
             <div
               class="absolute bottom-0 left-0 right-0 p-4 text-white text-left"
             >
-              <h3 class="font-bold uppercase tracking-wide">
+              <h3 class="content-teaser-heading-inside">
                 {{ item.headline }}
               </h3>
-              <p v-if="item.subline" class="text-sm opacity-80">
+              <p v-if="item.subline" class="content-teaser-subline-inside">
                 {{ item.subline }}
               </p>
-              <span v-if="item.meta" class="text-xs text-gray-400 mt-1 block">{{
-                item.meta
-              }}</span>
+              <span
+                v-if="item.meta"
+                class="content-teaser-meta-inside mt-1 block"
+                >{{ item.meta }}</span
+              >
             </div>
           </figure>
           <!-- Fallback for 'inside' text when there is no image -->
           <div v-else class="text-center">
-            <h3 class="font-bold uppercase tracking-wide">
+            <h3 class="content-teaser-heading-inside">
               {{ item.headline }}
             </h3>
-            <p v-if="item.subline" class="text-sm text-gray-500">
+            <p v-if="item.subline" class="content-teaser-subline-inside">
               {{ item.subline }}
             </p>
-            <span v-if="item.meta" class="text-xs text-gray-400 mt-1 block">{{
-              item.meta
-            }}</span>
+            <span
+              v-if="item.meta"
+              class="content-teaser-meta-inside mt-1 block"
+              >{{ item.meta }}</span
+            >
           </div>
         </template>
       </div>
