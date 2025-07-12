@@ -313,3 +313,7 @@ blockquote.text-center {
 .page-fade-leave-from {
   @apply opacity-100;
 }
+
+figcaption {
+  @apply text-base text-black/50 mt-2 text-center leading-snug;
+}
