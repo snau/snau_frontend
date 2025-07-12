@@ -292,3 +292,11 @@ blockquote.text-center {
 .content-teaser-meta-outside {
   @apply text-black/50 text-sm;
 }
+
+.fade-in-section {
+  @apply opacity-0 translate-y-5 transition-opacity duration-500 ease-out;
+}
+
+.fade-in-section.is-visible {
+  @apply opacity-100 translate-y-0;
+}

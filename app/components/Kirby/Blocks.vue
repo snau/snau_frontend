@@ -25,6 +25,7 @@ import {
   LazyKirbyBlockTeaser,
   LazyKirbyBlockText,
   LazyKirbyBlockVideo,
+  FadeIn,
 } from '#components'
 
 defineProps<{
@@ -66,7 +67,9 @@ useInternalLinks(content)
 <template>
   <div ref="content">
     <template v-for="(block, index) in blocks" :key="index">
-      <component :is="blockComponents[block.type]" :block="block" />
+      <FadeIn>
+        <component :is="blockComponents[block.type]" :block="block" />
+      </FadeIn>
     </template>
   </div>
 </template>
