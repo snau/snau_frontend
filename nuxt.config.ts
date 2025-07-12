@@ -4,6 +4,7 @@ import { prefetchQuery, siteQuery } from './app/queries'
 export default defineNuxtConfig({
   app: {
     baseURL: '/',
+    pageTransition: { name: 'fade', mode: 'out-in' },
   },
   modules: [
     '@nuxtjs/i18n',
