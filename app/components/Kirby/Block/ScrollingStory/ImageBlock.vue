@@ -37,13 +37,15 @@ const getObjectPosition = (block: ImageBlockProps['block']) => {
 </script>
 
 <template>
-  <figure class="my-6" :style="getImageStyle(block)">
-    <component
-      :is="block.link ? 'a' : 'div'"
+  <figure class="my-6 pswp-gallery" :style="getImageStyle(block)">
+    <a
       v-bind="
         block.link
           ? {
               href: block.link,
+              :href="block.image.url",
+              :data-pswp-width="block.image.width",
+              :data-pswp-height="block.image.height",
               rel: 'noopener noreferrer',
               target: '_blank',
               class: 'block-image-link',

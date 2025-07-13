@@ -22,7 +22,8 @@
     "dompurify": "^3.2.6",
     "gsap": "^3.13.0",
     "marked": "^16.0.0",
-    "medium-zoom": "^1.1.0"
+    "medium-zoom": "^1.1.0",
+    "photoswipe": "^5.4.4"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^4.16.2",

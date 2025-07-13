@@ -25,10 +25,11 @@ const { width } = useElementSize(figure)
 </script>
 
 <template>
-  <figure ref="figure">
-    <component
-      :is="block.content.link ? 'a' : 'div'"
-      :href="block.content.link || undefined"
+  <figure ref="figure" class="pswp-gallery">
+    <a
+      :href="block.content.image?.[0]?.url || block.content.src"
+      :data-pswp-width="block.content.image?.[0]?.width"
+      :data-pswp-height="block.content.image?.[0]?.height"
       :data-contain="block.content.crop === false || undefined"
       :style="{
         aspectRatio: block.content.ratio || undefined,
@@ -46,7 +47,7 @@ const { width } = useElementSize(figure)
         :sizes="`${width}px`"
         :alt="block.content.alt || block.content.image?.[0]?.alt || ''"
       />
-    </component>
+    </a>
 
     <figcaption v-if="block.content.caption" v-html="block.content.caption" />
   </figure>
