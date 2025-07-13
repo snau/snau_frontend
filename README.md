@@ -15,8 +15,8 @@ A modern Nuxt 3 frontend application built for SNAU, featuring headless Kirby CM
 ### Styling & UI
 
 - **[Tailwind CSS](https://tailwindcss.com/)** - Utility-first CSS framework
-- **[Nuxt UI](https://ui.nuxt.com/)** (v3.1.3) - Vue component library
-- **[GSAP](https://greensock.com/gsap/)** (v3.12.7) - Animation library
+- **[Nuxt UI](https://ui.nuxt.com/)** (v3.2.0) - Vue component library
+- **[GSAP](https://greensock.com/gsap/)** (v3.13.0) - Animation library
 
 ### CMS & Data
 
@@ -33,13 +33,16 @@ A modern Nuxt 3 frontend application built for SNAU, featuring headless Kirby CM
 
 - **[ESLint](https://eslint.org/)** (v9.27.0) with [@antfu/eslint-config](https://github.com/antfu/eslint-config)
 - **[Prettier](https://prettier.io/)** (v3.5.3) - Code formatting
-- **[pnpm](https://pnpm.io/)** (v10.11.0) - Package manager
+- **[pnpm](https://pnpm.io/)** (v10.13.1) - Package manager
 
 ### Additional Libraries
 
-- **[VueUse](https://vueuse.org/)** (v13.3.0) - Vue composition utilities
-- **[marked](https://marked.js.org/)** (v15.0.7) - Markdown parser
+- **[VueUse](https://vueuse.org/)** (v13.5.0) - Vue composition utilities
+- **[marked](https://marked.js.org/)** (v16.0.0) - Markdown parser
 - **[medium-zoom](https://medium-zoom.francoischalifour.com/)** (v1.1.0) - Image zoom functionality
+- **[PhotoSwipe](https://photoswipe.com/)** (v5.4.4) - Responsive image gallery with lightbox
+- **[DOMPurify](https://github.com/cure53/DOMPurify)** (v3.2.6) - HTML sanitization library
+- **[@nuxtjs/mdc](https://mdc.nuxtjs.org/)** (v0.17.0) - Markdown component rendering
 
 ## 🏗️ Architecture
 
@@ -105,7 +108,8 @@ snau_frontend/
 - **ScrollingStory.vue**: ~~580 lines~~ → **265 lines** (54% reduction) - REFACTORED ✅
   - **Status**: Successfully extracted block components and composables
   - **Architecture**: Now uses modular block renderer and dedicated composables
-- **InterviewsGrid.vue**: 328 lines - PENDING
+- **InterviewsGrid.vue**: ~~328 lines~~ → **Replaced with Portfolio component** - REFACTORED ✅
+  - **Status**: Component replaced with more flexible Portfolio block
 - **Layouts.vue**: 325 lines - PENDING
 - **Solution**: Continue breaking into smaller, focused components
 
@@ -114,6 +118,44 @@ snau_frontend/
 - **useInterviewFilters.ts**: 141 lines
 - **page.ts**: 130 lines
 - **Solution**: Split into single-purpose composables
+
+## 🆕 Recent Enhancements (Since May 2025)
+
+### New Features & Components
+
+#### 1. PhotoSwipe Integration ✅
+
+- **PhotoSwipe Gallery**: Added responsive image gallery with lightbox functionality
+- **Components**: Enhanced `Image.vue` and `ImageBlock.vue` with gallery support
+- **Plugin**: Client-side PhotoSwipe plugin for automatic gallery initialization
+- **Styling**: Integrated PhotoSwipe CSS for seamless user experience
+
+#### 2. Enhanced Block Components ✅
+
+- **Buttons Block**: New flexible button component with multiple variants (primary, secondary, tertiary, quaternary, white)
+- **ContentTeaser Block**: Replaced TeamStructure with more flexible content teaser component
+- **Spacing Block**: Added configurable spacing component with responsive sizing options
+- **Portfolio Block**: Replaced InterviewsGrid with more versatile Portfolio component
+
+#### 3. Improved Typography & Styling ✅
+
+- **Font Updates**: Integrated Fira Sans and EB Garamond fonts via Bunny Fonts
+- **Enhanced Styling**: Updated blockquote, figcaption, and button styles
+- **Color System**: Migrated from stone to neutral color variables for better consistency
+- **Animation**: Added fade-in animations for block rendering and page transitions
+
+#### 4. Enhanced Markdown Support ✅
+
+- **MDC Integration**: Added @nuxtjs/mdc for enhanced markdown component rendering
+- **Improved Parser**: Updated markdown parsing with better caching and performance
+- **Security**: Integrated DOMPurify for HTML sanitization
+
+#### 5. UI/UX Improvements ✅
+
+- **Page Transitions**: Implemented fade transitions for smoother navigation
+- **Header Enhancements**: Added frosted glass background effect and improved scroll behavior
+- **Footer Updates**: Enhanced navigation structure with dynamic legal links
+- **Responsive Design**: Improved mobile responsiveness across components
 
 ### Medium Priority
 
@@ -129,7 +171,7 @@ snau_frontend/
 ### Prerequisites
 
 1. **Node.js** (v18+)
-2. **pnpm** (v10.11.0) - Enable with `corepack enable`
+2. **pnpm** (v10.13.1) - Enable with `corepack enable`
 3. **Kirby Backend** - Running instance required
 
 ### Environment Variables
@@ -256,7 +298,7 @@ The `netlify.toml` file is already configured with:
 [build.environment]
   NODE_VERSION = "22"
   NPM_FLAGS = "--version"
-  PNPM_VERSION = "10.11.0"
+  PNPM_VERSION = "10.13.1"
 
 [[redirects]]
   from = "/*"
@@ -284,8 +326,10 @@ NUXT_PUBLIC_SITE_URL=https://snau.net
 
 - **SSG**: Static Site Generation enabled
 - **Prerendering**: Configured for optimal static output
-- **i18n**: English/German support
-- **Image Optimization**: Enabled
+- **i18n**: English/German support with @nuxtjs/i18n
+- **Image Optimization**: Enabled with @nuxt/image
+- **MDC**: Markdown component rendering with @nuxtjs/mdc
+- **Page Transitions**: Fade transitions for smooth navigation
 - **Dev Proxy**: Kirby backend proxy for development
 
 ### ESLint Configuration
@@ -309,32 +353,47 @@ Currently no testing infrastructure. Recommended additions:
 
 ## 📊 Performance Optimization
 
-### Current Issues
+### Recent Improvements ✅
 
 1. ~~Large base64 images in components~~ - RESOLVED ✅
-2. No bundle analysis
-3. Missing code splitting optimization
+2. **Component Refactoring**: Reduced ScrollingStory from 580 to 265 lines (54% reduction)
+3. **Lazy Loading**: All block components use lazy loading with `Lazy` prefix
+4. **Animation Optimization**: Added fade-in animations with FadeIn component
+5. **Markdown Caching**: Implemented caching in markdown parser for better performance
+6. **PhotoSwipe Integration**: Efficient image gallery with lazy loading
+
+### Current Issues
+
+1. No bundle analysis
+2. Missing code splitting optimization
+3. Limited performance monitoring
 
 ### Recommended Improvements
 
-1. **Image Optimization**: Use Nuxt Image module
-2. **Bundle Analysis**: Add webpack-bundle-analyzer
-3. **Code Splitting**: Implement dynamic imports
-4. **Caching**: Configure proper cache headers
+1. **Bundle Analysis**: Add webpack-bundle-analyzer
+2. **Code Splitting**: Implement dynamic imports for large components
+3. **Caching**: Configure proper cache headers
+4. **Performance Monitoring**: Add performance metrics tracking
 
 ## 🔒 Security
+
+### Recent Improvements ✅
+
+- **HTML Sanitization**: Integrated DOMPurify (v3.2.6) for safe HTML rendering
+- **Environment Variables**: Properly handled and secured
+- **Type Safety**: Enhanced TypeScript integration for better security
 
 ### Current Status
 
 - **CSP**: Not configured
 - **Security Headers**: Missing
-- **Environment Variables**: Properly handled
+- **Input Validation**: Basic validation in place
 
 ### Recommended Additions
 
 1. Content Security Policy
 2. Security headers middleware
-3. Input validation
+3. Enhanced input validation
 4. Rate limiting
 
 ## 📚 Resources
@@ -371,12 +430,30 @@ MIT License - See [LICENSE](./LICENSE) file for details.
    - ~~Reduced from 580 to 265 lines (54% reduction)~~
    - ~~Extracted 6 block components and 3 composables~~
    - ~~Improved maintainability and modularity~~
+6. ~~**Add PhotoSwipe image gallery functionality**~~ - DONE
+   - ~~Integrated PhotoSwipe v5.4.4 for responsive image galleries~~
+   - ~~Enhanced Image and ImageBlock components with gallery support~~
+   - ~~Added client-side plugin for automatic initialization~~
+7. ~~**Enhance block component system**~~ - DONE
+   - ~~Added Buttons, ContentTeaser, Spacing, and Portfolio blocks~~
+   - ~~Replaced TeamStructure and InterviewsGrid with improved components~~
+   - ~~Improved component flexibility and reusability~~
+8. ~~**Improve typography and styling system**~~ - DONE
+   - ~~Integrated Fira Sans and EB Garamond fonts~~
+   - ~~Enhanced color system with neutral variables~~
+   - ~~Added fade animations and page transitions~~
+9. ~~**Enhance markdown support and security**~~ - DONE
+   - ~~Integrated @nuxtjs/mdc for better markdown rendering~~
+   - ~~Added DOMPurify for HTML sanitization~~
+   - ~~Improved markdown parsing performance~~
 
 ### 🔄 Next Priority
 
-5. **Refactor remaining large components** (InterviewsGrid, Layouts)
+1. **Refactor remaining large components** (Layouts.vue)
    - ~~ScrollingStory.vue~~ - COMPLETED ✅
-6. **Add testing infrastructure**
-7. **Implement bundle optimization**
-8. **Add security headers** (partially done via netlify.toml)
-9. **Expand type definitions**
+   - ~~InterviewsGrid.vue~~ - COMPLETED ✅ (replaced with Portfolio)
+   - **Layouts.vue**: 325 lines - PENDING
+2. **Add testing infrastructure**
+3. **Implement bundle optimization**
+4. **Add security headers** (partially done via netlify.toml)
+5. **Expand type definitions**
