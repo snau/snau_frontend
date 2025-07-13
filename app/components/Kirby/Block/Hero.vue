@@ -130,18 +130,16 @@ const imageStyle = computed(() => {
     </figure>
 
     <div :class="contentClasses">
-      <div class="column px-4 text-center">
+      <div class="column px-12 text-center">
         <h1
-          class="m-auto px-2 text-2xl font-bold font-sans italic md:max-w-[22ch] lg:text-3xl xl:text-4xl"
+          class="m-auto px-2 text-xl font-serif italic md:max-w-[22ch] lg:text-3xl xl:text-4xl leaading-tight"
           v-html="heading"
         />
         <h2
-          :style="h2Color"
-          class="mt-4 text-lg font-normal tracking-wider font-sans opacity-85 md:text-xl"
-          v-html="subheading"
+          :style="h2Color" class="text-md" v-html="subheading"
         />
         <span
-          class="text-sm opacity-85 lg:text-base"
+          class="text-base opacity-85 lg:text-base"
           :datetime="date"
           v-html="date"
         />
