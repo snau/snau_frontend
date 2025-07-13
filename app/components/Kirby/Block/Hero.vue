@@ -110,7 +110,7 @@ const imageStyle = computed(() => {
 </script>
 <template>
   <div
-    class="h-screen min-h-[85vh]"
+    class="h-screen min-h-[100]"
     :class="containerClasses"
     :style="backgroundStyle"
   >

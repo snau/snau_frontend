@@ -331,6 +331,18 @@ const hasScrollingStoryBlock = (layout: KirbyLayoutWithAttrs): boolean => {
     column.blocks.some((block) => (block.type as string) === 'scrolling-story'),
   )
 }
+
+/**
+ * Check if a layout contains a Hero block
+ *
+ * @param layout - The layout configuration
+ * @returns boolean indicating if the layout contains a Hero block
+ */
+const hasHeroBlock = (layout: KirbyLayoutWithAttrs): boolean => {
+  return layout.columns.some((column) =>
+    column.blocks.some((block) => (block.type as string) === 'hero'),
+  )
+}
 </script>
 
 <template>
@@ -339,7 +351,15 @@ const hasScrollingStoryBlock = (layout: KirbyLayoutWithAttrs): boolean => {
     v-for="(layout, layoutIndex) in layouts"
     :id="layout.id"
     :key="layout.id"
-    :class="getBackgroundClass(layout)"
+    :class="[
+      getBackgroundClass(layout),
+      {
+        'min-h-screen':
+          layout.attrs.fullscreen &&
+          isFirstLayout(layoutIndex) &&
+          hasHeroBlock(layout),
+      },
+    ]"
     :style="getLayoutStyles(layout)"
     class="layout-section"
   >
@@ -355,7 +375,7 @@ const hasScrollingStoryBlock = (layout: KirbyLayoutWithAttrs): boolean => {
       <!-- Special spacing applied when:
            1. This is the first layout on the page (layoutIndex === 0)
            2. The layout has fullscreen attribute set to true
-           3. The layout contains a ScrollingStory block -->
+           3. The layout contains a ScrollingStory block or Hero block -->
       <div
         id="inner-container"
         class="grid grid-cols-12 gap-6"
@@ -363,7 +383,7 @@ const hasScrollingStoryBlock = (layout: KirbyLayoutWithAttrs): boolean => {
           '-mt-20 lg:-mt-64 mb-64':
             layout.attrs.fullscreen &&
             isFirstLayout(layoutIndex) &&
-            hasScrollingStoryBlock(layout),
+            (hasScrollingStoryBlock(layout) || hasHeroBlock(layout)),
         }"
       >
         <!-- Loop through each column in the layout -->
@@ -375,6 +395,7 @@ const hasScrollingStoryBlock = (layout: KirbyLayoutWithAttrs): boolean => {
             getColumnClasses(column.width),
             {
               'h-auto flex justify-center': layout.attrs.fullscreen,
+              'min-h-screen': layout.attrs.fullscreen && isFirstLayout(layoutIndex) && hasHeroBlock(layout),
             },
           ]"
           class=""
