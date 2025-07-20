@@ -2,9 +2,11 @@
 import type { KirbyBlock } from '#nuxt-kql'
 import type { Component } from 'vue'
 import {
+  FadeIn,
   LazyKirbyBlockAccordion,
   LazyKirbyBlockButtons,
   LazyKirbyBlockContentTeaser,
+  LazyKirbyBlockGallery,
   LazyKirbyBlockHeading,
   LazyKirbyBlockHero,
   LazyKirbyBlockImage,
@@ -25,7 +27,6 @@ import {
   LazyKirbyBlockTeaser,
   LazyKirbyBlockText,
   LazyKirbyBlockVideo,
-  FadeIn,
 } from '#components'
 
 defineProps<{
@@ -44,6 +45,7 @@ const blockComponents: Record<string, Component> = {
   // Custom blocks
   accordion: LazyKirbyBlockAccordion,
   buttons: LazyKirbyBlockButtons,
+  gallery: LazyKirbyBlockGallery,
   hero: LazyKirbyBlockHero,
   latest: LazyKirbyBlockLatest,
   intro: LazyKirbyBlockIntro,
