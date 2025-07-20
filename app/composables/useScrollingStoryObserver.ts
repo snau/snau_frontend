@@ -48,20 +48,27 @@ export function useScrollingStoryObserver(
       // Initialize Intersection Observer to track scroll position
       observer = new IntersectionObserver(
         (entries) => {
-          for (const entry of entries) {
-            if (entry.isIntersecting) {
-              const marker = entry.target as HTMLElement
-              const indexAttr = marker.dataset.index
-              const markerContent = marker.dataset.markerContent
+          let mostVisibleEntry: IntersectionObserverEntry | null = null
 
-              if (indexAttr !== undefined) {
-                // Update current section and corresponding image
-                const newIndex = Number.parseInt(indexAttr, 10)
-                if (currentMarkerIndex.value !== newIndex) {
-                  currentMarkerIndex.value = newIndex
-                  currentImageId.value = markerContent || null
-                }
-                break // Exit after finding first visible marker
+          for (const entry of entries) {
+            if (
+              !mostVisibleEntry ||
+              entry.intersectionRatio > mostVisibleEntry.intersectionRatio
+            ) {
+              mostVisibleEntry = entry
+            }
+          }
+
+          if (mostVisibleEntry?.isIntersecting) {
+            const marker = mostVisibleEntry.target as HTMLElement
+            const indexAttr = marker.dataset.index
+            const markerContent = marker.dataset.markerContent
+
+            if (indexAttr !== undefined) {
+              const newIndex = Number.parseInt(indexAttr, 10)
+              if (currentMarkerIndex.value !== newIndex) {
+                currentMarkerIndex.value = newIndex
+                currentImageId.value = markerContent || null
               }
             }
           }

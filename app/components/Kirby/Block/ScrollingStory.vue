@@ -27,6 +27,7 @@
 
 import type { KirbyBlock } from '#nuxt-kql'
 import type { ResolvedKirbyImage } from '../../../../shared/types/kirby'
+import { computed } from 'vue'
 import BlockRenderer from './ScrollingStory/BlockRenderer.vue'
 
 /**
@@ -75,6 +76,15 @@ const { backgroundStyle } = useScrollingStoryBackground(
   props.block.content.rightcontent,
 )
 
+// Compute the text color based on the currently active section
+const currentTextColor = computed(() => {
+  const index = currentMarkerIndex.value
+  if (index === -1 || index >= props.block.content.rightcontent.length) return 'inherit'
+  
+  const content = props.block.content.rightcontent[index]
+  return content?.textcolor || 'inherit'
+})
+
 const { parseMarkdown } = useMarkdownParser()
 
 /**
@@ -92,7 +102,7 @@ const normalizeBlocks = (blocks: any): any[] => {
 
 <template>
   <!-- Main container with dynamic background -->
-  <div class="lg:flex lg:max-w-full" :style="backgroundStyle">
+  <div class="lg:flex lg:max-w-full scrolling-story" :style="backgroundStyle">
     <!-- Left panel: Fixed position images (desktop only) -->
     <div
       class="hidden lg:block lg:w-1/2 lg:h-screen lg:sticky md:top-0 md:overflow-hidden relative"
@@ -193,14 +203,16 @@ const normalizeBlocks = (blocks: any): any[] => {
             >
               <div
                 v-if="item.text"
-                class="mb-6 text-white"
+                class="mb-6"
+                :style="{ color: currentTextColor }"
                 v-html="parseMarkdown(item.text)"
               />
-              <div v-if="item.blocks" class="leading-normal mt-6 text-white">
+              <div v-if="item.blocks" class="leading-normal mt-6">
                 <BlockRenderer
                   v-for="(contentBlock, i) in normalizeBlocks(item.blocks)"
                   :key="i"
                   :block="contentBlock"
+                  :text-color="currentTextColor"
                 />
               </div>
             </div>
@@ -211,6 +223,7 @@ const normalizeBlocks = (blocks: any): any[] => {
             <div
               v-if="item.text"
               class="mb-6"
+              :style="{ color: currentTextColor }"
               v-html="parseMarkdown(item.text)"
             />
             <div v-if="item.blocks" class="leading-normal mt-6">
@@ -218,6 +231,7 @@ const normalizeBlocks = (blocks: any): any[] => {
                 v-for="(contentBlock, i) in normalizeBlocks(item.blocks)"
                 :key="i"
                 :block="contentBlock"
+                :text-color="currentTextColor"
               />
             </div>
           </div>
@@ -247,6 +261,7 @@ const normalizeBlocks = (blocks: any): any[] => {
           <div
             v-if="item.text"
             class="mb-6"
+            :style="{ color: currentTextColor }"
             v-html="parseMarkdown(item.text)"
           />
 
@@ -256,6 +271,7 @@ const normalizeBlocks = (blocks: any): any[] => {
               v-for="(contentBlock, i) in normalizeBlocks(item.blocks)"
               :key="i"
               :block="contentBlock"
+              :text-color="currentTextColor"
             />
           </div>
         </template>

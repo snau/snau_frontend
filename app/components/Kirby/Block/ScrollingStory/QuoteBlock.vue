@@ -7,6 +7,7 @@ interface QuoteBlockProps {
     font_size?: string
     serif_sans?: string
   }
+  textColor?: string
 }
 
 defineProps<QuoteBlockProps>()
@@ -25,7 +26,7 @@ const getFontFamily = (block: QuoteBlockProps['block']) => {
 </script>
 
 <template>
-  <blockquote class="text-sm mx-12 lg:my-24" :class="getAlignment(block)">
+  <blockquote class="text-sm mx-12 lg:my-24" :class="getAlignment(block)" :style="{ color: textColor || 'inherit' }">
     <span
       :class="[getFontSize(block), getFontFamily(block)]"
       v-html="block.text"
@@ -33,6 +34,7 @@ const getFontFamily = (block: QuoteBlockProps['block']) => {
     <footer
       v-if="block.author"
       class="text-sm mt-2"
+      :style="{ color: textColor || 'inherit' }"
       v-html="`— ${block.author}`"
     />
   </blockquote>

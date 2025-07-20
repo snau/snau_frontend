@@ -8,7 +8,7 @@ A modern Nuxt 3 frontend application built for SNAU, featuring headless Kirby CM
 
 ### Core Framework
 
-- **[Nuxt 3](https://nuxt.com/)** (v3.17.4) - Vue.js framework with SSR/SSG
+- **[Nuxt 3](https://nuxt.com/)** (v3.17.6) - Vue.js framework with SSR/SSG
 - **[Vue 3](https://vuejs.org/)** - Progressive JavaScript framework
 - **[TypeScript](https://www.typescriptlang.org/)** (v5.8.3) - Type-safe JavaScript
 
@@ -31,9 +31,9 @@ A modern Nuxt 3 frontend application built for SNAU, featuring headless Kirby CM
 
 ### Development Tools
 
-- **[ESLint](https://eslint.org/)** (v9.27.0) with [@antfu/eslint-config](https://github.com/antfu/eslint-config)
-- **[Prettier](https://prettier.io/)** (v3.5.3) - Code formatting
-- **[pnpm](https://pnpm.io/)** (v10.13.1) - Package manager
+- **[ESLint](https://eslint.org/)** (v9.30.1) with [@antfu/eslint-config](https://github.com/antfu/eslint-config)
+- **[Prettier](https://prettier.io/)** (v3.6.2) - Code formatting
+- **[pnpm](https://pnpm.io/)** (v10.11.0) - Package manager
 
 ### Additional Libraries
 
@@ -226,8 +226,8 @@ pnpm prepare            # Nuxt preparation
 
 ## 🌐 Deployment
 
-This project is configured for deployment on Netlify and Cloudflare Pages/Workers.
-Refer to `netlify.toml` and `wrangler.toml` respectively for platform-specific configurations.
+This project is configured for deployment on Netlify.
+Refer to `netlify.toml` for platform-specific configuration.
 
 ## 🏗️ Development Guidelines
 

@@ -5,6 +5,7 @@ interface TextBlockProps {
     font_size?: string
     serif_sans?: string
   }
+  textColor?: string // Add new prop
 }
 
 defineProps<TextBlockProps>()
@@ -21,5 +22,5 @@ const getClasses = (block: TextBlockProps['block']) => {
 </script>
 
 <template>
-  <div :class="getClasses(block)" v-html="block.content" />
+  <div :class="getClasses(block)" :style="{ color: textColor || 'inherit' }" v-html="block.content" />
 </template>

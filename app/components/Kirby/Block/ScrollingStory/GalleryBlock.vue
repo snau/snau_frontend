@@ -13,6 +13,7 @@ interface GalleryBlockProps {
     crop?: boolean
     caption?: string
   }
+  textColor?: string
 }
 
 defineProps<GalleryBlockProps>()
@@ -44,14 +45,16 @@ const getImageStyle = (block: GalleryBlockProps['block']) => {
         />
         <figcaption
           v-if="img.copyright"
-          class="text-sm mt-2 text-gray-600"
+          class="text-sm mt-2"
+          :style="{ color: textColor || 'inherit' }"
           v-html="img.copyright"
         />
       </figure>
     </div>
     <figcaption
       v-if="block.caption"
-      class="text-center text-sm mt-2 text-gray-600"
+      class="text-center text-sm mt-2"
+      :style="{ color: textColor || 'inherit' }"
       v-html="block.caption"
     />
   </div>

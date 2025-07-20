@@ -19,6 +19,7 @@ interface ImageBlockProps {
     caption?: string
     link?: string
   }
+  textColor?: string
 }
 
 defineProps<ImageBlockProps>()
@@ -61,13 +62,15 @@ const getObjectPosition = (block: ImageBlockProps['block']) => {
 
     <figcaption
       v-if="block.image.copyright"
-      class="text-sm mt-2 text-gray-600"
+      class="text-sm mt-2"
+      :style="{ color: textColor || 'inherit' }"
       v-html="block.image.copyright"
     />
 
     <figcaption
       v-if="block.caption || block.image.caption"
-      class="text-sm mt-2 text-gray-600"
+      class="text-sm mt-2"
+      :style="{ color: textColor || 'inherit' }"
       v-html="block.caption || block.image.caption"
     />
   </figure>

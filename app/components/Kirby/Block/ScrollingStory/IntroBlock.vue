@@ -7,6 +7,7 @@ interface IntroBlockProps {
       serif_sans?: string
     }
   }
+  textColor?: string
 }
 
 defineProps<IntroBlockProps>()
@@ -20,6 +21,6 @@ const getClasses = (content: IntroBlockProps['block']['content']) => {
 
 <template>
   <div class="grid place-items-center w-full h-screen">
-    <h1 :class="getClasses(block.content)" v-html="block.content.text" />
+    <h1 :class="getClasses(block.content)" :style="{ color: textColor || 'inherit' }" v-html="block.content.text" />
   </div>
 </template>

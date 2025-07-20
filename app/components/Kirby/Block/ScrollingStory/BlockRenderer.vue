@@ -8,6 +8,7 @@ import TextBlock from './TextBlock.vue'
 
 interface BlockRendererProps {
   block: any
+  textColor?: string // Add new prop
 }
 
 defineProps<BlockRendererProps>()
@@ -27,6 +28,7 @@ const blockComponents = {
     :is="blockComponents[block.type as keyof typeof blockComponents]"
     v-if="blockComponents[block.type as keyof typeof blockComponents]"
     :block="block"
+    :text-color="textColor"
   />
   <div v-else class="my-4">Block type: {{ block.type }}</div>
 </template>

@@ -340,3 +340,32 @@ blockquote .author {
 figcaption {
   @apply text-base text-black/50 mt-2 text-center leading-snug;
 }
+
+/* ScrollingStory component text color overrides */
+.scrolling-story p,
+.scrolling-story h1,
+.scrolling-story h2,
+.scrolling-story h3,
+.scrolling-story h4,
+.scrolling-story h5,
+.scrolling-story h6,
+.scrolling-story blockquote,
+.scrolling-story span,
+.scrolling-story div {
+  color: inherit;
+  transition: color 0.5s ease-in-out;
+}
+
+/* Ensure custom text colors take precedence over global styles */
+.scrolling-story [style*='color:'] p,
+.scrolling-story [style*='color:'] h1,
+.scrolling-story [style*='color:'] h2,
+.scrolling-story [style*='color:'] h3,
+.scrolling-story [style*='color:'] h4,
+.scrolling-story [style*='color:'] h5,
+.scrolling-story [style*='color:'] h6,
+.scrolling-story [style*='color:'] blockquote,
+.scrolling-story [style*='color:'] span,
+.scrolling-story [style*='color:'] div {
+  color: inherit !important;
+}
