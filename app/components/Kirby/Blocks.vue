@@ -46,6 +46,7 @@ const blockComponents: Record<string, Component> = {
   accordion: LazyKirbyBlockAccordion,
   buttons: LazyKirbyBlockButtons,
   gallery: LazyKirbyBlockGallery,
+  'gallery-resolved': LazyKirbyBlockGallery,
   hero: LazyKirbyBlockHero,
   latest: LazyKirbyBlockLatest,
   intro: LazyKirbyBlockIntro,
