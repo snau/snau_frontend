@@ -136,61 +136,31 @@ onBeforeUnmount(() => {
 <template>
   <section class="my-8">
     <!-- Gallery Grid -->
-    <div
-      class="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-3 pswp-gallery"
-      :data-pswp-uid="galleryId"
-    >
-      <figure
-        v-for="(img, index) in block.content.images"
-        :key="index"
-        class="group relative overflow-hidden rounded-lg bg-gray-100 dark:bg-gray-800"
-        :style="{
+    <div class="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-3 pswp-gallery" :data-pswp-uid="galleryId">
+      <figure v-for="(img, index) in block.content.images" :key="index"
+        class="group relative overflow-hidden rounded-sm bg-gray-100 dark:bg-gray-800" :style="{
           aspectRatio: block.content.ratio || undefined,
-        }"
-      >
+        }">
         <!-- Image Link -->
-        <a
-          :href="img.url"
-          :data-pswp-width="img.width"
-          :data-pswp-height="img.height"
-          :data-pswp-srcset="img.srcset || ''"
-          :data-pswp-alt="img.alt || ''"
-          :data-cropped="block.content.crop !== false"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="block h-full w-full cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 rounded-lg"
-          @mouseenter="preloadImage(img.url)"
-        >
-          <img
-            :src="img.url"
-            :srcset="img.srcset"
-            :width="img.width"
-            :height="img.height"
-            :alt="img.alt || ''"
-            :class="getImageClasses(block.content.crop)"
-            :style="{ objectPosition: getObjectPosition(img) }"
-            loading="lazy"
-            decoding="async"
-          />
+        <a :href="img.url" :data-pswp-width="img.width" :data-pswp-height="img.height"
+          :data-pswp-srcset="img.srcset || ''" :data-pswp-alt="img.alt || ''"
+          :data-cropped="block.content.crop !== false" target="_blank" rel="noopener noreferrer"
+          class="block h-full w-full cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 rounded-sm"
+          @mouseenter="preloadImage(img.url)">
+          <img :src="img.url" :srcset="img.srcset" :width="img.width" :height="img.height" :alt="img.alt || ''"
+            :class="getImageClasses(block.content.crop)" :style="{ objectPosition: getObjectPosition(img) }"
+            loading="lazy" decoding="async" />
         </a>
 
         <!-- Image Copyright -->
-        <figcaption
-          v-if="img.copyright"
-          class="mt-2 px-1 text-xs text-gray-600 dark:text-gray-400"
-          :style="{ color: textColor || undefined }"
-          v-html="img.copyright"
-        />
+        <figcaption v-if="img.copyright" class="mt-2 px-1 text-xs text-gray-600 dark:text-gray-400"
+          :style="{ color: textColor || undefined }" v-html="img.copyright" />
       </figure>
     </div>
 
     <!-- Gallery Caption -->
-    <figcaption
-      v-if="block.content.caption"
-      class="mt-6 text-center text-sm text-gray-700 dark:text-gray-300"
-      :style="{ color: textColor || undefined }"
-      v-html="block.content.caption"
-    />
+    <figcaption v-if="block.content.caption" class="mt-6 text-center text-sm text-gray-700 dark:text-gray-300"
+      :style="{ color: textColor || undefined }" v-html="block.content.caption" />
   </section>
 </template>
 
