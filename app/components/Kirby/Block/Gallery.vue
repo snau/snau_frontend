@@ -2,7 +2,7 @@
 import type { KirbyBlock } from '#nuxt-kql'
 import type { ResolvedKirbyImage } from '../../../../shared/types/kirby'
 
-defineProps<{
+interface GalleryBlockProps {
   block: KirbyBlock<
     'gallery',
     {
@@ -13,93 +13,138 @@ defineProps<{
     }
   >
   textColor?: string
-}>()
+}
 
-const getObjectPosition = (img: ResolvedKirbyImage) => {
+defineProps<GalleryBlockProps>()
+
+/**
+ * Determines the CSS object-position value for an image based on focus point data
+ */
+const getObjectPosition = (img: ResolvedKirbyImage): string => {
   // Handle focus point as object with value property
   if (img.focus && typeof img.focus === 'object' && (img.focus as any).value) {
-    return `object-position: ${(img.focus as any).value};`
+    return (img.focus as any).value
   }
 
   // Handle focus point as direct string
   if (img.focus && typeof img.focus === 'string' && img.focus.trim() !== '') {
-    return `object-position: ${img.focus};`
+    return img.focus
   }
 
   // Fallback to focusX and focusY percentages
   if (typeof img.focusX === 'number' && typeof img.focusY === 'number') {
-    return `object-position: ${img.focusX}% ${img.focusY}%;`
+    return `${img.focusX}% ${img.focusY}%`
   }
 
-  return ''
+  return 'center center'
 }
 
-const getImageStyle = (block: any) => {
-  const aspectRatio = block.content.ratio ? `aspect-ratio:${block.content.ratio};` : ''
-  const objectFit = `object-fit:${block.content.crop === false ? 'contain' : 'cover'};`
-  return `${aspectRatio}${objectFit}`
+/**
+ * Computes Tailwind classes for image object-fit behavior
+ */
+const getImageClasses = (crop: boolean | undefined): string => {
+  const baseClasses = 'w-full h-full transition-all duration-300 ease-out rounded-sm'
+  const fitClass = crop === false ? 'object-contain' : 'object-cover'
+  const hoverClasses = 'hover:scale-105 hover:brightness-105'
+
+  return `${baseClasses} ${fitClass} ${hoverClasses}`
+}
+
+/**
+ * Preloads an image for better UX when hovering
+ */
+/**
+ * Generate a unique gallery ID for PhotoSwipe grouping
+ */
+const galleryId = `gallery-${Math.random().toString(36).substr(2, 9)}`
+
+/**
+ * Preloads an image for better UX when hovering
+ */
+const preloadImage = (url: string): void => {
+  if (import.meta.client) {
+    const link = document.createElement('link')
+    link.rel = 'preload'
+    link.as = 'image'
+    link.href = url
+    document.head.appendChild(link)
+  }
 }
 </script>
 
 <template>
-  <div class="my-6">
-    <div class="grid grid-cols-2 lg:grid-cols-3 gap-4">
-      <figure v-for="(img, index) in block.content.images" :key="index" class="relative overflow-hidden pswp-gallery"
-        :style="{
+  <section class="my-8">
+    <!-- Gallery Grid -->
+    <div class="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-3 pswp-gallery" :data-pswp-uid="galleryId">
+      <figure v-for="(img, index) in block.content.images" :key="index"
+        class="group relative overflow-hidden rounded-lg bg-gray-100 dark:bg-gray-800" :style="{
           aspectRatio: block.content.ratio || undefined,
         }">
+        <!-- Image Link -->
         <a :href="img.url" :data-pswp-width="img.width" :data-pswp-height="img.height"
           :data-pswp-srcset="img.srcset || ''" :data-pswp-alt="img.alt || ''"
           :data-cropped="block.content.crop !== false" target="_blank" rel="noopener noreferrer"
-          class="block w-full h-full cursor-pointer" @mouseenter="preloadImage(img.url)">
+          class="block h-full w-full cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 rounded-lg"
+          @mouseenter="preloadImage(img.url)">
           <img :src="img.url" :srcset="img.srcset" :width="img.width" :height="img.height" :alt="img.alt || ''"
-            class="w-full h-full transition-transform duration-300 hover:scale-105 rounded-sm" :class="[
-              block.content.crop === false ? 'object-contain' : 'object-cover'
-            ]" :style="getObjectPosition(img)" loading="lazy" decoding="async" />
+            :class="getImageClasses(block.content.crop)" :style="{ objectPosition: getObjectPosition(img) }"
+            loading="lazy" decoding="async" />
         </a>
 
-        <figcaption v-if="img.copyright" class="text-xs mt-1 px-1" :style="{ color: textColor || 'inherit' }"
-          v-html="img.copyright" />
+        <!-- Image Copyright -->
+        <figcaption v-if="img.copyright" class="mt-2 px-1 text-xs text-gray-600 dark:text-gray-400"
+          :style="{ color: textColor || undefined }" v-html="img.copyright" />
       </figure>
     </div>
 
-    <figcaption v-if="block.content.caption" class="text-center text-sm mt-4" :style="{ color: textColor || 'inherit' }"
-      v-html="block.content.caption" />
-  </div>
+    <!-- Gallery Caption -->
+    <figcaption v-if="block.content.caption" class="mt-6 text-center text-sm text-gray-700 dark:text-gray-300"
+      :style="{ color: textColor || undefined }" v-html="block.content.caption" />
+  </section>
 </template>
 
 <style scoped>
-/* Smooth transition CSS for gallery images */
-.pswp-gallery a {
-  position: relative;
-  overflow: hidden;
-}
-
+/* Enhanced loading shimmer animation */
 .pswp-gallery img {
-  transition: transform 0.3s ease, filter 0.3s ease;
-  will-change: transform;
-}
-
-.pswp-gallery a:hover img {
-  transform: scale(1.05);
-  filter: brightness(1.05);
-}
-
-/* Ensure consistent sizing for smooth transitions */
-.pswp-gallery figure {
-  background-color: #f5f5f5;
-  border-radius: 0.25rem;
-  overflow: hidden;
-}
-
-/* Loading state for better UX */
-.pswp-gallery img {
-  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background: linear-gradient(90deg,
+      #f3f4f6 25%,
+      #e5e7eb 50%,
+      #f3f4f6 75%);
   background-size: 200% 100%;
-  animation: shimmer 1.5s infinite;
+  animation: shimmer 1.5s infinite ease-in-out;
 }
 
 .pswp-gallery img[src] {
   animation: none;
+  background: none;
+}
+
+/* Dark mode shimmer */
+@media (prefers-color-scheme: dark) {
+  .pswp-gallery img {
+    background: linear-gradient(90deg,
+        #1f2937 25%,
+        #374151 50%,
+        #1f2937 75%);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+/* Smooth hover transitions */
+.pswp-gallery a {
+  will-change: transform;
+}
+
+.pswp-gallery img {
+  will-change: transform, filter;
 }
 </style>
