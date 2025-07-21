@@ -15,74 +15,53 @@ defineProps<{
   textColor?: string
 }>()
 
-const getObjectPosition = (img: ResolvedKirbyImage, index: number) => {
-  // Debug: Log focus point data for each image
-  console.warn(`🎯 Gallery Image ${index + 1} Focus Debug:`, {
-    url: img.url,
-    focus: img.focus,
-    focusType: typeof img.focus,
-    focusValue: (img.focus as any)?.value, // Check if focus is an object with value
-    focusX: img.focusX,
-    focusY: img.focusY,
-    allImageData: img
-  })
-
+const getObjectPosition = (img: ResolvedKirbyImage, _index: number) => {
   // Handle focus point as object with value property (like ScrollingStory ImageBlock)
   if (img.focus && typeof img.focus === 'object' && (img.focus as any).value) {
-    const style = `object-position: ${(img.focus as any).value};`
-    console.warn(`🎯 Using focus object value: "${(img.focus as any).value}" -> ${style}`)
-    return style
+    return `object-position: ${(img.focus as any).value};`
   }
 
-  // Handle focus point as direct string (like "center top", "left bottom", "50% 25%")
+  // Handle focus point as direct string
   if (img.focus && typeof img.focus === 'string' && img.focus.trim() !== '') {
-    const style = `object-position: ${img.focus};`
-    console.warn(`🎯 Using focus string: "${img.focus}" -> ${style}`)
-    return style
+    return `object-position: ${img.focus};`
   }
 
-  // Fallback to focusX and focusY percentages if available
+  // Fallback to focusX and focusY percentages
   if (typeof img.focusX === 'number' && typeof img.focusY === 'number') {
-    const style = `object-position: ${img.focusX}% ${img.focusY}%;`
-    console.warn(`🎯 Using focusX/Y: ${img.focusX}%, ${img.focusY}% -> ${style}`)
-    return style
+    return `object-position: ${img.focusX}% ${img.focusY}%;`
   }
 
-  console.warn(`🎯 No valid focus point data found for image ${index + 1}`)
   return ''
+}
+
+const getImageStyle = (block: any) => {
+  const aspectRatio = block.content.ratio ? `aspect-ratio:${block.content.ratio};` : ''
+  const objectFit = `object-fit:${block.content.crop === false ? 'contain' : 'cover'};`
+  return `${aspectRatio}${objectFit}`
 }
 </script>
 
 <template>
   <div class="my-6">
-    <div class="grid grid-cols-2 lg:grid-cols-3 gap-4">
+    <div class="grid grid-cols-2 lg:grid-cols-3 gap-4 pswp-gallery">
       <figure v-for="(img, index) in block.content.images" :key="index" class="relative overflow-hidden" :style="{
         aspectRatio: block.content.ratio || undefined,
       }">
-        <!-- Debug: Focus point indicator -->
-        <div class="absolute top-1 left-1 bg-red-500 text-white text-xs px-1 rounded z-10">
-          {{ index + 1 }}:
-          {{
-            (img.focus && typeof img.focus === 'object' && (img.focus as any).value)
-              ? (img.focus as any).value
-              : (img.focus && typeof img.focus === 'string' && img.focus.trim() !== '')
-                ? img.focus
-                : (typeof img.focusX === 'number' && typeof img.focusY === 'number')
-                  ? `${img.focusX}%,${img.focusY}%`
-                  : 'No focus'
-          }}
-        </div>
+        <a :href="img.url" :data-pswp-width="img.width" :data-pswp-height="img.height"
+          :data-pswp-srcset="img.srcset || ''" target="_blank" rel="noopener noreferrer" class="block w-full h-full">
+          <img :src="img.url" :srcset="img.srcset" :width="img.width" :height="img.height" :alt="img.alt || ''"
+            class="w-full h-full" :class="{
+              'object-contain': block.content.crop === false,
+              'object-cover': block.content.crop !== false,
+            }" :style="getObjectPosition(img, index)" loading="lazy" />
+        </a>
 
-        <img :src="img.url" :srcset="img.srcset" :width="img.width" :height="img.height" :alt="img.alt || ''"
-          class="w-full h-full" :class="{
-            'object-contain': block.content.crop === false,
-            'object-cover': block.content.crop !== false,
-          }" :style="getObjectPosition(img, index)" loading="lazy" />
         <figcaption v-if="img.copyright" class="text-sm mt-2" :style="{ color: textColor || 'inherit' }"
           v-html="img.copyright" />
       </figure>
     </div>
-    <figcaption v-if="block.content.caption" class="text-center text-sm mt-2" :style="{ color: textColor || 'inherit' }"
+
+    <figcaption v-if="block.content.caption" class="text-center text-sm mt-4" :style="{ color: textColor || 'inherit' }"
       v-html="block.content.caption" />
   </div>
 </template>
