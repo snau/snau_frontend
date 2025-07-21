@@ -1,28 +1,71 @@
 import PhotoSwipeLightbox from 'photoswipe/lightbox'
-import type { NuxtApp } from '#app'
 import 'photoswipe/style.css'
 
 // Nuxt plugin that initialises a global PhotoSwipeLightbox instance on every page
-export default defineNuxtPlugin((nuxtApp: NuxtApp) => {
+export default defineNuxtPlugin(() => {
   let lightbox: PhotoSwipeLightbox | undefined
 
-  // Re-create lightbox whenever page navigation finishes so that
-  // newly rendered images are picked up automatically.
-  nuxtApp.hook('page:finish', () => {
-    // Destroy previous instance to avoid duplicates and memory leaks
+  const initLightbox = () => {
     if (lightbox) {
       lightbox.destroy()
     }
 
-    // Create a new instance. We treat every element that has the
-    // `.pswp-gallery` class as an individual gallery and every anchor
-    // (`<a>`) inside it as a slide.
     lightbox = new PhotoSwipeLightbox({
       gallery: '.pswp-gallery',
       children: 'a',
       pswpModule: () => import('photoswipe'),
+
+      // Smooth animation settings
+      showHideAnimationType: 'zoom',
+      showAnimationDuration: 300,
+      hideAnimationDuration: 300,
+
+      // Preload adjacent images
+      preload: [1, 2],
+
+      // Consistent sizing
+      initialZoomLevel: 'fit',
+      secondaryZoomLevel: 1.5,
+
+      // Disable zoom to prevent jitter
+      wheelToZoom: false,
+
+      // Better UX
+      escKey: true,
+      arrowKeys: true,
     })
 
+    // Add smooth transition CSS
+    const style = document.createElement('style')
+    style.textContent = `
+      .pswp {
+        --pswp-transition-duration: 300ms;
+      }
+      
+      .pswp__img {
+        transition: opacity var(--pswp-transition-duration) ease;
+      }
+      
+      .pswp__bg {
+        transition: opacity var(--pswp-transition-duration) ease;
+      }
+    `
+    document.head.appendChild(style)
+
     lightbox.init()
-  })
+  }
+
+  // Initialize immediately
+  initLightbox()
+
+  // Re-initialize on route changes
+  if (process.client) {
+    window.addEventListener('nuxt:page:finish', initLightbox)
+  }
+
+  return {
+    provide: {
+      photoswipe: lightbox,
+    },
+  }
 })
