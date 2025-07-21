@@ -21,19 +21,19 @@ A modern Nuxt 3 frontend application built for SNAU, featuring headless Kirby CM
 ### CMS & Data
 
 - **[Kirby CMS](https://getkirby.com/)** - Headless CMS backend
-- **[nuxt-kql](https://nuxt-kql.byjohann.dev)** (v1.5.4) - Kirby Query Language integration
+- **[nuxt-kql](https://nuxt-kql.byjohann.dev)** (v1.5.6) - Kirby Query Language integration
 - **[Nuxt Image](https://image.nuxt.com/)** (v1.10.0) - Image optimization
 
 ### Internationalization
 
-- **[@nuxtjs/i18n](https://i18n.nuxtjs.org/)** (v9.5.4) - Multi-language support
+- **[@nuxtjs/i18n](https://i18n.nuxtjs.org/)** (v9.5.6) - Multi-language support
 - **Languages**: English (default), German
 
 ### Development Tools
 
 - **[ESLint](https://eslint.org/)** (v9.30.1) with [@antfu/eslint-config](https://github.com/antfu/eslint-config)
 - **[Prettier](https://prettier.io/)** (v3.6.2) - Code formatting
-- **[pnpm](https://pnpm.io/)** (v10.11.0) - Package manager
+- **[pnpm](https://pnpm.io/)** (v10.13.1) - Package manager
 
 ### Additional Libraries
 
@@ -111,15 +111,20 @@ snau_frontend/
 - **InterviewsGrid.vue**: ~~328 lines~~ → **Replaced with Portfolio component** - REFACTORED ✅
   - **Status**: Component replaced with more flexible Portfolio block
 - **Layouts.vue**: 325 lines - PENDING
-- **Solution**: Continue breaking into smaller, focused components
+  - **Status**: Scheduled for refactoring in next sprint
+  - **Plan**: Extract layout-specific components and composables
+  - **Target**: Reduce to <200 lines with improved maintainability
 
 #### 6. Composable Complexity
 
 - **useInterviewFilters.ts**: 141 lines
+  - **Status**: Scheduled for refactoring
+  - **Plan**: Split into filter-specific composables (useFilterState, useFilterActions)
 - **page.ts**: 130 lines
-- **Solution**: Split into single-purpose composables
+  - **Status**: Scheduled for refactoring
+  - **Plan**: Extract SEO, i18n, and page state management into separate composables
 
-## 🆕 Recent Enhancements (Since May 2025)
+## 🆕 Recent Enhancements (July 2025)
 
 ### New Features & Components
 
@@ -159,12 +164,21 @@ snau_frontend/
 
 ### Medium Priority
 
-- Inconsistent error handling patterns
-- Limited type definitions for CMS data
-- No testing infrastructure
-  - _Future plans may include implementing a testing strategy (e.g., using Vitest for unit/component testing) to improve code reliability._
-- Missing bundle optimization
-- Insufficient documentation
+- **Inconsistent error handling patterns**
+  - **Plan**: Implement standardized error handling with composables
+  - **Target**: Q3 2025
+- **Limited type definitions for CMS data**
+  - **Plan**: Expand TypeScript interfaces for Kirby blocks and content
+  - **Target**: Ongoing, prioritizing most-used components
+- **No testing infrastructure**
+  - **Plan**: Implement Vitest for unit testing and component testing
+  - **Target**: Q4 2025
+- **Missing bundle optimization**
+  - **Plan**: Add webpack-bundle-analyzer and implement code splitting
+  - **Target**: Q3 2025
+- **Insufficient documentation**
+  - **Plan**: Create comprehensive component and API documentation
+  - **Target**: Ongoing
 
 ## 🛠️ Development Setup
 
@@ -226,45 +240,6 @@ pnpm prepare            # Nuxt preparation
 
 ## 🌐 Deployment
 
-This project is configured for deployment on Netlify.
-Refer to `netlify.toml` for platform-specific configuration.
-
-## 🏗️ Development Guidelines
-
-### Component Development
-
-1. **Block Components**: Place in `app/components/Kirby/Block/`
-2. **Register in Blocks.vue**: Add to component mapping
-3. **Follow Naming**: Use PascalCase, descriptive names
-4. **Keep Small**: Aim for <200 lines per component
-
-### Adding New Blocks
-
-```typescript
-// In components/Kirby/Blocks.vue
-import { LazyKirbyBlockYourBlock } from '#components'
-
-const blockComponents: Partial<Record<string, Component>> = {
-  'your-block': LazyKirbyBlockYourBlock,
-}
-```
-
-### Composables Best Practices
-
-1. **Single Responsibility**: One concern per composable
-2. **Reactive Data**: Use `ref`/`reactive` appropriately
-3. **Error Handling**: Consistent error patterns
-4. **TypeScript**: Full type coverage
-
-### Styling Guidelines
-
-1. **Tailwind First**: Use utility classes
-2. **Component Scoped**: Avoid global styles
-3. **Responsive**: Mobile-first approach
-4. **Dark Mode**: Consider dark mode support
-
-## 🚀 Deployment
-
 This project uses **Static Site Generation (SSG)** for optimal performance and is deployed via **Netlify**.
 
 ### Build for Production
@@ -320,6 +295,40 @@ NUXT_PUBLIC_SITE_URL=https://snau.net
 2. Add the variables above
 3. Redeploy the site
 
+## 🏗️ Development Guidelines
+
+### Component Development
+
+1. **Block Components**: Place in `app/components/Kirby/Block/`
+2. **Register in Blocks.vue**: Add to component mapping
+3. **Follow Naming**: Use PascalCase, descriptive names
+4. **Keep Small**: Aim for <200 lines per component
+
+### Adding New Blocks
+
+```typescript
+// In components/Kirby/Blocks.vue
+import { LazyKirbyBlockYourBlock } from '#components'
+
+const blockComponents: Record<string, Component> = {
+  'your-block': LazyKirbyBlockYourBlock,
+}
+```
+
+### Composables Best Practices
+
+1. **Single Responsibility**: One concern per composable
+2. **Reactive Data**: Use `ref`/`reactive` appropriately
+3. **Error Handling**: Consistent error patterns
+4. **TypeScript**: Full type coverage
+
+### Styling Guidelines
+
+1. **Tailwind First**: Use utility classes
+2. **Component Scoped**: Avoid global styles
+3. **Responsive**: Mobile-first approach
+4. **Dark Mode**: Consider dark mode support
+
 ## 🔧 Configuration
 
 ### Nuxt Configuration
@@ -342,14 +351,6 @@ NUXT_PUBLIC_SITE_URL=https://snau.net
 
 - **Custom Config**: `tailwind.config.ts`
 - **Nuxt UI**: Integrated component system
-
-## 🧪 Testing (TODO)
-
-Currently no testing infrastructure. Recommended additions:
-
-- **Vitest**: Unit testing
-- **@vue/test-utils**: Component testing
-- **Playwright**: E2E testing
 
 ## 📊 Performance Optimization
 
@@ -395,6 +396,20 @@ Currently no testing infrastructure. Recommended additions:
 2. Security headers middleware
 3. Enhanced input validation
 4. Rate limiting
+
+## 🧪 Testing (Planned)
+
+Currently no testing infrastructure. Implementation planned for Q4 2025:
+
+- **Vitest**: Unit testing for utility functions and composables
+- **@vue/test-utils**: Component testing for UI components
+- **Playwright**: E2E testing for critical user flows
+
+### Testing Strategy
+
+1. **Phase 1**: Set up testing infrastructure and write tests for critical utilities
+2. **Phase 2**: Add component tests for core block components
+3. **Phase 3**: Implement E2E tests for main user journeys
 
 ## 📚 Resources
 
@@ -447,13 +462,25 @@ MIT License - See [LICENSE](./LICENSE) file for details.
    - ~~Added DOMPurify for HTML sanitization~~
    - ~~Improved markdown parsing performance~~
 
-### 🔄 Next Priority
+### 🔄 Next Priority (Q3-Q4 2025)
 
 1. **Refactor remaining large components** (Layouts.vue)
    - ~~ScrollingStory.vue~~ - COMPLETED ✅
    - ~~InterviewsGrid.vue~~ - COMPLETED ✅ (replaced with Portfolio)
    - **Layouts.vue**: 325 lines - PENDING
 2. **Add testing infrastructure**
+   - Set up Vitest for unit testing
+   - Configure component testing with @vue/test-utils
+   - Add E2E testing with Playwright for critical flows
 3. **Implement bundle optimization**
-4. **Add security headers** (partially done via netlify.toml)
+   - Add webpack-bundle-analyzer
+   - Implement code splitting for large components
+   - Optimize asset loading
+4. **Add security headers**
+   - Configure Content Security Policy
+   - Implement security headers middleware
+   - Enhance input validation
 5. **Expand type definitions**
+   - Create comprehensive TypeScript interfaces for CMS data
+   - Improve type safety across the application
+   - Document type system
