@@ -177,10 +177,9 @@ onBeforeUnmount(() => {
         ]" :style="getObjectPosition(block)" loading="lazy" decoding="async" />
     </component>
 
-    <figcaption v-if="block.image.copyright" :class="getFigcaptionClasses" :style="{ color: textColor || 'inherit' }"
-      v-html="block.image.copyright" />
+    <figcaption v-if="block.image.copyright" :class="getFigcaptionClasses" v-html="block.image.copyright" />
 
     <figcaption v-if="block.caption || block.image.caption" :class="getFigcaptionClasses"
-      :style="{ color: textColor || 'inherit' }" v-html="block.caption || block.image.caption" />
+      v-html="block.caption || block.image.caption" />
   </figure>
 </template>
