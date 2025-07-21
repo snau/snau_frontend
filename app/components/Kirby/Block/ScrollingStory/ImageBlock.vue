@@ -168,13 +168,12 @@ onBeforeUnmount(() => {
       :class="[
         getLinkHref ? 'cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2' : ''
       ]">
-      <img :src="block.image.url" :srcset="block.image.srcset || ''" :width="block.image.width || ''"
-        :height="block.image.height || ''" :alt="block.alt || block.image.alt || ''"
-        class="w-full transition-all duration-300 ease-out" :class="[
+      <NuxtImg :src="block.image.url" :width="block.image.width || ''" :height="block.image.height || ''"
+        :alt="block.alt || block.image.alt || ''" class="w-full transition-all duration-300 ease-out" :class="[
           block.crop === false ? 'object-contain' : 'object-cover',
           block.crop ? 'h-auto' : 'h-full',
           getLinkHref ? 'hover:scale-105 hover:brightness-105' : ''
-        ]" :style="getObjectPosition(block)" loading="lazy" decoding="async" />
+        ]" :style="getObjectPosition(block)" loading="lazy" decoding="async" format="avif,webp,jpg" quality="80" />
     </component>
 
     <figcaption v-if="block.image.copyright" :class="getFigcaptionClasses" v-html="block.image.copyright" />
