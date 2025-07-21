@@ -15,7 +15,7 @@ interface GalleryBlockProps {
   textColor?: string
 }
 
-defineProps<GalleryBlockProps>()
+const props = defineProps<GalleryBlockProps>()
 
 /**
  * Determines the CSS object-position value for an image based on focus point data
@@ -51,12 +51,14 @@ const getImageClasses = (crop: boolean | undefined): string => {
 }
 
 /**
- * Preloads an image for better UX when hovering
+ * Generate a stable gallery ID for PhotoSwipe grouping
  */
-/**
- * Generate a unique gallery ID for PhotoSwipe grouping
- */
-const galleryId = `gallery-${Math.random().toString(36).substr(2, 9)}`
+const galleryId = computed(() => {
+  // Create a stable ID based on the first image URL or block content
+  const firstImageUrl = props.block.content.images?.[0]?.url || ''
+  const hash = firstImageUrl.split('/').pop() || Math.random().toString(36).substring(2, 11)
+  return `gallery-${hash}`
+})
 
 /**
  * Preloads an image for better UX when hovering
@@ -70,6 +72,63 @@ const preloadImage = (url: string): void => {
     document.head.appendChild(link)
   }
 }
+
+/**
+ * PhotoSwipe Lightbox instance
+ */
+let lightbox: any = null
+
+/**
+ * Initialize PhotoSwipe Lightbox properly for Vue/Nuxt
+ */
+const initPhotoSwipe = async () => {
+  if (!import.meta.client) return
+
+  try {
+    // Dynamic import of PhotoSwipe modules
+    const { default: PhotoSwipeLightbox } = await import('photoswipe/lightbox')
+
+    // Clean up existing instance
+    if (lightbox) {
+      lightbox.destroy()
+      lightbox = null
+    }
+
+    // Create new lightbox instance
+    lightbox = new PhotoSwipeLightbox({
+      gallery: `[data-pswp-uid="${galleryId.value}"]`,
+      children: 'a',
+      pswpModule: () => import('photoswipe'),
+
+      // Better performance options
+      preloadFirstSlide: false,
+
+      // Animation options
+      showAnimationDuration: 300,
+      hideAnimationDuration: 200,
+    })
+
+    // Initialize the lightbox
+    lightbox.init()
+
+  } catch (error) {
+    console.warn('PhotoSwipe initialization failed:', error)
+  }
+}
+
+onMounted(() => {
+  nextTick(() => {
+    setTimeout(initPhotoSwipe, 100)
+  })
+})
+
+onBeforeUnmount(() => {
+  // Clean up PhotoSwipe instance
+  if (lightbox) {
+    lightbox.destroy()
+    lightbox = null
+  }
+})
 </script>
 
 <template>
