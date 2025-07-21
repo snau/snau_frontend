@@ -1,5 +1,5 @@
-import { ref } from 'vue'
 import { useIntersectionObserver } from '@vueuse/core'
+import { ref } from 'vue'
 
 export function useFadeIn() {
   const target = ref(null)
@@ -7,8 +7,9 @@ export function useFadeIn() {
 
   const { stop } = useIntersectionObserver(
     target,
-    ([{ isIntersecting }]) => {
-      if (isIntersecting) {
+    (entries) => {
+      const entry = entries[0]
+      if (entry?.isIntersecting) {
         isVisible.value = true
         // Optional: Stop observing once the element is visible
         stop()

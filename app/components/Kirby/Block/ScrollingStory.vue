@@ -79,8 +79,9 @@ const { backgroundStyle } = useScrollingStoryBackground(
 // Compute the text color based on the currently active section
 const currentTextColor = computed(() => {
   const index = currentMarkerIndex.value
-  if (index === -1 || index >= props.block.content.rightcontent.length) return 'inherit'
-  
+  if (index === -1 || index >= props.block.content.rightcontent.length)
+    return 'inherit'
+
   const content = props.block.content.rightcontent[index]
   return content?.textcolor || 'inherit'
 })

@@ -395,7 +395,10 @@ const hasHeroBlock = (layout: KirbyLayoutWithAttrs): boolean => {
             getColumnClasses(column.width),
             {
               'h-auto flex justify-center': layout.attrs.fullscreen,
-              'min-h-screen': layout.attrs.fullscreen && isFirstLayout(layoutIndex) && hasHeroBlock(layout),
+              'min-h-screen':
+                layout.attrs.fullscreen &&
+                isFirstLayout(layoutIndex) &&
+                hasHeroBlock(layout),
             },
           ]"
           class=""

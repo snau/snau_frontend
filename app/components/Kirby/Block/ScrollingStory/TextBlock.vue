@@ -22,5 +22,9 @@ const getClasses = (block: TextBlockProps['block']) => {
 </script>
 
 <template>
-  <div :class="getClasses(block)" :style="{ color: textColor || 'inherit' }" v-html="block.content" />
+  <div
+    :class="getClasses(block)"
+    :style="{ color: textColor || 'inherit' }"
+    v-html="block.content"
+  />
 </template>

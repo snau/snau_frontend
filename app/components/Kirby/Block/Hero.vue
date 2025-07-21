@@ -135,9 +135,7 @@ const imageStyle = computed(() => {
           class="m-auto px-2 text-xl font-serif italic md:max-w-[22ch] lg:text-3xl xl:text-4xl leaading-tight"
           v-html="heading"
         />
-        <h2
-          :style="h2Color" class="text-md" v-html="subheading"
-        />
+        <h2 :style="h2Color" class="text-md" v-html="subheading" />
         <span
           class="text-base opacity-85 lg:text-base"
           :datetime="date"

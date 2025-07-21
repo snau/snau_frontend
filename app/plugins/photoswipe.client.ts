@@ -59,7 +59,7 @@ export default defineNuxtPlugin(() => {
   initLightbox()
 
   // Re-initialize on route changes
-  if (process.client) {
+  if (import.meta.client) {
     window.addEventListener('nuxt:page:finish', initLightbox)
   }
 
