@@ -338,7 +338,7 @@ blockquote .author {
 }
 
 figcaption {
-  @apply text-base text-black/50 mt-2 text-center leading-snug;
+  @apply text-base mt-2 leading-normal mt-6 mb-12;
 }
 
 /* ScrollingStory component text color overrides */

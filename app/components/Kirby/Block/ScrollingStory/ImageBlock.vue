@@ -127,6 +127,23 @@ const getContainerClasses = computed(() => {
   return baseClasses
 })
 
+/**
+ * Get figcaption classes based on offset_bleed setting
+ */
+const getFigcaptionClasses = computed(() => {
+  const baseClasses = ['text-sm', 'mt-2', 'text-left']
+
+  if (props.block.offset_bleed === 'offset') {
+    // Offset: Align caption with left edge of offset image + same left margin as offset
+    baseClasses.push('ml-4', 'sm:ml-6', 'lg:ml-8')
+  } else if (props.block.offset_bleed === 'bleed') {
+    // Bleed: Reset caption margins for bleed images
+    baseClasses.push('mx-2', 'sm:mx-4', 'lg:mx-6')
+  }
+
+  return baseClasses
+})
+
 onBeforeUnmount(() => {
   // Clean up PhotoSwipe instance
   if (lightbox) {
@@ -160,12 +177,10 @@ onBeforeUnmount(() => {
         ]" :style="getObjectPosition(block)" loading="lazy" decoding="async" />
     </component>
 
-    <figcaption v-if="block.image.copyright" class="text-sm mt-2" :class="[
-      block.offset_bleed === 'bleed' ? 'mx-2 sm:mx-4 lg:mx-6' : ''
-    ]" :style="{ color: textColor || 'inherit' }" v-html="block.image.copyright" />
+    <figcaption v-if="block.image.copyright" :class="getFigcaptionClasses" :style="{ color: textColor || 'inherit' }"
+      v-html="block.image.copyright" />
 
-    <figcaption v-if="block.caption || block.image.caption" class="text-sm mt-2" :class="[
-      block.offset_bleed === 'bleed' ? 'mx-2 sm:mx-4 lg:mx-6' : ''
-    ]" :style="{ color: textColor || 'inherit' }" v-html="block.caption || block.image.caption" />
+    <figcaption v-if="block.caption || block.image.caption" :class="getFigcaptionClasses"
+      :style="{ color: textColor || 'inherit' }" v-html="block.caption || block.image.caption" />
   </figure>
 </template>

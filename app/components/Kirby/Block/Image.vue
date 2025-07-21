@@ -115,6 +115,23 @@ const getContainerClasses = computed(() => {
   return baseClasses
 })
 
+/**
+ * Get figcaption classes based on offset_bleed setting
+ */
+const getFigcaptionClasses = computed(() => {
+  const baseClasses = ['mt-2', 'text-sm', 'text-gray-700', 'dark:text-gray-300', 'text-left']
+
+  if (props.block.content.offset_bleed === 'offset') {
+    // Offset: Align caption with left edge of offset image + same left margin as offset
+    baseClasses.push('ml-4', 'sm:ml-8', 'lg:ml-12')
+  } else if (props.block.content.offset_bleed === 'bleed') {
+    // Bleed: Reset caption margins for bleed images
+    baseClasses.push('mx-4', 'sm:mx-8', 'lg:mx-12', 'xl:mx-16')
+  }
+
+  return baseClasses
+})
+
 onBeforeUnmount(() => {
   // Clean up PhotoSwipe instance
   if (lightbox) {
@@ -142,8 +159,8 @@ onBeforeUnmount(() => {
         getLinkHref ? 'cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2' : ''
       ]">
       <img :src="block.content.location === 'web' ? block.content.src : undefined" :srcset="block.content.location !== 'web'
-          ? block.content.image?.[0]?.srcset
-          : undefined
+        ? block.content.image?.[0]?.srcset
+        : undefined
         " :width="block.content.image?.[0]?.width" :height="block.content.image?.[0]?.height" :sizes="`${width}px`"
         :alt="block.content.alt || block.content.image?.[0]?.alt || ''"
         class="w-full h-full transition-all duration-300 ease-out" :class="[
@@ -154,8 +171,6 @@ onBeforeUnmount(() => {
         }" loading="lazy" decoding="async" />
     </component>
 
-    <figcaption v-if="block.content.caption" class="mt-2 text-sm text-gray-700 dark:text-gray-300" :class="[
-      block.content.offset_bleed === 'bleed' ? 'mx-4 sm:mx-8 lg:mx-12 xl:mx-16' : ''
-    ]" v-html="block.content.caption" />
+    <figcaption v-if="block.content.caption" :class="getFigcaptionClasses" v-html="block.content.caption" />
   </figure>
 </template>
