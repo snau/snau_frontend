@@ -78,7 +78,7 @@
   --ui-border-nav: var(--color-neutral-300);
 
   --ui-accordion-color-text: var(--ui-color-text);
-  --ui-accordion-color-closed: var(--ui-color-nav-hover);
+  --ui-accordion-color-closed: var(--color-stone-50);
   --ui-accordion-color-hover: var(--color-stone-100);
   --ui-accordion-color-open: var(--color-orange-100);
 }
