@@ -119,7 +119,7 @@ const getContainerClasses = computed(() => {
  * Get figcaption classes based on offset_bleed setting
  */
 const getFigcaptionClasses = computed(() => {
-  const baseClasses = ['mt-2', 'text-sm', 'text-gray-700', 'dark:text-gray-300', 'text-left']
+  const baseClasses = ['mt-2', 'text-sm', 'text-left']
 
   if (props.block.content.offset_bleed === 'offset') {
     // Offset: Align caption with left edge of offset image + same left margin as offset

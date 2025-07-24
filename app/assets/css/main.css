@@ -52,6 +52,28 @@
   --sm-min-font-size: 0.875rem;
   --sm-max-font-size: 0.95rem;
   --sm-preferred-font-size: calc(0.875rem + 0.125vw);
+
+  --ui-easing: cubic-bezier(0.4, 0, 0.2, 1);
+  --ui-color-bg: var(--color-neutral-50);
+  --ui-color-text-light: oklch(0 0 0 / 65%);
+  --ui-color-text: oklch(0 0 0 / 90%);
+  --ui-color-text-strong: oklch(0 0 0);
+  --ui-color-primary: var(--color-red-500);
+  --ui-color-light: oklch(0 0 0 / 10%);
+  --ui-color-dark: oklch(0 0 0 / 70%);
+
+  --ui-nav-color-text: oklch(0 0 0 / 80%);
+  --ui-nav-color-text-active: var(--ui-nav-color-text);
+  --ui-nav-color-text-inv: oklch(0 0 0 / 30%);
+  --ui-nav-color-text-inv-active: var(--ui-nav-color-text-inv);
+  --ui-nav-color-hover: oklch(0 0 0 / 10%);
+  --ui-nav-color-bg: var(--color-white);
+  --ui-border-nav: oklch(0 0 0 / 30%);
+
+  --ui-accordion-color-text: var(--ui-color-text);
+  --ui-accordion-color-closed: oklch(0 0 0 / 5%);
+  --ui-accordion-color-hover: oklch(0 0 0 / 10%);
+  --ui-accordion-color-open: oklch(0 0 0 /10%);
 }
 
 :root {
@@ -68,28 +90,6 @@
   --ui-itemsize-small: 300;
   --ui-itemsize-medium: 500;
   --ui-itemsize-large: 700;
-
-  --ui-easing: cubic-bezier(0.4, 0, 0.2, 1);
-  --ui-color-bg: var(--color-neutral-50);
-  --ui-color-text-light: var(--color-neutral-700);
-  --ui-color-text: var(--color-neutral-900);
-  --ui-color-text-strong: var(--color-neutral-900);
-  --ui-color-primary: var(--color-red-500);
-  --ui-color-light: hsla(100, 100%, 100%, 0.7);
-  --ui-color-dark: var(--color-neutral-800);
-
-  --ui-nav-color-text: var(--color-neutral-800);
-  --ui-nav-color-text-active: var(--ui-nav-color-text);
-  --ui-nav-color-text-inv: var(--color-neutral-300);
-  --ui-nav-color-text-inv-active: var(--ui-nav-color-text-inv);
-  --ui-nav-color-hover: var(--color-neutral-100);
-  --ui-nav-color-bg: var(--color-white);
-  --ui-border-nav: var(--color-neutral-300);
-
-  --ui-accordion-color-text: var(--ui-color-text);
-  --ui-accordion-color-closed: var(--color-stone-50);
-  --ui-accordion-color-hover: var(--color-stone-100);
-  --ui-accordion-color-open: var(--color-stone-100);
 }
 
 .dark {
@@ -361,6 +361,7 @@ blockquote .author {
 
 figcaption {
   @apply font-mono text-sm mt-2 leading-normal mt-6 mb-12;
+  color: var(--ui-color-dark);
 }
 
 /* ScrollingStory component text color overrides */
