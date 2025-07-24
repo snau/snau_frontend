@@ -25,6 +25,7 @@ const props = defineProps<{
       coverimage?: ResolvedKirbyImage[]
       hero_layout?: 'left' | 'right' | 'centered'
       hero_fade?: 'top' | 'bottom'
+      object_fit?: 'cover' | 'contain' | 'none'
       // File UUIDs are resolved server-side to the actual image data
       // See: https://kirby.tools/docs/headless/field-methods
     }
@@ -113,7 +114,7 @@ const contentClasses = computed(() => {
   if (alignment === 'up') {
     base += ' items-center pt-[20vh]'
   } else if (alignment === 'down') {
-    base += ' items-center pb-[10vh]'
+    base += ' items-center pb-[5vh]'
   } else {
     base += ' items-center py-12'
   }
@@ -124,10 +125,20 @@ const contentClasses = computed(() => {
 const imageStyle = computed(() => {
   if (!imageData.value) return {}
   const style: Record<string, string> = {}
+  // Object fit
+  style.objectFit = objectFit.value
+  // Focus
   if (imageData.value.focus) {
     style.objectPosition = imageData.value.focus
   } else if (imageData.value.focusX && imageData.value.focusY) {
     style.objectPosition = `${imageData.value.focusX}% ${imageData.value.focusY}%`
+  }
+  // If object-fit is 'none', don't stretch image
+  if (objectFit.value === 'none') {
+    style.width = 'auto'
+    style.height = 'auto'
+    style.maxWidth = '100%'
+    style.maxHeight = '100%'
   }
   return style
 })
@@ -159,12 +170,31 @@ const headingSizeClass = (size?: string) => {
 
 // Fade overlay computed
 const heroFade = computed(() => props.block.content.hero_fade)
+
+// Object fit computed
+const objectFit = computed(() => props.block.content.object_fit || 'cover')
+
+// Tailwind classes for image based on object_fit
+const imageTailwindClasses = computed(() => {
+  switch (objectFit.value) {
+    case 'cover':
+      return ['object-cover', 'h-full', 'w-screen']
+    case 'contain':
+      return ['object-contain', 'h-full', 'w-screen']
+    case 'none':
+      return ['max-w-full', 'max-h-full']
+    default:
+      return ['object-cover', 'h-full', 'w-screen']
+  }
+})
 </script>
 <template>
   <div class="h-screen min-h-[100]" :class="containerClasses" :style="backgroundStyle">
     <figure v-if="imageData" :class="imageClasses" class="w-full h-screen;">
-      <img class="h-full w-screen object-cover" :class="[{ kenburns: props.block.content.hero_layout === 'centered' }]"
-        loading="lazy" :src="imageData.url" :srcset="imageData.srcset" :width="imageData.width"
+      <img :class="[
+        { kenburns: props.block.content.hero_layout === 'centered' },
+        ...imageTailwindClasses
+      ]" loading="lazy" :src="imageData.url" :srcset="imageData.srcset" :width="imageData.width"
         :height="imageData.height" sizes="(min-width: 640px) 50vw, 100vw" :alt="imageData.alt || ''"
         :style="imageStyle" />
       <div v-if="heroFade === 'top'" class="hero-fade-top pointer-events-none" />
