@@ -11,6 +11,7 @@ const props = defineProps<{
       heading?: string
       heading_size?: string
       heading_style?: string
+      heading_alignment?: 'up' | 'down'
       subheading?: string
       subheading_style?: string
       date?: string
@@ -96,10 +97,26 @@ const imageClasses = computed(() => {
 
 const contentClasses = computed(() => {
   const layout = props.block.content.hero_layout || 'left'
+  const alignment = props.block.content.heading_alignment
   if (layout === 'centered') {
-    return 'column not-prose absolute inset-0 flex items-center justify-center z-10'
+    // Default: center, up: top, down: bottom
+    if (alignment === 'up') {
+      return 'column not-prose absolute inset-0 flex flex-col items-center justify-start pt-[20vh] z-10 w-full h-full'
+    } else if (alignment === 'down') {
+      return 'column not-prose absolute inset-0 flex flex-col items-center justify-end pb-[10vh] z-10 w-full h-full'
+    }
+    return 'column not-prose absolute inset-0 flex flex-col items-center justify-center z-10 w-full h-full'
   }
-  return `column not-prose grid col-span-12 items-center justify-center justify-items-center py-12 text-center md:col-span-6 ${layout === 'right' ? 'md:order-1' : 'md:order-2'}`
+  // Default: center, up: top, down: bottom
+  let base = `column not-prose grid col-span-12 justify-center justify-items-center text-center md:col-span-6 ${layout === 'right' ? 'md:order-1' : 'md:order-2'}`
+  if (alignment === 'up') {
+    base += ' items-center pt-[20vh]'
+  } else if (alignment === 'down') {
+    base += ' items-center pb-[10vh]'
+  } else {
+    base += ' items-center py-12'
+  }
+  return base
 })
 
 // Computed property for image focus style
