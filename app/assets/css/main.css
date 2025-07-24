@@ -249,6 +249,10 @@ main {
   @apply mt-0;
 }
 
+[data-template='interview'] h3 {
+  @apply text-2xl pb-0 mt-8 font-bold;
+}
+
 .nav-light {
   --ui-nav-color-text: var(--ui-color-light) !important;
 }
