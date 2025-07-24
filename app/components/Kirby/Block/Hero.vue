@@ -8,9 +8,13 @@ const props = defineProps<{
     'hero',
     {
       heading?: string
+      heading_style?: string
       subheading?: string
+      subheading_style?: string
       date?: string
+      date_style?: string
       text?: string
+      text_style?: string
       backgroundcolor?: string
       secondarybackgroundcolor?: string
       textcolor?: string
@@ -107,41 +111,37 @@ const imageStyle = computed(() => {
   }
   return style
 })
+
+// Font class helper
+const fontClass = (style?: string) => {
+  switch (style) {
+    case 'font-serif':
+      return 'font-serif'
+    case 'font-mono':
+      return 'font-mono'
+    default:
+      return 'font-sans'
+  }
+}
 </script>
 <template>
-  <div
-    class="h-screen min-h-[100]"
-    :class="containerClasses"
-    :style="backgroundStyle"
-  >
+  <div class="h-screen min-h-[100]" :class="containerClasses" :style="backgroundStyle">
     <figure v-if="imageData" :class="imageClasses" class="w-full h-screen;">
-      <img
-        class="h-full w-screen object-cover"
-        :class="[{ kenburns: props.block.content.hero_layout === 'centered' }]"
-        loading="lazy"
-        :src="imageData.url"
-        :srcset="imageData.srcset"
-        :width="imageData.width"
-        :height="imageData.height"
-        sizes="(min-width: 640px) 50vw, 100vw"
-        :alt="imageData.alt || ''"
-        :style="imageStyle"
-      />
+      <img class="h-full w-screen object-cover" :class="[{ kenburns: props.block.content.hero_layout === 'centered' }]"
+        loading="lazy" :src="imageData.url" :srcset="imageData.srcset" :width="imageData.width"
+        :height="imageData.height" sizes="(min-width: 640px) 50vw, 100vw" :alt="imageData.alt || ''"
+        :style="imageStyle" />
     </figure>
 
     <div :class="contentClasses">
       <div class="column px-12 text-center">
-        <h1
-          class="m-auto px-2 text-xl font-serif italic md:max-w-[22ch] lg:text-3xl xl:text-4xl leaading-tight"
-          v-html="heading"
-        />
-        <h2 :style="h2Color" class="text-md" v-html="subheading" />
-        <span
-          class="text-base opacity-85 lg:text-base"
-          :datetime="date"
-          v-html="date"
-        />
-        <p v-html="text" />
+        <h1 class="m-auto px-2 text-xl italic md:max-w-[22ch] lg:text-3xl xl:text-4xl leaading-tight"
+          :class="fontClass(props.block.content.heading_style)" v-html="heading" />
+        <h2 :style="h2Color" class="text-md" :class="fontClass(props.block.content.subheading_style)"
+          v-html="subheading" />
+        <span class="text-base opacity-85 lg:text-base" :class="fontClass(props.block.content.date_style)"
+          :datetime="date" v-html="date" />
+        <p :class="fontClass(props.block.content.text_style)" v-html="text" />
       </div>
     </div>
   </div>
