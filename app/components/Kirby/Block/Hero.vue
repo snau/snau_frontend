@@ -150,7 +150,7 @@ const headingSizeClass = (size?: string) => {
 
     <div :class="contentClasses">
       <div class="column px-12 text-center">
-        <h1 class="m-auto px-2 italic md:max-w-[22ch] leaading-tight"
+        <h1 class="m-auto px-2 md:max-w-[22ch] leaading-tight"
           :class="[fontClass(props.block.content.heading_style), headingSizeClass(props.block.content.heading_size)]"
           v-html="heading" />
         <h2 :style="h2Color" class="text-md" :class="fontClass(props.block.content.subheading_style)"
