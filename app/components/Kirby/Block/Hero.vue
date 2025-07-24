@@ -24,6 +24,7 @@ const props = defineProps<{
       secondarytextcolor?: string
       coverimage?: ResolvedKirbyImage[]
       hero_layout?: 'left' | 'right' | 'centered'
+      hero_fade?: 'top' | 'bottom'
       // File UUIDs are resolved server-side to the actual image data
       // See: https://kirby.tools/docs/headless/field-methods
     }
@@ -155,6 +156,9 @@ const headingSizeClass = (size?: string) => {
       return 'text-xl'
   }
 }
+
+// Fade overlay computed
+const heroFade = computed(() => props.block.content.hero_fade)
 </script>
 <template>
   <div class="h-screen min-h-[100]" :class="containerClasses" :style="backgroundStyle">
@@ -163,6 +167,8 @@ const headingSizeClass = (size?: string) => {
         loading="lazy" :src="imageData.url" :srcset="imageData.srcset" :width="imageData.width"
         :height="imageData.height" sizes="(min-width: 640px) 50vw, 100vw" :alt="imageData.alt || ''"
         :style="imageStyle" />
+      <div v-if="heroFade === 'top'" class="hero-fade-top pointer-events-none" />
+      <div v-else-if="heroFade === 'bottom'" class="hero-fade-bottom pointer-events-none" />
     </figure>
 
     <div :class="contentClasses">
@@ -197,5 +203,27 @@ const headingSizeClass = (size?: string) => {
 
 .kenburns {
   animation: kenburns 45s ease-in-out infinite;
+}
+
+.hero-fade-top {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 30%;
+  pointer-events: none;
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0));
+  z-index: 2;
+}
+
+.hero-fade-bottom {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 30%;
+  pointer-events: none;
+  background: linear-gradient(to top, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0));
+  z-index: 2;
 }
 </style>
