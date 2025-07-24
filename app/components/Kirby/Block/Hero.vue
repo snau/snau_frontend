@@ -2,12 +2,14 @@
 import type { KirbyBlock } from '#nuxt-kql'
 import type { ResolvedKirbyImage } from '../../../../shared/types/kirby'
 import { computed } from 'vue'
+import { useMarkdownParser } from '@/composables/useMarkdownParser'
 
 const props = defineProps<{
   block: KirbyBlock<
     'hero',
     {
       heading?: string
+      heading_size?: string
       heading_style?: string
       subheading?: string
       subheading_style?: string
@@ -48,7 +50,7 @@ const imageData = computed(() => {
   return null
 })
 
-const heading = computed(() => props.block.content.heading)
+const heading = computed(() => props.block.content.heading || '')
 const subheading = computed(() => props.block.content.subheading)
 const text = computed(() => props.block.content.text)
 const date = computed(() => props.block.content.date)
@@ -123,6 +125,19 @@ const fontClass = (style?: string) => {
       return 'font-sans'
   }
 }
+// Font size helper for heading
+const headingSizeClass = (size?: string) => {
+  switch (size) {
+    case 'text-xl':
+    case 'text-lg':
+    case 'text-md':
+    case 'text-small':
+    case 'text-xs':
+      return size
+    default:
+      return 'text-xl'
+  }
+}
 </script>
 <template>
   <div class="h-screen min-h-[100]" :class="containerClasses" :style="backgroundStyle">
@@ -135,13 +150,14 @@ const fontClass = (style?: string) => {
 
     <div :class="contentClasses">
       <div class="column px-12 text-center">
-        <h1 class="m-auto px-2 text-xl italic md:max-w-[22ch] lg:text-3xl xl:text-4xl leaading-tight"
-          :class="fontClass(props.block.content.heading_style)" v-html="heading" />
+        <h1 class="m-auto px-2 italic md:max-w-[22ch] leaading-tight"
+          :class="[fontClass(props.block.content.heading_style), headingSizeClass(props.block.content.heading_size)]"
+          v-html="heading" />
         <h2 :style="h2Color" class="text-md" :class="fontClass(props.block.content.subheading_style)"
           v-html="subheading" />
         <span class="text-base opacity-85 lg:text-base" :class="fontClass(props.block.content.date_style)"
           :datetime="date" v-html="date" />
-        <p :class="fontClass(props.block.content.text_style)" v-html="text" />
+        <div :class="fontClass(props.block.content.text_style)" v-html="text" />
       </div>
     </div>
   </div>
