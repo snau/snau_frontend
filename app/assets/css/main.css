@@ -263,7 +263,7 @@ blockquote {
 }
 blockquote footer,
 blockquote .author {
-  @apply text-sm text-black/50 mt-2 not-italic block;
+  @apply font-normal text-base text-black/50 mt-2 not-italic block;
 }
 
 .quote-mark {
