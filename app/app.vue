@@ -33,19 +33,27 @@ const bodyStyle = computed(() => {
       gradientColors.length === 1
         ? `${gradientColors[0].color}, ${gradientColors[0].color}`
         : gradientColors
-            .map((g: { color: string; position?: string }, index: number) => {
-              const position =
-                g.position || (index / (gradientColors.length - 1)) * 100
-              return `${g.color} ${position}%`
-            })
-            .join(', ')
+          .map((g: { color: string; position?: string }, index: number) => {
+            const position =
+              g.position || (index / (gradientColors.length - 1)) * 100
+            return `${g.color} ${position}%`
+          })
+          .join(', ')
 
     // Use background-image for CSS string
     styles['background-image'] = `linear-gradient(${direction}, ${colorStops})`
   }
 
-  if (page.value.customtextcolor) {
-    styles.color = page.value.customtextcolor
+  // Add general text color if valid (not empty, null, or undefined)
+  const generalTextColor = page.value.generaltextcolor
+  if (generalTextColor && generalTextColor.trim() !== '') {
+    // Filter out suspicious debugging colors that might come from browser extensions
+    const suspiciousColors = ['#fc00bd', 'rgb(252, 0, 189)', 'hsl(312, 100%, 49%)']
+    if (!suspiciousColors.includes(generalTextColor.trim().toLowerCase())) {
+      styles.color = generalTextColor
+    } else {
+      console.warn('Filtered out suspicious color value in app.vue:', generalTextColor)
+    }
   }
 
   // Convert object to CSS string for the style attribute
@@ -74,29 +82,20 @@ useHead({
 
     <!-- Mobile Overlay -->
     <ClientOnly>
-      <Transition
-        enter-active-class="transition-opacity duration-300 ease-out"
-        leave-active-class="transition-opacity duration-200 ease-in"
-        enter-from-class="opacity-0"
-        leave-to-class="opacity-0"
-      >
-        <div
-          v-if="isOpen"
-          class="fixed inset-0 z-40 bg-black/50 dark:bg-stone/200 backdrop-blur-sm"
-          role="presentation"
-          @click="isOpen = false"
-        />
+      <Transition enter-active-class="transition-opacity duration-300 ease-out"
+        leave-active-class="transition-opacity duration-200 ease-in" enter-from-class="opacity-0"
+        leave-to-class="opacity-0">
+        <div v-if="isOpen" class="fixed inset-0 z-40 bg-black/50 dark:bg-stone/200 backdrop-blur-sm" role="presentation"
+          @click="isOpen = false" />
       </Transition>
     </ClientOnly>
 
     <!-- Main Content -->
-    <main
-      id="main"
+    <main id="main"
       class="main relative z-10 transition-opacity duration-300 ease-out dark:bg-[var(--ui-color-bg)] dark:text-[var(--ui-color-text)]"
       :class="{
         'opacity-75 pointer-events-none': isOpen,
-      }"
-    >
+      }">
       <NuxtPage />
     </main>
 
