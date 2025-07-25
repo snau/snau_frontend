@@ -390,7 +390,7 @@ const hasHeroBlock = (layout: KirbyLayoutWithAttrs): boolean => {
           },
         ]" class="">
           <!-- Render blocks within the column -->
-          <KirbyBlocks :blocks="column.blocks" />
+          <KirbyBlocks :blocks="column.blocks" :text-color="layout.attrs.customtextcolor" />
         </div>
       </div>
     </div>

@@ -31,6 +31,7 @@ import {
 
 defineProps<{
   blocks: KirbyBlock<string>[]
+  textColor?: string
 }>()
 
 const blockComponents: Record<string, Component> = {
@@ -71,7 +72,7 @@ useInternalLinks(content)
   <div ref="content">
     <template v-for="(block, index) in blocks" :key="index">
       <FadeIn>
-        <component :is="blockComponents[block.type]" :block="block" />
+        <component :is="blockComponents[block.type]" :block="block" :text-color="textColor" />
       </FadeIn>
     </template>
   </div>

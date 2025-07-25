@@ -3,9 +3,10 @@ import type { KirbyBlock } from '#nuxt-kql'
 
 defineProps<{
   block: KirbyBlock<'text'>
+  textColor?: string
 }>()
 </script>
 
 <template>
-  <div v-html="block.content.text" />
+  <div :style="{ color: textColor || 'inherit' }" v-html="block.content.text" />
 </template>
