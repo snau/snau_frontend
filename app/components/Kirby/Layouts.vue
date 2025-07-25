@@ -64,10 +64,53 @@ const page = usePage()
 
 /**
  * Compute the effective text color for a layout
- * Priority: layout.attrs.customtextcolor > page.generaltextcolor > undefined
+ * Priority: layout.attrs.customtextcolor > page.generaltextcolor > null (use default)
  */
-const getEffectiveTextColor = (layout: KirbyLayoutWithAttrs): string | undefined => {
-  return layout.attrs.customtextcolor || page.value.generaltextcolor || undefined
+const getEffectiveTextColor = (layout: KirbyLayoutWithAttrs): string | null => {
+  // Helper function to check if a color value is valid (not empty, null, or undefined)
+  const isValidColor = (color: string | undefined | null): color is string => {
+    if (color == null) return false
+
+    const trimmed = color.trim()
+
+    // Check for empty or invalid values
+    if (trimmed === '' || trimmed === 'undefined' || trimmed === 'null') {
+      return false
+    }
+
+    // Filter out suspicious debugging colors that might come from browser extensions
+    const suspiciousColors = ['#fc00bd', 'rgb(252, 0, 189)', 'hsl(312, 100%, 49%)']
+    if (suspiciousColors.includes(trimmed.toLowerCase())) {
+      console.warn('Filtered out suspicious color value:', trimmed)
+      return false
+    }
+
+    return true
+  }
+
+  // Check layout-specific custom text color first
+  if (isValidColor(layout.attrs.customtextcolor)) {
+    return layout.attrs.customtextcolor
+  }
+
+  // Fall back to page-wide general text color (with safe access)
+  const generalTextColor = page.value?.generaltextcolor
+  if (isValidColor(generalTextColor)) {
+    return generalTextColor
+  }
+
+  // Debug logging for development
+  if (import.meta.dev && (layout.attrs.customtextcolor || generalTextColor)) {
+    console.log('Color values debug:', {
+      customtextcolor: layout.attrs.customtextcolor,
+      generaltextcolor: generalTextColor,
+      customValid: isValidColor(layout.attrs.customtextcolor),
+      generalValid: isValidColor(generalTextColor)
+    })
+  }
+
+  // No valid color found - return null to use default styling
+  return null
 }
 
 /**
@@ -404,7 +447,7 @@ const hasHeroBlock = (layout: KirbyLayoutWithAttrs): boolean => {
           },
         ]" class="">
           <!-- Render blocks within the column -->
-          <KirbyBlocks :blocks="column.blocks" :text-color="getEffectiveTextColor(layout)" />
+          <KirbyBlocks :blocks="column.blocks" :text-color="getEffectiveTextColor(layout) || undefined" />
         </div>
       </div>
     </div>
