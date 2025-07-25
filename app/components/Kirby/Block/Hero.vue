@@ -27,6 +27,7 @@ const props = defineProps<{
       hero_fade?: 'top' | 'bottom'
       object_fit?: 'cover' | 'contain' | 'none'
       image_alignment?: 'up' | 'down'
+      kenburns?: 'effect_on' | 'effect_off'
       // File UUIDs are resolved server-side to the actual image data
       // See: https://kirby.tools/docs/headless/field-methods
     }
@@ -200,7 +201,7 @@ const imageTailwindClasses = computed(() => {
   <div class="h-screen min-h-[100]" :class="containerClasses" :style="backgroundStyle">
     <figure v-if="imageData" :class="imageClasses" class="w-full h-screen;">
       <img :class="[
-        { kenburns: props.block.content.hero_layout === 'centered' },
+        { kenburns: props.block.content.kenburns === 'effect_on' },
         ...imageTailwindClasses
       ]" loading="lazy" :src="imageData.url" :srcset="imageData.srcset" :width="imageData.width"
         :height="imageData.height" sizes="(min-width: 640px) 50vw, 100vw" :alt="imageData.alt || ''"
