@@ -22,6 +22,7 @@ const props = defineProps<{
       secondarybackgroundcolor?: string
       textcolor?: string
       secondarytextcolor?: string
+      text_shadow?: 'shadow_dark' | 'shadow_light'
       coverimage?: ResolvedKirbyImage[]
       hero_layout?: 'left' | 'right' | 'centered'
       hero_fade?: 'top' | 'bottom'
@@ -185,6 +186,21 @@ const heroFade = computed(() => props.block.content.hero_fade)
 // Object fit computed
 const objectFit = computed(() => props.block.content.object_fit || 'cover')
 
+// Text shadow computed
+const textShadowClass = computed(() => {
+  const shadow = props.block.content.text_shadow
+  if (!shadow) return ''
+
+  switch (shadow) {
+    case 'shadow_dark':
+      return 'text-shadow-dark'
+    case 'shadow_light':
+      return 'text-shadow-light'
+    default:
+      return ''
+  }
+})
+
 // Tailwind classes for image based on object_fit
 const imageTailwindClasses = computed(() => {
   switch (objectFit.value) {
@@ -215,7 +231,7 @@ const imageTailwindClasses = computed(() => {
     <div :class="contentClasses">
       <div class="column px-12 text-center">
         <h1 class="m-auto px-2 md:max-w-[22ch] leaading-tight"
-          :class="[fontClass(props.block.content.heading_style), headingSizeClass(props.block.content.heading_size)]"
+          :class="[fontClass(props.block.content.heading_style), headingSizeClass(props.block.content.heading_size), textShadowClass]"
           v-html="heading" />
         <h2 v-if="subheading" :style="h2Color" class="text-md pt-4"
           :class="fontClass(props.block.content.subheading_style)" v-html="subheading" />
@@ -254,5 +270,29 @@ const imageTailwindClasses = computed(() => {
 .hero-fade-bottom {
   mask: linear-gradient(to top, transparent 0%, black 30%);
   -webkit-mask: linear-gradient(to top, transparent 0%, black 30%);
+}
+
+.text-shadow-dark,
+.text-shadow-dark:hover,
+.text-shadow-dark:focus,
+.text-shadow-dark:active {
+  text-shadow:
+    0 0 4rem rgba(0, 0, 0, 0.9),
+    0 0 8rem rgba(0, 0, 0, 0.7),
+    0 0 12rem rgba(0, 0, 0, 0.5),
+    0.125rem 0.125rem 1rem rgba(0, 0, 0, 0.8) !important;
+  transition: none !important;
+}
+
+.text-shadow-light,
+.text-shadow-light:hover,
+.text-shadow-light:focus,
+.text-shadow-light:active {
+  text-shadow:
+    0 0 4rem rgba(255, 255, 255, 0.9),
+    0 0 8rem rgba(255, 255, 255, 0.7),
+    0 0 12rem rgba(255, 255, 255, 0.5),
+    0.0625rem 0.0625rem 1rem rgba(255, 255, 255, 0.8) !important;
+  transition: none !important;
 }
 </style>
