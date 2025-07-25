@@ -169,11 +169,11 @@ const fontClass = (style?: string) => {
 // Font size helper for heading
 const headingSizeClass = (size?: string) => {
   switch (size) {
+    case 'text-3xl':
+    case 'text-2xl':
     case 'text-xl':
     case 'text-lg':
-    case 'text-md':
-    case 'text-small':
-    case 'text-xs':
+    case 'text-m':
       return size
     default:
       return 'text-xl'
