@@ -68,15 +68,17 @@ const backgroundStyle = computed(() => {
   if (secondaryColor) {
     return {
       background: `linear-gradient(to bottom, ${primaryColor}, ${secondaryColor})`,
-      color: props.block.content.textcolor || 'inherit',
     }
   }
 
   return {
     backgroundColor: primaryColor,
-    color: props.block.content.textcolor || 'inherit',
   }
 })
+
+const textColorStyle = computed(() => ({
+  color: props.block.content.textcolor || 'inherit',
+}))
 
 const h2Color = computed(() => ({
   color: props.block.content.secondarytextcolor || 'inherit',

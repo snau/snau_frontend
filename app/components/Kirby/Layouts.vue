@@ -40,6 +40,7 @@ interface LayoutAttributes {
   | 'left'
   | 'left-up' // Gradient direction
   fullscreen?: boolean // Whether the layout should be fullscreen
+  customtextcolor?: string // Custom text color for the section
 }
 
 /**
@@ -299,6 +300,11 @@ const getLayoutStyles = (layout: KirbyLayoutWithAttrs): string => {
     styles.push(
       getGradientStyle(layout.attrs.gradient, layout.attrs.gradient_alignment),
     )
+  }
+
+  // Add custom text color if defined
+  if (layout.attrs.customtextcolor) {
+    styles.push(`color: ${layout.attrs.customtextcolor}`)
   }
 
   // Add custom styles if defined
