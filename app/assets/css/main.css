@@ -396,3 +396,18 @@ figcaption {
 .scrolling-story [style*='color:'] div {
   color: inherit !important;
 }
+
+/* Fix for text blocks with custom text color */
+.custom-text-color p,
+.custom-text-color h1,
+.custom-text-color h2,
+.custom-text-color h3,
+.custom-text-color h4,
+.custom-text-color h5,
+.custom-text-color h6,
+.custom-text-color span,
+.custom-text-color div,
+.custom-text-color strong,
+.custom-text-color em {
+  color: inherit !important;
+}

@@ -8,5 +8,6 @@ defineProps<{
 </script>
 
 <template>
-  <div :style="{ color: textColor || 'inherit' }" v-html="block.content.text" />
+  <div :style="{ color: textColor || 'inherit' }" :class="{ 'custom-text-color': textColor }"
+    v-html="block.content.text" />
 </template>
