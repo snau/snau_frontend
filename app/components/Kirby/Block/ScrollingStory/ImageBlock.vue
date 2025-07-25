@@ -176,9 +176,11 @@ onBeforeUnmount(() => {
         ]" :style="getObjectPosition(block)" loading="lazy" decoding="async" format="avif,webp,jpg" quality="80" />
     </component>
 
-    <figcaption v-if="block.image.copyright" :class="getFigcaptionClasses" v-html="block.image.copyright" />
+    <figcaption v-if="block.image.copyright" :class="[...getFigcaptionClasses, { 'custom-text-color': textColor }]"
+      :style="{ color: textColor || 'inherit' }" v-html="block.image.copyright" />
 
-    <figcaption v-if="block.caption || block.image.caption" :class="getFigcaptionClasses"
+    <figcaption v-if="block.caption || block.image.caption"
+      :class="[...getFigcaptionClasses, { 'custom-text-color': textColor }]" :style="{ color: textColor || 'inherit' }"
       v-html="block.caption || block.image.caption" />
   </figure>
 </template>

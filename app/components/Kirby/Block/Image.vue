@@ -20,6 +20,7 @@ const props = defineProps<{
       offset_bleed?: 'offset' | 'bleed' | string
     }
   >
+  textColor?: string
 }>()
 
 const figure = ref<HTMLElement | undefined>()
@@ -171,6 +172,7 @@ onBeforeUnmount(() => {
         }" loading="lazy" decoding="async" />
     </component>
 
-    <figcaption v-if="block.content.caption" :class="getFigcaptionClasses" v-html="block.content.caption" />
+    <figcaption v-if="block.content.caption" :class="[...getFigcaptionClasses, { 'custom-text-color': textColor }]"
+      :style="{ color: textColor || 'inherit' }" v-html="block.content.caption" />
   </figure>
 </template>

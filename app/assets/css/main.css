@@ -408,6 +408,7 @@ figcaption {
 .custom-text-color span,
 .custom-text-color div,
 .custom-text-color strong,
-.custom-text-color em {
+.custom-text-color em,
+.custom-text-color figcaption {
   color: inherit !important;
 }
