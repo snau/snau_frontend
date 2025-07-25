@@ -26,6 +26,7 @@ const props = defineProps<{
       hero_layout?: 'left' | 'right' | 'centered'
       hero_fade?: 'top' | 'bottom'
       object_fit?: 'cover' | 'contain' | 'none'
+      image_alignment?: 'up' | 'down'
       // File UUIDs are resolved server-side to the actual image data
       // See: https://kirby.tools/docs/headless/field-methods
     }
@@ -103,7 +104,7 @@ const contentClasses = computed(() => {
   if (layout === 'centered') {
     // Default: center, up: top, down: bottom
     if (alignment === 'up') {
-      return 'column not-prose absolute inset-0 flex flex-col items-center justify-start pt-[20vh] z-10 w-full h-full'
+      return 'column not-prose absolute inset-0 flex flex-col items-center justify-start pt-[22vh] z-10 w-full h-full'
     } else if (alignment === 'down') {
       return 'column not-prose absolute inset-0 flex flex-col items-center justify-end pb-[10vh] z-10 w-full h-full'
     }
@@ -112,7 +113,7 @@ const contentClasses = computed(() => {
   // Default: center, up: top, down: bottom
   let base = `column not-prose grid col-span-12 justify-center justify-items-center text-center md:col-span-6 ${layout === 'right' ? 'md:order-1' : 'md:order-2'}`
   if (alignment === 'up') {
-    base += ' items-center pt-[20vh]'
+    base += ' items-center pt-[22vh]'
   } else if (alignment === 'down') {
     base += ' items-center pb-[5vh]'
   } else {
@@ -132,6 +133,13 @@ const imageStyle = computed(() => {
     style.objectPosition = imageData.value.focus
   } else if (imageData.value.focusX && imageData.value.focusY) {
     style.objectPosition = `${imageData.value.focusX}% ${imageData.value.focusY}%`
+  } else if ((objectFit.value === 'cover' || objectFit.value === 'contain') && props.block.content.image_alignment) {
+    // Default object position for alignment
+    if (props.block.content.image_alignment === 'up') {
+      style.objectPosition = 'center 37%'
+    } else if (props.block.content.image_alignment === 'down') {
+      style.objectPosition = 'center 70%'
+    }
   }
   // If object-fit is 'none', don't stretch image
   if (objectFit.value === 'none') {
@@ -206,11 +214,11 @@ const imageTailwindClasses = computed(() => {
         <h1 class="m-auto px-2 md:max-w-[22ch] leaading-tight"
           :class="[fontClass(props.block.content.heading_style), headingSizeClass(props.block.content.heading_size)]"
           v-html="heading" />
-        <h2 :style="h2Color" class="text-md" :class="fontClass(props.block.content.subheading_style)"
-          v-html="subheading" />
-        <span class="text-base opacity-85 lg:text-base" :class="fontClass(props.block.content.date_style)"
-          :datetime="date" v-html="date" />
-        <div :class="fontClass(props.block.content.text_style)" v-html="text" />
+        <h2 v-if="subheading" :style="h2Color" class="text-md pt-4"
+          :class="fontClass(props.block.content.subheading_style)" v-html="subheading" />
+        <span v-if="date" class="text-base opacity-85 lg:text-base pt-4"
+          :class="fontClass(props.block.content.date_style)" :datetime="date" v-html="date" />
+        <div v-if="text" class="pt-4" :class="fontClass(props.block.content.text_style)" v-html="text" />
       </div>
     </div>
   </div>
