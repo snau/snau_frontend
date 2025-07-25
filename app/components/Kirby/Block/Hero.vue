@@ -136,9 +136,9 @@ const imageStyle = computed(() => {
   } else if ((objectFit.value === 'cover' || objectFit.value === 'contain') && props.block.content.image_alignment) {
     // Default object position for alignment
     if (props.block.content.image_alignment === 'up') {
-      style.objectPosition = 'center 37%'
+      style.objectPosition = 'center 0%'
     } else if (props.block.content.image_alignment === 'down') {
-      style.objectPosition = 'center 70%'
+      style.objectPosition = 'center 100%'
     }
   }
   // If object-fit is 'none', don't stretch image
