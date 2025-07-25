@@ -79,7 +79,7 @@ if (page) {
 <template>
   <div>
     <KirbyLayouts v-if="page?.layouts?.length" :layouts="page.layouts" />
-    <KirbyBlocks v-else-if="page?.blocks" :blocks="page.blocks" />
+    <KirbyBlocks v-else-if="page?.blocks" :blocks="page.blocks" :text-color="page.generaltextcolor" />
     <div v-else-if="fetchError" class="error-fallback">
       <h1>Page Not Found</h1>
       <p>

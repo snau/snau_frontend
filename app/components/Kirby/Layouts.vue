@@ -58,6 +58,19 @@ const _props = defineProps<{
 }>()
 
 /**
+ * Get the current page data to access generaltextcolor
+ */
+const page = usePage()
+
+/**
+ * Compute the effective text color for a layout
+ * Priority: layout.attrs.customtextcolor > page.generaltextcolor > undefined
+ */
+const getEffectiveTextColor = (layout: KirbyLayoutWithAttrs): string | undefined => {
+  return layout.attrs.customtextcolor || page.value.generaltextcolor || undefined
+}
+
+/**
  * Check if a layout is the first one on the page
  *
  * @param layoutIndex - Index of the current layout
@@ -302,9 +315,10 @@ const getLayoutStyles = (layout: KirbyLayoutWithAttrs): string => {
     )
   }
 
-  // Add custom text color if defined
-  if (layout.attrs.customtextcolor) {
-    styles.push(`color: ${layout.attrs.customtextcolor}`)
+  // Add effective text color if defined (customtextcolor takes priority over generaltextcolor)
+  const effectiveTextColor = getEffectiveTextColor(layout)
+  if (effectiveTextColor) {
+    styles.push(`color: ${effectiveTextColor}`)
   }
 
   // Add custom styles if defined
@@ -390,7 +404,7 @@ const hasHeroBlock = (layout: KirbyLayoutWithAttrs): boolean => {
           },
         ]" class="">
           <!-- Render blocks within the column -->
-          <KirbyBlocks :blocks="column.blocks" :text-color="layout.attrs.customtextcolor" />
+          <KirbyBlocks :blocks="column.blocks" :text-color="getEffectiveTextColor(layout)" />
         </div>
       </div>
     </div>
