@@ -230,10 +230,10 @@ const imageTailwindClasses = computed(() => {
 
     <div :class="contentClasses">
       <div class="column px-12 text-center">
-        <h1 class="m-auto px-2 md:max-w-[22ch] leaading-tight"
+        <h1 class="m-auto pb-0 md:max-w-[22ch] leaading-tight"
           :class="[fontClass(props.block.content.heading_style), headingSizeClass(props.block.content.heading_size), textShadowClass]"
           v-html="heading" />
-        <h2 v-if="subheading" :style="h2Color" class="text-md pt-4"
+        <h2 v-if="subheading" :style="h2Color" class="text-md pb-0 pt-4"
           :class="fontClass(props.block.content.subheading_style)" v-html="subheading" />
         <span v-if="date" class="text-base opacity-85 lg:text-base pt-4"
           :class="fontClass(props.block.content.date_style)" :datetime="date" v-html="date" />
@@ -294,5 +294,15 @@ const imageTailwindClasses = computed(() => {
     0 0 12rem rgba(255, 255, 255, 0.5),
     0.0625rem 0.0625rem 1rem rgba(255, 255, 255, 0.8) !important;
   transition: none !important;
+}
+
+/* Override global heading padding */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  padding-bottom: 0 !important;
 }
 </style>
