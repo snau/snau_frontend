@@ -204,12 +204,12 @@ const imageTailwindClasses = computed(() => {
     <figure v-if="imageData" :class="imageClasses" class="w-full h-screen;">
       <img :class="[
         { kenburns: props.block.content.kenburns === 'effect_on' },
+        { 'hero-fade-top': heroFade === 'top' },
+        { 'hero-fade-bottom': heroFade === 'bottom' },
         ...imageTailwindClasses
       ]" loading="lazy" :src="imageData.url" :srcset="imageData.srcset" :width="imageData.width"
         :height="imageData.height" sizes="(min-width: 640px) 50vw, 100vw" :alt="imageData.alt || ''"
         :style="imageStyle" />
-      <div v-if="heroFade === 'top'" class="hero-fade-top pointer-events-none" />
-      <div v-else-if="heroFade === 'bottom'" class="hero-fade-bottom pointer-events-none" />
     </figure>
 
     <div :class="contentClasses">
@@ -247,24 +247,12 @@ const imageTailwindClasses = computed(() => {
 }
 
 .hero-fade-top {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 30%;
-  pointer-events: none;
-  background: linear-gradient(to bottom, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0));
-  z-index: 2;
+  mask: linear-gradient(to bottom, transparent 0%, black 30%);
+  -webkit-mask: linear-gradient(to bottom, transparent 0%, black 30%);
 }
 
 .hero-fade-bottom {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 30%;
-  pointer-events: none;
-  background: linear-gradient(to top, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0));
-  z-index: 2;
+  mask: linear-gradient(to top, transparent 0%, black 30%);
+  -webkit-mask: linear-gradient(to top, transparent 0%, black 30%);
 }
 </style>
