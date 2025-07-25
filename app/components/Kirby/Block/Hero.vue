@@ -61,6 +61,20 @@ const subheading = computed(() => props.block.content.subheading)
 const text = computed(() => props.block.content.text)
 const date = computed(() => props.block.content.date)
 
+// Format date as dd.mm.YYYY
+const formattedDate = computed(() => {
+  if (!props.block.content.date) return ''
+
+  const dateObj = new Date(props.block.content.date)
+  if (Number.isNaN(dateObj.getTime())) return props.block.content.date // Return original if invalid
+
+  const day = dateObj.getDate().toString().padStart(2, '0')
+  const month = (dateObj.getMonth() + 1).toString().padStart(2, '0')
+  const year = dateObj.getFullYear()
+
+  return `${day}.${month}.${year}`
+})
+
 // Computed properties for styling
 const backgroundStyle = computed(() => {
   const primaryColor = props.block.content.backgroundcolor || 'transparent'
@@ -236,7 +250,7 @@ const imageTailwindClasses = computed(() => {
         <h2 v-if="subheading" :style="h2Color" class="text-md pb-0 pt-4"
           :class="fontClass(props.block.content.subheading_style)" v-html="subheading" />
         <span v-if="date" class="text-base opacity-85 lg:text-base pt-4"
-          :class="fontClass(props.block.content.date_style)" :datetime="date" v-html="date" />
+          :class="fontClass(props.block.content.date_style)" :datetime="date">{{ formattedDate }}</span>
         <div v-if="text" class="pt-4" :class="fontClass(props.block.content.text_style)" v-html="text" />
       </div>
     </div>
