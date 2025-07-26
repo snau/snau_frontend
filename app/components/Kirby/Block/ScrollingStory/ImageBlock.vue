@@ -164,6 +164,7 @@ onBeforeUnmount(() => {
 <template>
   <figure :class="[
     ...getContainerClasses,
+    'flex-grow w-full', // Ensure proper sizing in flex containers
     isLightboxEnabled ? 'pswp-gallery' : ''
   ]" :data-pswp-uid="isLightboxEnabled ? galleryId : undefined" :style="getImageStyle(block)">
     <!-- Conditional wrapper: link or div -->
