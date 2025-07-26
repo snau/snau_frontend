@@ -26,10 +26,18 @@ interface ImageBlockProps {
 
 const props = defineProps<ImageBlockProps>()
 
+/**
+ * Check if crop should be disabled - handles various possible values
+ */
+const isCropDisabled = computed(() => {
+  const cropValue = props.block.crop
+  return cropValue === false || cropValue === 'false' || cropValue === '0' || cropValue === 0 || cropValue === null
+})
+
 const getImageStyle = (block: ImageBlockProps['block']) => {
-  const aspectRatio = block.ratio ? `aspect-ratio:${block.ratio};` : ''
-  const objectFit = `object-fit:${block.crop === false ? 'contain' : 'cover'};`
-  return `${aspectRatio}${objectFit}`
+  // Only apply aspect ratio if crop is not disabled
+  const aspectRatio = isCropDisabled.value ? '' : (block.ratio ? `aspect-ratio:${block.ratio};` : '')
+  return aspectRatio
 }
 
 const getObjectPosition = (block: ImageBlockProps['block']) => {
@@ -111,6 +119,9 @@ const getLinkHref = computed(() => {
 })
 
 onMounted(() => {
+  // Debug crop value
+  console.log('ImageBlock crop value:', props.block.crop, typeof props.block.crop, 'isCropDisabled:', isCropDisabled.value)
+
   if (isLightboxEnabled.value) {
     nextTick(() => {
       setTimeout(initPhotoSwipe, 100)
@@ -173,14 +184,13 @@ onBeforeUnmount(() => {
       :data-pswp-height="isLightboxEnabled ? block.image.height : undefined"
       :data-pswp-srcset="isLightboxEnabled ? block.image.srcset : undefined"
       :target="!isLightboxEnabled && block.link ? '_blank' : undefined"
-      :rel="!isLightboxEnabled && block.link ? 'noopener noreferrer' : undefined"
-      class="block overflow-hidden rounded-sm" :class="[
+      :rel="!isLightboxEnabled && block.link ? 'noopener noreferrer' : undefined" class="block rounded-sm" :class="[
+        isCropDisabled ? '' : 'overflow-hidden',
         getLinkHref ? 'cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2' : ''
       ]">
       <NuxtImg :src="block.image.url" :width="block.image.width || ''" :height="block.image.height || ''"
         :alt="block.alt || block.image.alt || ''" class="w-full transition-all duration-300 ease-out" :class="[
-          block.crop === false ? 'object-contain' : 'object-cover',
-          block.crop ? 'h-auto' : 'h-full',
+          isCropDisabled ? 'object-contain h-auto max-h-none' : 'object-cover h-full',
           getLinkHref ? 'hover:scale-105 hover:brightness-105' : ''
         ]" :style="getObjectPosition(block)" loading="lazy" decoding="async" quality="80"
         @error="(e) => console.warn('Image loading failed:', e)" />

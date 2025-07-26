@@ -99,6 +99,14 @@ const getLinkHref = computed(() => {
   return null
 })
 
+/**
+ * Check if crop should be disabled - handles various possible values
+ */
+const isCropDisabled = computed(() => {
+  const cropValue = props.block.content.crop
+  return cropValue === false || cropValue === 'false' || cropValue === '0' || cropValue === 0 || cropValue === null
+})
+
 onMounted(() => {
   if (isLightboxEnabled.value) {
     nextTick(() => {
@@ -161,19 +169,20 @@ onBeforeUnmount(() => {
       :data-pswp-width="isLightboxEnabled ? (block.content.image?.[0]?.width) : undefined"
       :data-pswp-height="isLightboxEnabled ? (block.content.image?.[0]?.height) : undefined"
       :data-pswp-srcset="isLightboxEnabled ? (block.content.image?.[0]?.srcset) : undefined"
-      :data-contain="block.content.crop === false || undefined"
+      :data-contain="isCropDisabled || undefined"
       :target="!isLightboxEnabled && block.content.link ? '_blank' : undefined"
       :rel="!isLightboxEnabled && block.content.link ? 'noopener noreferrer' : undefined" :style="{
         aspectRatio: block.content.ratio || undefined,
-      }" class="block overflow-hidden rounded-sm" :class="[
+      }" class="block rounded-sm" :class="[
+        isCropDisabled ? '' : 'overflow-hidden',
         getLinkHref ? 'cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2' : ''
       ]">
       <NuxtImg
         :src="block.content.location === 'web' ? block.content.src : (block.content.image?.[0]?.url || block.content.src)"
         :width="block.content.image?.[0]?.width || ''" :height="block.content.image?.[0]?.height || ''"
         :sizes="`${width}px`" :alt="block.content.alt || block.content.image?.[0]?.alt || ''"
-        class="w-full h-full transition-all duration-300 ease-out" :class="[
-          block.content.crop === false ? 'object-contain' : 'object-cover',
+        class="w-full transition-all duration-300 ease-out" :class="[
+          isCropDisabled ? 'object-contain h-auto max-h-none' : 'object-cover h-full',
           getLinkHref ? 'hover:scale-105 hover:brightness-105' : ''
         ]" :style="{
           objectPosition: block.content.image?.[0]?.focus || 'center center'
