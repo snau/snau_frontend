@@ -8,6 +8,7 @@ await hasPage()
 
 const { t } = useI18n()
 const site = useSite()
+const page = usePage()
 const { navigationLinks } = useHeader(site)
 const localePath = useLocalePath()
 
@@ -64,21 +65,64 @@ const kontaktSection = computed(
 )
 
 const currentYear = new Date().getFullYear()
+
+/**
+ * Get the effective text color for the footer
+ * Uses the same logic as Layouts.vue to respect page-level generaltextcolor
+ */
+const getEffectiveTextColor = (): string | null => {
+  // Helper function to check if a color value is valid (not empty, null, or undefined)
+  const isValidColor = (color: string | undefined | null): color is string => {
+    if (color == null) return false
+
+    const trimmed = color.trim()
+
+    // Check for empty or invalid values
+    if (trimmed === '' || trimmed === 'undefined' || trimmed === 'null') {
+      return false
+    }
+
+    // Filter out suspicious debugging colors that might come from browser extensions
+    const suspiciousColors = ['#fc00bd', 'rgb(252, 0, 189)', 'hsl(312, 100%, 49%)']
+    if (suspiciousColors.includes(trimmed.toLowerCase())) {
+      console.warn('Filtered out suspicious color value:', trimmed)
+      return false
+    }
+
+    return true
+  }
+
+  // Check page-wide general text color
+  const generalTextColor = page.value?.generaltextcolor
+  if (isValidColor(generalTextColor)) {
+    return generalTextColor
+  }
+
+  // Debug logging for development
+  if (import.meta.dev && generalTextColor) {
+    console.log('Footer color values debug:', {
+      generaltextcolor: generalTextColor,
+      generalValid: isValidColor(generalTextColor)
+    })
+  }
+
+  // No valid color found - return null to use default styling
+  return null
+}
+
+// Compute the effective text color
+const effectiveTextColor = computed(() => getEffectiveTextColor())
 </script>
 
 <template>
-  <footer
-    class="relative backdrop-blur-md border-t border-gray-200/20 dark:border-gray-800/30 mt-24"
-  >
+  <footer class="relative backdrop-blur-md mt-24" :style="{ color: effectiveTextColor || 'inherit' }">
     <!-- Gradient overlay for visual depth -->
     <div class="absolute inset-0 pointer-events-none"></div>
 
     <div class="relative max-w-7xl mx-auto px-6 lg:px-8">
       <!-- Main footer content -->
       <div class="py-16">
-        <div
-          class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12 lg:gap-8"
-        >
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12 lg:gap-8">
           <!-- Logo and brand section -->
           <div class="lg:col-span-1">
             <div class="mb-6">
@@ -88,22 +132,16 @@ const currentYear = new Date().getFullYear()
 
           <!-- Magazin Section -->
           <div v-if="magazinSection" class="lg:col-span-1">
-            <h4
-              class="text-sm font-semibold text-black text-opacity-50 dark:text-white uppercase tracking-wider mb-6"
-            >
-              <NuxtLink
-                :to="magazinSection.to"
-                class="hover:text-black dark:hover:white transition-colors duration-200 hover:underline decoration-1 underline-offset-4"
-              >
+            <h4 class="text-sm font-semibold text-opacity-50  uppercase tracking-wider mb-6">
+              <NuxtLink :to="magazinSection.to"
+                class="  transition-colors duration-200 hover:underline decoration-1 underline-offset-4">
                 {{ magazinSection.label }}
               </NuxtLink>
             </h4>
             <ul class="space-y-4">
               <li v-for="child in magazinSection.children" :key="child.to">
-                <NuxtLink
-                  :to="child.to"
-                  class="text-sm text-black opacity-50 dark:text-white hover:text-black dark:hover:white transition-colors duration-200 hover:underline decoration-1 underline-offset-4"
-                >
+                <NuxtLink :to="child.to"
+                  class="text-sm opacity-50    transition-colors duration-200 hover:underline decoration-1 underline-offset-4">
                   {{ child.label }}
                 </NuxtLink>
               </li>
@@ -112,22 +150,16 @@ const currentYear = new Date().getFullYear()
 
           <!-- Portfolio Section -->
           <div v-if="portfolioSection" class="lg:col-span-1">
-            <h4
-              class="text-sm font-semibold text-black dark:white uppercase tracking-wider mb-6"
-            >
-              <NuxtLink
-                :to="portfolioSection.to"
-                class="hover:text-black dark:hover:white transition-colors duration-200 hover:underline decoration-1 underline-offset-4"
-              >
+            <h4 class="text-sm font-semibold dark:white uppercase tracking-wider mb-6">
+              <NuxtLink :to="portfolioSection.to"
+                class="  transition-colors duration-200 hover:underline decoration-1 underline-offset-4">
                 {{ portfolioSection.label }}
               </NuxtLink>
             </h4>
             <ul class="space-y-4">
               <li v-for="child in portfolioSection.children" :key="child.to">
-                <NuxtLink
-                  :to="child.to"
-                  class="text-sm text-black opacity-50 dark:text-white hover:text-black dark:hover:white transition-colors duration-200 hover:underline decoration-1 underline-offset-4"
-                >
+                <NuxtLink :to="child.to"
+                  class="text-sm opacity-50    transition-colors duration-200 hover:underline decoration-1 underline-offset-4">
                   {{ child.label }}
                 </NuxtLink>
               </li>
@@ -136,22 +168,16 @@ const currentYear = new Date().getFullYear()
 
           <!-- Über Uns Section -->
           <div v-if="uberUnsSection" class="lg:col-span-1">
-            <h4
-              class="text-sm font-semibold text-black dark:white uppercase tracking-wider mb-6"
-            >
-              <NuxtLink
-                :to="uberUnsSection.to"
-                class="hover:text-black dark:hover:white transition-colors duration-200 hover:underline decoration-1 underline-offset-4"
-              >
+            <h4 class="text-sm font-semibold dark:white uppercase tracking-wider mb-6">
+              <NuxtLink :to="uberUnsSection.to"
+                class="  transition-colors duration-200 hover:underline decoration-1 underline-offset-4">
                 {{ uberUnsSection.label }}
               </NuxtLink>
             </h4>
             <ul class="space-y-4">
               <li v-for="child in uberUnsSection.children" :key="child.to">
-                <NuxtLink
-                  :to="child.to"
-                  class="text-sm text-black opacity-50 dark:text-white hover:text-black dark:hover:white transition-colors duration-200 hover:underline decoration-1 underline-offset-4"
-                >
+                <NuxtLink :to="child.to"
+                  class="text-sm opacity-50    transition-colors duration-200 hover:underline decoration-1 underline-offset-4">
                   {{ child.label }}
                 </NuxtLink>
               </li>
@@ -160,22 +186,16 @@ const currentYear = new Date().getFullYear()
 
           <!-- Kontakt Section -->
           <div v-if="kontaktSection" class="lg:col-span-1">
-            <h4
-              class="text-sm font-semibold text-black dark:white uppercase tracking-wider mb-6"
-            >
-              <NuxtLink
-                :to="kontaktSection.to"
-                class="hover:text-black dark:hover:white transition-colors duration-200 hover:underline decoration-1 underline-offset-4"
-              >
+            <h4 class="text-sm font-semibold dark:white uppercase tracking-wider mb-6">
+              <NuxtLink :to="kontaktSection.to"
+                class="  transition-colors duration-200 hover:underline decoration-1 underline-offset-4">
                 {{ kontaktSection.label }}
               </NuxtLink>
             </h4>
             <ul class="space-y-4">
               <li v-for="child in kontaktSection.children" :key="child.to">
-                <NuxtLink
-                  :to="child.to"
-                  class="text-sm text-black opacity-50 dark:text-white hover:text-black dark:hover:white transition-colors duration-200 hover:underline decoration-1 underline-offset-4"
-                >
+                <NuxtLink :to="child.to"
+                  class="text-sm opacity-50    transition-colors duration-200 hover:underline decoration-1 underline-offset-4">
                   {{ child.label }}
                 </NuxtLink>
               </li>
@@ -185,26 +205,18 @@ const currentYear = new Date().getFullYear()
       </div>
 
       <!-- Bottom section with copyright and legal links -->
-      <div
-        class="border-t border-gray-200/30 dark:border-gray-800/30 py-8 mb-24"
-      >
-        <div
-          class="flex flex-col md:flex-row md:items-center md:justify-center gap-4"
-        >
+      <div class="py-8 mb-24">
+        <div class="flex flex-col md:flex-row md:items-center md:justify-center gap-4">
           <!-- Copyright -->
-          <span class="text-sm text-black dark:text-white opacity-50">
+          <span class="text-sm  opacity-50">
             &copy; {{ currentYear }} {{ site.title }}.
             {{ t('footer.copyright') }}
           </span>
 
           <!-- Legal links -->
           <div class="flex flex-wrap items-center gap-6">
-            <NuxtLink
-              v-for="link in legalLinks"
-              :key="link.to"
-              :to="link.to"
-              class="text-sm opacity-50 text-black dark:text-white transition-colors duration-200 hover:underline decoration-1 underline-offset-4"
-            >
+            <NuxtLink v-for="link in legalLinks" :key="link.to" :to="link.to"
+              class="text-sm opacity-50  transition-colors duration-200 hover:underline decoration-1 underline-offset-4">
               {{ link.label }}
             </NuxtLink>
           </div>
