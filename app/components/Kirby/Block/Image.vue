@@ -168,17 +168,16 @@ onBeforeUnmount(() => {
       }" class="block overflow-hidden rounded-sm" :class="[
         getLinkHref ? 'cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2' : ''
       ]">
-      <img :src="block.content.location === 'web' ? block.content.src : undefined" :srcset="block.content.location !== 'web'
-        ? block.content.image?.[0]?.srcset
-        : undefined
-        " :width="block.content.image?.[0]?.width" :height="block.content.image?.[0]?.height" :sizes="`${width}px`"
-        :alt="block.content.alt || block.content.image?.[0]?.alt || ''"
+      <NuxtImg
+        :src="block.content.location === 'web' ? block.content.src : (block.content.image?.[0]?.url || block.content.src)"
+        :width="block.content.image?.[0]?.width || ''" :height="block.content.image?.[0]?.height || ''"
+        :sizes="`${width}px`" :alt="block.content.alt || block.content.image?.[0]?.alt || ''"
         class="w-full h-full transition-all duration-300 ease-out" :class="[
           block.content.crop === false ? 'object-contain' : 'object-cover',
           getLinkHref ? 'hover:scale-105 hover:brightness-105' : ''
         ]" :style="{
           objectPosition: block.content.image?.[0]?.focus || 'center center'
-        }" loading="lazy" decoding="async" />
+        }" loading="lazy" decoding="async" format="avif,webp,jpg" quality="80" preset="default" />
     </component>
 
     <figcaption v-if="block.content.caption" :class="[...getFigcaptionClasses, { 'custom-text-color': textColor }]"

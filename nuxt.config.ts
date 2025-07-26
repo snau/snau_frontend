@@ -15,6 +15,35 @@ export default defineNuxtConfig({
     '@nuxtjs/mdc',
   ],
 
+  image: {
+    // Enable modern formats
+    format: ['avif', 'webp', 'jpg', 'png'],
+    // Quality settings
+    quality: 80,
+    // Enable responsive images
+    screens: {
+      xs: 320,
+      sm: 640,
+      md: 768,
+      lg: 1024,
+      xl: 1280,
+      xxl: 1536,
+    },
+    // Provider configuration
+    providers: {
+      // Use default provider for local images
+    },
+    // Presets for common use cases
+    presets: {
+      default: {
+        modifiers: {
+          format: 'avif,webp,jpg',
+          quality: 80,
+        },
+      },
+    },
+  },
+
   // Ensure ssr is true (this is the default, but explicit is good)
   ssr: true,
 

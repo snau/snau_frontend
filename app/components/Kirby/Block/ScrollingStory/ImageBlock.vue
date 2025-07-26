@@ -182,7 +182,8 @@ onBeforeUnmount(() => {
           block.crop === false ? 'object-contain' : 'object-cover',
           block.crop ? 'h-auto' : 'h-full',
           getLinkHref ? 'hover:scale-105 hover:brightness-105' : ''
-        ]" :style="getObjectPosition(block)" loading="lazy" decoding="async" format="avif,webp,jpg" quality="80" />
+        ]" :style="getObjectPosition(block)" loading="lazy" decoding="async" format="avif,webp,jpg" quality="80"
+        preset="default" />
     </component>
 
     <figcaption v-if="block.image.copyright" :class="[...getFigcaptionClasses, { 'custom-text-color': textColor }]"
