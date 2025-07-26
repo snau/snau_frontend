@@ -266,7 +266,7 @@ const imageSizes = computed(() => {
           textShadowClass
         ]" :style="textColorStyle" v-html="heading" />
 
-        <h2 v-if="subheading" :style="h2Color" class="pb-0 pt-4" :class="[
+        <h2 v-if="subheading" :style="h2Color" class="pb-0" :class="[
           fontClass(content.subheading_style),
           subheadingSizeClass(content.subheading_size),
           subheadingLineHeightClass
