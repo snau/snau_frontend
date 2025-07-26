@@ -7,7 +7,7 @@ interface HeadingBlockProps {
     alignment?: string
     serif_sans?: string
   }
-  textColor?: string // Add new prop
+  textColor?: string
 }
 
 defineProps<HeadingBlockProps>()
@@ -17,7 +17,7 @@ const getClasses = (block: HeadingBlockProps['block']) => {
     'my-6',
     block.font_size || '',
     block.alignment ? `text-${block.alignment}` : '',
-    block.serif_sans || '',
+    block.serif_sans || 'font-sans',
   ]
     .filter(Boolean)
     .join(' ')
@@ -25,11 +25,8 @@ const getClasses = (block: HeadingBlockProps['block']) => {
 </script>
 
 <template>
-  <component
-    :is="block.level || 'h2'"
-    :class="getClasses(block)"
-    :style="{ color: textColor || 'inherit' }"
-  >
+  <component :is="block.level || 'h2'" :class="[getClasses(block), { 'custom-text-color': textColor }]"
+    :style="{ color: textColor || 'inherit' }">
     <span v-html="block.content"></span>
   </component>
 </template>
