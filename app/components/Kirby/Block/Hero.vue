@@ -109,14 +109,14 @@ const containerClasses = computed(() => {
   if (layout.value === 'centered') {
     return 'hero w-full h-full -ml-2 md:ml-0 top-0 left-0'
   }
-  return 'hero w-screen sm:grid sm:grid-cols-12 -ml-2 md:ml-0 md:h-full md:w-full'
+  return 'hero w-screen md:grid md:grid-cols-12 -ml-2 md:ml-0 md:h-full md:w-full'
 })
 
 const imageClasses = computed(() => {
   if (layout.value === 'centered') {
     return 'column group m-0 overflow-hidden inset-0 w-full h-full'
   }
-  return `column group col-span-12 m-0 overflow-hidden md:col-span-6 ${layout.value === 'right' ? 'md:order-2' : ''}`
+  return `column group col-span-12 m-0 overflow-hidden h-screen md:col-span-6 md:h-full ${layout.value === 'right' ? 'md:order-2' : ''}`
 })
 
 const contentClasses = computed(() => {
@@ -131,7 +131,7 @@ const contentClasses = computed(() => {
   }
 
   // Default: center, up: top, down: bottom
-  let base = `column not-prose grid col-span-12 justify-center justify-items-center text-center md:col-span-6 ${layout.value === 'right' ? 'md:order-1' : 'md:order-2'}`
+  let base = `column not-prose flex flex-col col-span-12 justify-center items-center text-center md:col-span-6 ${layout.value === 'right' ? 'md:order-1' : 'md:order-2'}`
   if (alignment.value === 'up') {
     base += ' items-center pt-[22vh]'
   } else if (alignment.value === 'down') {
@@ -224,11 +224,21 @@ const textShadowClass = computed(() => {
 
 // Optimized: Image classes with better performance
 const imageTailwindClasses = computed(() => {
-  switch (objectFit.value) {
-    case 'cover': return ['object-cover', 'h-full', 'w-screen']
-    case 'contain': return ['object-contain', 'h-full', 'w-screen']
-    case 'none': return ['max-w-full', 'max-h-full']
-    default: return ['object-cover', 'h-full', 'w-screen']
+  if (layout.value === 'centered') {
+    switch (objectFit.value) {
+      case 'cover': return ['object-cover', 'h-full', 'w-screen']
+      case 'contain': return ['object-contain', 'h-full', 'w-screen']
+      case 'none': return ['max-w-full', 'max-h-full']
+      default: return ['object-cover', 'h-full', 'w-screen']
+    }
+  } else {
+    // For side-by-side layout, use w-full instead of w-screen
+    switch (objectFit.value) {
+      case 'cover': return ['object-cover', 'h-full', 'w-full']
+      case 'contain': return ['object-contain', 'h-full', 'w-full']
+      case 'none': return ['max-w-full', 'max-h-full']
+      default: return ['object-cover', 'h-full', 'w-full']
+    }
   }
 })
 
@@ -253,7 +263,7 @@ const imageSizes = computed(() => {
 
 <template>
   <div class="h-screen min-h-[100]" :class="containerClasses" :style="backgroundStyle">
-    <figure v-if="imageData" :class="imageClasses" class="w-full h-screen">
+    <figure v-if="imageData" :class="imageClasses">
       <img :class="imageClassList" loading="lazy" :src="imageData.url" :srcset="imageData.srcset"
         :width="imageData.width" :height="imageData.height" :sizes="imageSizes" :alt="imageAlt" :style="imageStyle" />
     </figure>
@@ -357,5 +367,28 @@ h6 {
 /* Force line-height: 1 for text-2xl subheadings */
 .leading-none {
   line-height: 1 !important;
+}
+
+/* Force grid layout to work properly */
+@media (min-width: 768px) {
+  .hero.md\:grid {
+    display: grid !important;
+    grid-template-columns: repeat(12, 1fr) !important;
+  }
+
+  .hero .md\:col-span-6 {
+    grid-column: span 6 / span 6 !important;
+  }
+
+  /* Force figure to fill full height of grid cell */
+  .hero figure.md\:col-span-6 {
+    height: 100vh !important;
+  }
+
+  /* Ensure img fills the figure */
+  .hero figure img {
+    height: 100% !important;
+    width: 100% !important;
+  }
 }
 </style>

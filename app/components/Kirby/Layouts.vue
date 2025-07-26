@@ -439,7 +439,7 @@ const hasHeroBlock = (layout: KirbyLayoutWithAttrs): boolean => {
         <div v-for="(column, columnIndex) in layout.columns" id="column-container" :key="columnIndex" :class="[
           getColumnClasses(column.width),
           {
-            'h-auto flex flex-col justify-start': layout.attrs.fullscreen,
+            'h-auto': layout.attrs.fullscreen,
             'min-h-screen':
               layout.attrs.fullscreen &&
               isFirstLayout(layoutIndex) &&
