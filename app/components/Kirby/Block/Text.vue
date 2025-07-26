@@ -15,7 +15,7 @@ defineProps<{
 
 <template>
   <div :style="{ color: textColor || 'inherit' }" class="kirby-text-block" :class="[
-    block.content.font_size || 'text-md',
+    block.content.font_size || 'text-base',
     block.content.serif_sans || 'font-sans',
     { 'custom-text-color': textColor }
   ]" v-html="block.content.text" />
