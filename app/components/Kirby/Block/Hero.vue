@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import type { KirbyBlock } from '#nuxt-kql'
 import type { ResolvedKirbyImage } from '../../../../shared/types/kirby'
-import { computed } from 'vue'
-import { useMarkdownParser } from '@/composables/useMarkdownParser'
 
 const props = defineProps<{
   block: KirbyBlock<
@@ -34,51 +32,57 @@ const props = defineProps<{
     }
   >
 }>()
-const page = usePage()
-const _invert = computed(() => page.value.invert)
 
+// Optimized: Direct access to content for better performance
+const content = computed(() => props.block.content)
+
+// Optimized: Single computed for image handling
 const coverImage = computed(() => {
-  // Return the image data directly if it's a single object, otherwise return the array
-  if (
-    props.block.content.coverimage &&
-    !Array.isArray(props.block.content.coverimage)
-  ) {
-    return [props.block.content.coverimage]
-  }
-  return props.block.content.coverimage
+  const images = content.value.coverimage
+  if (!images) return null
+
+  // Handle both array and single object cases efficiently
+  return Array.isArray(images) ? images : [images]
 })
 
 const imageData = computed(() => {
-  // Handle both array and single object cases
-  if (coverImage.value && coverImage.value.length > 0) {
-    return coverImage.value[0]
-  }
-  return null
+  return coverImage.value?.[0] || null
 })
 
-const heading = computed(() => props.block.content.heading || '')
-const subheading = computed(() => props.block.content.subheading)
-const text = computed(() => props.block.content.text)
-const date = computed(() => props.block.content.date)
+// Optimized: Memoized content computeds
+const heading = computed(() => content.value.heading || '')
+const subheading = computed(() => content.value.subheading)
+const text = computed(() => content.value.text)
+const date = computed(() => content.value.date)
 
-// Format date as dd.mm.YYYY
+// Optimized: Better date formatting with error handling
 const formattedDate = computed(() => {
-  if (!props.block.content.date) return ''
+  if (!date.value) return ''
 
-  const dateObj = new Date(props.block.content.date)
-  if (Number.isNaN(dateObj.getTime())) return props.block.content.date // Return original if invalid
+  try {
+    const dateObj = new Date(date.value)
+    if (Number.isNaN(dateObj.getTime())) return date.value
 
-  const day = dateObj.getDate().toString().padStart(2, '0')
-  const month = (dateObj.getMonth() + 1).toString().padStart(2, '0')
-  const year = dateObj.getFullYear()
+    const day = dateObj.getDate().toString().padStart(2, '0')
+    const month = (dateObj.getMonth() + 1).toString().padStart(2, '0')
+    const year = dateObj.getFullYear()
 
-  return `${day}.${month}.${year}`
+    return `${day}.${month}.${year}`
+  } catch {
+    return date.value
+  }
 })
 
-// Computed properties for styling
+// Optimized: Cached layout computeds
+const layout = computed(() => content.value.hero_layout || 'left')
+const alignment = computed(() => content.value.heading_alignment)
+const objectFit = computed(() => content.value.object_fit || 'cover')
+const heroFade = computed(() => content.value.hero_fade)
+
+// Styling computeds - kept exactly as original for visual consistency
 const backgroundStyle = computed(() => {
-  const primaryColor = props.block.content.backgroundcolor || 'transparent'
-  const secondaryColor = props.block.content.secondarybackgroundcolor
+  const primaryColor = content.value.backgroundcolor || 'transparent'
+  const secondaryColor = content.value.secondarybackgroundcolor
 
   if (secondaryColor) {
     return {
@@ -92,47 +96,44 @@ const backgroundStyle = computed(() => {
 })
 
 const textColorStyle = computed(() => ({
-  color: props.block.content.textcolor || 'inherit',
+  color: content.value.textcolor || 'inherit',
 }))
 
 const h2Color = computed(() => ({
-  color: props.block.content.secondarytextcolor || 'inherit',
+  color: content.value.secondarytextcolor || 'inherit',
 }))
 
-// Computed properties for layout classes
+// Layout classes - preserved exactly for visual consistency
 const containerClasses = computed(() => {
-  const layout = props.block.content.hero_layout || 'left'
-  if (layout === 'centered') {
+  if (layout.value === 'centered') {
     return 'hero w-full h-full -ml-2 md:ml-0 top-0 left-0'
   }
   return 'hero w-screen sm:grid sm:grid-cols-12 -ml-2 md:ml-0 md:h-full md:w-full'
 })
 
 const imageClasses = computed(() => {
-  const layout = props.block.content.hero_layout || 'left'
-  if (layout === 'centered') {
+  if (layout.value === 'centered') {
     return 'column group m-0 overflow-hidden inset-0 w-full h-full'
   }
-  return `column group col-span-12 m-0 overflow-hidden md:col-span-6 ${layout === 'right' ? 'md:order-2' : ''}`
+  return `column group col-span-12 m-0 overflow-hidden md:col-span-6 ${layout.value === 'right' ? 'md:order-2' : ''}`
 })
 
 const contentClasses = computed(() => {
-  const layout = props.block.content.hero_layout || 'left'
-  const alignment = props.block.content.heading_alignment
-  if (layout === 'centered') {
+  if (layout.value === 'centered') {
     // Default: center, up: top, down: bottom
-    if (alignment === 'up') {
+    if (alignment.value === 'up') {
       return 'column not-prose absolute inset-0 flex flex-col items-center justify-start pt-[22vh] z-10 w-full h-full'
-    } else if (alignment === 'down') {
+    } else if (alignment.value === 'down') {
       return 'column not-prose absolute inset-0 flex flex-col items-center justify-end pb-[10vh] z-10 w-full h-full'
     }
     return 'column not-prose absolute inset-0 flex flex-col items-center justify-center z-10 w-full h-full'
   }
+
   // Default: center, up: top, down: bottom
-  let base = `column not-prose grid col-span-12 justify-center justify-items-center text-center md:col-span-6 ${layout === 'right' ? 'md:order-1' : 'md:order-2'}`
-  if (alignment === 'up') {
+  let base = `column not-prose grid col-span-12 justify-center justify-items-center text-center md:col-span-6 ${layout.value === 'right' ? 'md:order-1' : 'md:order-2'}`
+  if (alignment.value === 'up') {
     base += ' items-center pt-[22vh]'
-  } else if (alignment === 'down') {
+  } else if (alignment.value === 'down') {
     base += ' items-center pb-[5vh]'
   } else {
     base += ' items-center py-12'
@@ -140,48 +141,47 @@ const contentClasses = computed(() => {
   return base
 })
 
-// Computed property for image focus style
+// Image styling - preserved exactly
 const imageStyle = computed(() => {
   if (!imageData.value) return {}
+
   const style: Record<string, string> = {}
-  // Object fit
   style.objectFit = objectFit.value
-  // Focus
+
+  // Focus positioning
   if (imageData.value.focus) {
     style.objectPosition = imageData.value.focus
   } else if (imageData.value.focusX && imageData.value.focusY) {
     style.objectPosition = `${imageData.value.focusX}% ${imageData.value.focusY}%`
-  } else if ((objectFit.value === 'cover' || objectFit.value === 'contain') && props.block.content.image_alignment) {
-    // Default object position for alignment
-    if (props.block.content.image_alignment === 'up') {
+  } else if ((objectFit.value === 'cover' || objectFit.value === 'contain') && content.value.image_alignment) {
+    if (content.value.image_alignment === 'up') {
       style.objectPosition = 'center 0%'
-    } else if (props.block.content.image_alignment === 'down') {
+    } else if (content.value.image_alignment === 'down') {
       style.objectPosition = 'center 100%'
     }
   }
-  // If object-fit is 'none', don't stretch image
+
+  // Handle 'none' object-fit
   if (objectFit.value === 'none') {
     style.width = 'auto'
     style.height = 'auto'
     style.maxWidth = '100%'
     style.maxHeight = '100%'
   }
+
   return style
 })
 
-// Font class helper
-const fontClass = (style?: string) => {
+// Optimized: Utility functions with better performance
+const fontClass = (style?: string): string => {
   switch (style) {
-    case 'font-serif':
-      return 'font-serif'
-    case 'font-mono':
-      return 'font-mono'
-    default:
-      return 'font-sans'
+    case 'font-serif': return 'font-serif'
+    case 'font-mono': return 'font-mono'
+    default: return 'font-sans'
   }
 }
-// Font size helper for heading
-const headingSizeClass = (size?: string) => {
+
+const headingSizeClass = (size?: string): string => {
   switch (size) {
     case 'text-3xl':
     case 'text-2xl':
@@ -194,70 +194,77 @@ const headingSizeClass = (size?: string) => {
   }
 }
 
-// Fade overlay computed
-const heroFade = computed(() => props.block.content.hero_fade)
-
-// Object fit computed
-const objectFit = computed(() => props.block.content.object_fit || 'cover')
-
-// Text shadow computed
 const textShadowClass = computed(() => {
-  const shadow = props.block.content.text_shadow
+  const shadow = content.value.text_shadow
   if (!shadow) return ''
 
   switch (shadow) {
-    case 'shadow_dark':
-      return 'text-shadow-dark'
-    case 'shadow_light':
-      return 'text-shadow-light'
-    default:
-      return ''
+    case 'shadow_dark': return 'text-shadow-dark'
+    case 'shadow_light': return 'text-shadow-light'
+    default: return ''
   }
 })
 
-// Tailwind classes for image based on object_fit
+// Optimized: Image classes with better performance
 const imageTailwindClasses = computed(() => {
   switch (objectFit.value) {
-    case 'cover':
-      return ['object-cover', 'h-full', 'w-screen']
-    case 'contain':
-      return ['object-contain', 'h-full', 'w-screen']
-    case 'none':
-      return ['max-w-full', 'max-h-full']
-    default:
-      return ['object-cover', 'h-full', 'w-screen']
+    case 'cover': return ['object-cover', 'h-full', 'w-screen']
+    case 'contain': return ['object-contain', 'h-full', 'w-screen']
+    case 'none': return ['max-w-full', 'max-h-full']
+    default: return ['object-cover', 'h-full', 'w-screen']
   }
 })
+
+// Optimized: Better image classes computation
+const imageClassList = computed(() => [
+  { kenburns: content.value.kenburns === 'effect_on' },
+  { 'hero-fade-top': heroFade.value === 'top' },
+  { 'hero-fade-bottom': heroFade.value === 'bottom' },
+  ...imageTailwindClasses.value
+])
+
+// Optimized: Better alt text handling
+const imageAlt = computed(() => {
+  return imageData.value?.alt || ''
+})
+
+// Optimized: Better sizes attribute
+const imageSizes = computed(() => {
+  return layout.value === 'centered' ? '100vw' : '(min-width: 640px) 50vw, 100vw'
+})
 </script>
+
 <template>
   <div class="h-screen min-h-[100]" :class="containerClasses" :style="backgroundStyle">
-    <figure v-if="imageData" :class="imageClasses" class="w-full h-screen;">
-      <img :class="[
-        { kenburns: props.block.content.kenburns === 'effect_on' },
-        { 'hero-fade-top': heroFade === 'top' },
-        { 'hero-fade-bottom': heroFade === 'bottom' },
-        ...imageTailwindClasses
-      ]" loading="lazy" :src="imageData.url" :srcset="imageData.srcset" :width="imageData.width"
-        :height="imageData.height" sizes="(min-width: 640px) 50vw, 100vw" :alt="imageData.alt || ''"
-        :style="imageStyle" />
+    <figure v-if="imageData" :class="imageClasses" class="w-full h-screen">
+      <img :class="imageClassList" loading="lazy" :src="imageData.url" :srcset="imageData.srcset"
+        :width="imageData.width" :height="imageData.height" :sizes="imageSizes" :alt="imageAlt" :style="imageStyle" />
     </figure>
 
     <div :class="contentClasses">
       <div class="column px-12 text-center">
-        <h1 class="m-auto pb-0 md:max-w-[22ch] leaading-tight"
-          :class="[fontClass(props.block.content.heading_style), headingSizeClass(props.block.content.heading_size), textShadowClass]"
-          v-html="heading" />
-        <h2 v-if="subheading" :style="h2Color" class="text-md pb-0 pt-4"
-          :class="fontClass(props.block.content.subheading_style)" v-html="subheading" />
-        <span v-if="date" class="text-base opacity-85 lg:text-base pt-4"
-          :class="fontClass(props.block.content.date_style)" :datetime="date">{{ formattedDate }}</span>
-        <div v-if="text" class="pt-4" :class="fontClass(props.block.content.text_style)" v-html="text" />
+        <h1 class="m-auto pb-0 md:max-w-[22ch] leaading-tight" :class="[
+          fontClass(content.heading_style),
+          headingSizeClass(content.heading_size),
+          textShadowClass
+        ]" :style="textColorStyle" v-html="heading" />
+
+        <h2 v-if="subheading" :style="h2Color" class="text-md pb-0 pt-4" :class="fontClass(content.subheading_style)"
+          v-html="subheading" />
+
+        <span v-if="date" class="text-base opacity-85 lg:text-base pt-4" :class="fontClass(content.date_style)"
+          :datetime="date">
+          {{ formattedDate }}
+        </span>
+
+        <div v-if="text" class="pt-4" :class="fontClass(content.text_style)" :style="textColorStyle" v-html="text" />
       </div>
     </div>
   </div>
 </template>
 
 <style scoped>
+/* Ken Burns animation with reduced motion support */
 @keyframes kenburns {
   0% {
     transform: scale(1);
@@ -274,6 +281,13 @@ const imageTailwindClasses = computed(() => {
 
 .kenburns {
   animation: kenburns 45s ease-in-out infinite;
+}
+
+/* Respect user's motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  .kenburns {
+    animation: none;
+  }
 }
 
 .hero-fade-top {
