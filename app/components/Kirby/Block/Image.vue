@@ -41,10 +41,18 @@ const galleryId = computed(() => {
 })
 
 /**
+ * Check if lightbox should be enabled
+ */
+const isLightboxEnabled = computed(() => {
+  const lightboxValue = props.block.content.lightbox
+  return lightboxValue === true || lightboxValue === 'yes' || lightboxValue === '1'
+})
+
+/**
  * Initialize PhotoSwipe Lightbox for single images
  */
 const initPhotoSwipe = async () => {
-  if (!import.meta.client || !props.block.content.lightbox) return
+  if (!import.meta.client || !isLightboxEnabled.value) return
 
   try {
     // Dynamic import of PhotoSwipe modules
@@ -78,12 +86,12 @@ const initPhotoSwipe = async () => {
  */
 const getLinkHref = computed(() => {
   // If lightbox is enabled, return the full image URL for PhotoSwipe
-  if (props.block.content.lightbox) {
+  if (isLightboxEnabled.value) {
     return props.block.content.image?.[0]?.url || props.block.content.src
   }
 
   // If custom link is provided and lightbox is disabled, use custom link
-  if (props.block.content.link && !props.block.content.lightbox) {
+  if (props.block.content.link && !isLightboxEnabled.value) {
     return props.block.content.link
   }
 
@@ -92,7 +100,7 @@ const getLinkHref = computed(() => {
 })
 
 onMounted(() => {
-  if (props.block.content.lightbox) {
+  if (isLightboxEnabled.value) {
     nextTick(() => {
       setTimeout(initPhotoSwipe, 100)
     })
@@ -144,17 +152,17 @@ onBeforeUnmount(() => {
 
 <template>
   <figure ref="figure" :class="[
-    block.content.lightbox ? 'pswp-gallery' : '',
+    isLightboxEnabled ? 'pswp-gallery' : '',
     ...getContainerClasses
-  ]" :data-pswp-uid="block.content.lightbox ? galleryId : undefined">
+  ]" :data-pswp-uid="isLightboxEnabled ? galleryId : undefined">
     <!-- Conditional wrapper: link or div -->
     <component :is="getLinkHref ? 'a' : 'div'" :href="getLinkHref || undefined"
-      :data-pswp-width="block.content.lightbox ? (block.content.image?.[0]?.width) : undefined"
-      :data-pswp-height="block.content.lightbox ? (block.content.image?.[0]?.height) : undefined"
-      :data-pswp-srcset="block.content.lightbox ? (block.content.image?.[0]?.srcset) : undefined"
+      :data-pswp-width="isLightboxEnabled ? (block.content.image?.[0]?.width) : undefined"
+      :data-pswp-height="isLightboxEnabled ? (block.content.image?.[0]?.height) : undefined"
+      :data-pswp-srcset="isLightboxEnabled ? (block.content.image?.[0]?.srcset) : undefined"
       :data-contain="block.content.crop === false || undefined"
-      :target="!block.content.lightbox && block.content.link ? '_blank' : undefined"
-      :rel="!block.content.lightbox && block.content.link ? 'noopener noreferrer' : undefined" :style="{
+      :target="!isLightboxEnabled && block.content.link ? '_blank' : undefined"
+      :rel="!isLightboxEnabled && block.content.link ? 'noopener noreferrer' : undefined" :style="{
         aspectRatio: block.content.ratio || undefined,
       }" class="block overflow-hidden rounded-sm" :class="[
         getLinkHref ? 'cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2' : ''

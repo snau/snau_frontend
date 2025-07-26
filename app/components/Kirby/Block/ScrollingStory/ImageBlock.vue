@@ -52,10 +52,18 @@ const galleryId = computed(() => {
 })
 
 /**
+ * Check if lightbox should be enabled
+ */
+const isLightboxEnabled = computed(() => {
+  const lightboxValue = props.block.lightbox
+  return lightboxValue === true || lightboxValue === 'yes' || lightboxValue === '1'
+})
+
+/**
  * Initialize PhotoSwipe Lightbox for ScrollingStory images
  */
 const initPhotoSwipe = async () => {
-  if (!import.meta.client || !props.block.lightbox) return
+  if (!import.meta.client || !isLightboxEnabled.value) return
 
   try {
     // Dynamic import of PhotoSwipe modules
@@ -89,12 +97,12 @@ const initPhotoSwipe = async () => {
  */
 const getLinkHref = computed(() => {
   // If lightbox is enabled, return the full image URL for PhotoSwipe
-  if (props.block.lightbox) {
+  if (isLightboxEnabled.value) {
     return props.block.image.url
   }
 
   // If custom link is provided and lightbox is disabled, use custom link
-  if (props.block.link && !props.block.lightbox) {
+  if (props.block.link && !isLightboxEnabled.value) {
     return props.block.link
   }
 
@@ -103,7 +111,7 @@ const getLinkHref = computed(() => {
 })
 
 onMounted(() => {
-  if (props.block.lightbox) {
+  if (isLightboxEnabled.value) {
     nextTick(() => {
       setTimeout(initPhotoSwipe, 100)
     })
@@ -156,16 +164,16 @@ onBeforeUnmount(() => {
 <template>
   <figure :class="[
     ...getContainerClasses,
-    block.lightbox ? 'pswp-gallery' : ''
-  ]" :data-pswp-uid="block.lightbox ? galleryId : undefined" :style="getImageStyle(block)">
+    isLightboxEnabled ? 'pswp-gallery' : ''
+  ]" :data-pswp-uid="isLightboxEnabled ? galleryId : undefined" :style="getImageStyle(block)">
     <!-- Conditional wrapper: link or div -->
     <component :is="getLinkHref ? 'a' : 'div'" :href="getLinkHref || undefined"
-      :data-pswp-width="block.lightbox ? block.image.width : undefined"
-      :data-pswp-height="block.lightbox ? block.image.height : undefined"
-      :data-pswp-srcset="block.lightbox ? block.image.srcset : undefined"
-      :target="!block.lightbox && block.link ? '_blank' : undefined"
-      :rel="!block.lightbox && block.link ? 'noopener noreferrer' : undefined" class="block overflow-hidden rounded-sm"
-      :class="[
+      :data-pswp-width="isLightboxEnabled ? block.image.width : undefined"
+      :data-pswp-height="isLightboxEnabled ? block.image.height : undefined"
+      :data-pswp-srcset="isLightboxEnabled ? block.image.srcset : undefined"
+      :target="!isLightboxEnabled && block.link ? '_blank' : undefined"
+      :rel="!isLightboxEnabled && block.link ? 'noopener noreferrer' : undefined"
+      class="block overflow-hidden rounded-sm" :class="[
         getLinkHref ? 'cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2' : ''
       ]">
       <NuxtImg :src="block.image.url" :width="block.image.width || ''" :height="block.image.height || ''"
