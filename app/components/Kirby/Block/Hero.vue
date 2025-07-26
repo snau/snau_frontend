@@ -11,6 +11,7 @@ const props = defineProps<{
       heading_style?: string
       heading_alignment?: 'up' | 'down'
       subheading?: string
+      subheading_size?: string
       subheading_style?: string
       date?: string
       date_style?: string
@@ -194,6 +195,22 @@ const headingSizeClass = (size?: string): string => {
   }
 }
 
+const subheadingSizeClass = (size?: string): string => {
+  switch (size) {
+    case 'text-2xl':
+    case 'text-xl':
+    case 'text-lg':
+    case 'text-md':
+      return size
+    default:
+      return 'text-xl'
+  }
+}
+
+const subheadingLineHeightClass = computed(() => {
+  return content.value.subheading_size === 'text-2xl' ? 'leading-none' : ''
+})
+
 const textShadowClass = computed(() => {
   const shadow = content.value.text_shadow
   if (!shadow) return ''
@@ -249,8 +266,11 @@ const imageSizes = computed(() => {
           textShadowClass
         ]" :style="textColorStyle" v-html="heading" />
 
-        <h2 v-if="subheading" :style="h2Color" class="text-md pb-0 pt-4" :class="fontClass(content.subheading_style)"
-          v-html="subheading" />
+        <h2 v-if="subheading" :style="h2Color" class="pb-0 pt-4" :class="[
+          fontClass(content.subheading_style),
+          subheadingSizeClass(content.subheading_size),
+          subheadingLineHeightClass
+        ]" v-html="subheading" />
 
         <span v-if="date" class="text-base opacity-85 lg:text-base pt-4" :class="fontClass(content.date_style)"
           :datetime="date">
@@ -332,5 +352,10 @@ h4,
 h5,
 h6 {
   padding-bottom: 0 !important;
+}
+
+/* Force line-height: 1 for text-2xl subheadings */
+.leading-none {
+  line-height: 1 !important;
 }
 </style>
