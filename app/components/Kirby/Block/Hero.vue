@@ -264,8 +264,9 @@ const imageSizes = computed(() => {
 <template>
   <div class="h-screen min-h-[100]" :class="containerClasses" :style="backgroundStyle">
     <figure v-if="imageData" :class="imageClasses">
-      <img :class="imageClassList" loading="lazy" :src="imageData.url" :srcset="imageData.srcset"
-        :width="imageData.width" :height="imageData.height" :sizes="imageSizes" :alt="imageAlt" :style="imageStyle" />
+      <NuxtImg :class="imageClassList" loading="lazy" :src="imageData.url" :width="imageData.width"
+        :height="imageData.height" :sizes="imageSizes" :alt="imageAlt" :style="imageStyle" quality="80"
+        @error="(e) => console.warn('Hero image loading failed:', e)" />
     </figure>
 
     <div :class="contentClasses">

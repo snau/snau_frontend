@@ -177,7 +177,7 @@ onBeforeUnmount(() => {
           getLinkHref ? 'hover:scale-105 hover:brightness-105' : ''
         ]" :style="{
           objectPosition: block.content.image?.[0]?.focus || 'center center'
-        }" loading="lazy" decoding="async" format="avif,webp,jpg" quality="80" preset="default" />
+        }" loading="lazy" decoding="async" quality="80" @error="(e) => console.warn('Image loading failed:', e)" />
     </component>
 
     <figcaption v-if="block.content.caption" :class="[...getFigcaptionClasses, { 'custom-text-color': textColor }]"
