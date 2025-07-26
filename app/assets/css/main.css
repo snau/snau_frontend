@@ -461,3 +461,31 @@ figcaption {
 .custom-text-color figcaption {
   color: inherit !important;
 }
+
+/* Kirby text block font size overrides */
+.kirby-text-block.text-lg p {
+  font-size: clamp(
+    var(--lg-min-font-size),
+    var(--lg-preferred-font-size),
+    var(--lg-max-font-size)
+  ) !important;
+  line-height: 1.2 !important;
+}
+
+.kirby-text-block.text-md p {
+  font-size: clamp(
+    var(--md-min-font-size),
+    var(--md-preferred-font-size),
+    var(--md-max-font-size)
+  ) !important;
+  line-height: 1.3 !important;
+}
+
+.kirby-text-block.text-sm p {
+  font-size: clamp(
+    var(--sm-min-font-size),
+    var(--sm-preferred-font-size),
+    var(--sm-max-font-size)
+  ) !important;
+  line-height: 1.4 !important;
+}
