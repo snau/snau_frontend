@@ -22,7 +22,7 @@ interface Interview {
 
 interface Props {
   interview: Interview
-  formatDate: (date: Date) => string
+  formatDate: (date: Date | string) => string
   index?: number // Index for staggered animation
 }
 

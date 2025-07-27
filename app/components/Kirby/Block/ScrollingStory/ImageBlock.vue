@@ -35,8 +35,8 @@ const isCropDisabled = computed(() => {
 })
 
 const getImageStyle = (block: ImageBlockProps['block']) => {
-  // Only apply aspect ratio if crop is not disabled
-  const aspectRatio = isCropDisabled.value ? '' : (block.ratio ? `aspect-ratio:${block.ratio};` : '')
+  // Always apply aspect ratio if it exists - container maintains ratio, image uses object-contain/cover
+  const aspectRatio = block.ratio ? `aspect-ratio:${block.ratio};` : ''
   return aspectRatio
 }
 
@@ -119,9 +119,6 @@ const getLinkHref = computed(() => {
 })
 
 onMounted(() => {
-  // Debug crop value
-  console.log('ImageBlock crop value:', props.block.crop, typeof props.block.crop, 'isCropDisabled:', isCropDisabled.value)
-
   if (isLightboxEnabled.value) {
     nextTick(() => {
       setTimeout(initPhotoSwipe, 100)
@@ -130,37 +127,15 @@ onMounted(() => {
 })
 
 /**
- * Get container classes based on offset_bleed setting
+ * Get image scale based on offset_bleed setting
  */
-const getContainerClasses = computed(() => {
-  const baseClasses = ['my-6']
-
+const getImageScale = computed(() => {
   if (props.block.offset_bleed === 'offset') {
-    // Offset: Add margin/padding to create visual offset
-    baseClasses.push('mx-4 sm:mx-6 lg:mx-8')
+    return 'scale-95' // 5% smaller
   } else if (props.block.offset_bleed === 'bleed') {
-    // Bleed: Extend beyond container boundaries (more conservative for ScrollingStory)
-    baseClasses.push('-mx-2 sm:-mx-4 lg:-mx-6')
+    return 'scale-105' // 5% bigger
   }
-
-  return baseClasses
-})
-
-/**
- * Get figcaption classes based on offset_bleed setting
- */
-const getFigcaptionClasses = computed(() => {
-  const baseClasses = ['text-sm', 'mt-2', 'text-left']
-
-  if (props.block.offset_bleed === 'offset') {
-    // Offset: Align caption with left edge of offset image + same left margin as offset
-    baseClasses.push('ml-4', 'sm:ml-6', 'lg:ml-8')
-  } else if (props.block.offset_bleed === 'bleed') {
-    // Bleed: Reset caption margins for bleed images
-    baseClasses.push('mx-2', 'sm:mx-4', 'lg:mx-6')
-  }
-
-  return baseClasses
+  return '' // normal size
 })
 
 onBeforeUnmount(() => {
@@ -174,7 +149,7 @@ onBeforeUnmount(() => {
 
 <template>
   <figure :class="[
-    ...getContainerClasses,
+    'my-6',
     'flex-grow w-full', // Ensure proper sizing in flex containers
     isLightboxEnabled ? 'pswp-gallery' : ''
   ]" :data-pswp-uid="isLightboxEnabled ? galleryId : undefined" :style="getImageStyle(block)">
@@ -190,17 +165,18 @@ onBeforeUnmount(() => {
       ]">
       <NuxtImg :src="block.image.url" :width="block.image.width || ''" :height="block.image.height || ''"
         :alt="block.alt || block.image.alt || ''" class="w-full transition-all duration-300 ease-out" :class="[
-          isCropDisabled ? 'object-contain h-auto max-h-none' : 'object-cover h-full',
-          getLinkHref ? 'hover:scale-105 hover:brightness-105' : ''
+          isCropDisabled ? 'object-contain h-full' : 'object-cover h-full',
+          getLinkHref ? 'hover:scale-105 hover:brightness-105' : '',
+          getImageScale
         ]" :style="getObjectPosition(block)" loading="lazy" decoding="async" quality="80"
         @error="(e) => console.warn('Image loading failed:', e)" />
     </component>
 
-    <figcaption v-if="block.image.copyright" :class="[...getFigcaptionClasses, { 'custom-text-color': textColor }]"
+    <figcaption v-if="block.image.copyright" :class="['text-sm', 'mt-2', 'text-left', { 'custom-text-color': textColor }]"
       :style="{ color: textColor || 'inherit' }" v-html="block.image.copyright" />
 
     <figcaption v-if="block.caption || block.image.caption"
-      :class="[...getFigcaptionClasses, { 'custom-text-color': textColor }]" :style="{ color: textColor || 'inherit' }"
+      :class="['text-sm', 'mt-2', 'text-left', { 'custom-text-color': textColor }]" :style="{ color: textColor || 'inherit' }"
       v-html="block.caption || block.image.caption" />
   </figure>
 </template>

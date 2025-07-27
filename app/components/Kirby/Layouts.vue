@@ -23,7 +23,7 @@ interface GradientStop {
  * Defines the available attributes for layout customization
  */
 interface LayoutAttributes {
-  width?: 'full' | 'wide' | 'narrow' | string // Controls the max-width of the layout
+  width?: 'full' | 'wide' | 'md' | 'narrow' | string // Controls the max-width of the layout
   background?: string // Background color name or value
   padding?: string | boolean // Controls padding (true/false or custom value)
   alignment?: 'left' | 'middle' | 'right' | string // Text and content alignment
@@ -161,10 +161,11 @@ const calculateColumnSpan = (
  * Uses CSS variables for consistent sizing across the application
  */
 const widthClassMap = {
-  full: 'w-full', // Full width of the container
-  wide: 'max-w-[var(--ui-width-wide)] mx-auto', // Wide but constrained width
-  narrow: 'max-w-[var(--ui-width-narrow)] mx-auto', // Narrow width
-  default: 'max-w-[var(--ui-width-medium)] mx-auto', // Default width (medium)
+  full: 'max-w-[var(--ui-width-full)] mx-auto', // Full width container (XL)
+  wide: 'max-w-[var(--ui-width-wide)] mx-auto', // Wide but constrained width (L)
+  md: 'max-w-[var(--ui-width-md)] mx-auto', // Medium width (M)
+  narrow: 'max-w-[var(--ui-width-narrow)] mx-auto', // Narrow width (S)
+  default: 'max-w-[var(--ui-width-base)] mx-auto', // Default width (base)
 } as const
 
 /**

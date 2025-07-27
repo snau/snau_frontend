@@ -81,11 +81,14 @@
 }
 
 :root {
-  --ui-width-base: 50rem;
-  --ui-width-medium: 50rem;
-  --ui-width-wide: 80rem;
+  --ui-width-narrow: 48rem; /* ~768px - Single column, mobile-first (S) */
+  --ui-width-sm: 56rem; /* ~896px - Small desktop, tight layouts */
+  --ui-width-base: 60rem; /* ~960px - Default content width (when no width selected) */
+  --ui-width-md: 68rem; /* ~1088px - Medium content width (M) */
+  --ui-width-lg: 76rem; /* ~1216px - Large content width */
+  --ui-width-wide: 84rem; /* ~1344px - Wide layouts, hero sections (L) */
+  --ui-width-full: 100%; /* Full width container (XL) */
   --ui-width-default: var(--ui-width-base);
-  --ui-width-narrow: 30rem;
 
   --ui-gap-small: 2rem;
   --ui-gap-medium: 4rem;
@@ -234,22 +237,22 @@ p > strong {
 }
 /* Manueller Fix */
 .col-span-1 {
-  @apply col-span-1;
+  @apply lg:col-span-1;
 }
 .col-span-2 {
-  @apply col-span-2;
+  @apply lg:col-span-2;
 }
 .col-span-3 {
-  @apply col-span-3;
+  @apply lg:col-span-3;
 }
 .col-span-4 {
-  @apply col-span-4;
+  @apply lg:col-span-4;
 }
 .col-span-5 {
-  @apply col-span-5;
+  @apply lg:col-span-5;
 }
 .col-span-6 {
-  @apply col-span-6;
+  @apply col-span-12 lg:col-span-6;
 }
 .col-span-7 {
   @apply col-span-7;
@@ -413,7 +416,7 @@ blockquote .author {
 }
 
 figcaption {
-  @apply font-mono text-sm mt-2 leading-normal mt-6 mb-12;
+  @apply font-mono text-sm leading-normal mt-6 mb-12;
   color: var(--ui-color-dark);
 }
 

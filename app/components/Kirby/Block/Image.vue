@@ -116,37 +116,15 @@ onMounted(() => {
 })
 
 /**
- * Get container classes based on offset_bleed setting
+ * Get image scale based on offset_bleed setting
  */
-const getContainerClasses = computed(() => {
-  const baseClasses = []
-
+const getImageScale = computed(() => {
   if (props.block.content.offset_bleed === 'offset') {
-    // Offset: Add margin/padding to create visual offset
-    baseClasses.push('mx-4 sm:mx-8 lg:mx-12')
+    return 'scale-95' // 5% smaller
   } else if (props.block.content.offset_bleed === 'bleed') {
-    // Bleed: Extend beyond container boundaries
-    baseClasses.push('-mx-4 sm:-mx-8 lg:-mx-12 xl:-mx-16')
+    return 'scale-105' // 5% bigger
   }
-
-  return baseClasses
-})
-
-/**
- * Get figcaption classes based on offset_bleed setting
- */
-const getFigcaptionClasses = computed(() => {
-  const baseClasses = ['mt-2', 'text-sm', 'text-left']
-
-  if (props.block.content.offset_bleed === 'offset') {
-    // Offset: Align caption with left edge of offset image + same left margin as offset
-    baseClasses.push('ml-4', 'sm:ml-8', 'lg:ml-12')
-  } else if (props.block.content.offset_bleed === 'bleed') {
-    // Bleed: Reset caption margins for bleed images
-    baseClasses.push('mx-4', 'sm:mx-8', 'lg:mx-12', 'xl:mx-16')
-  }
-
-  return baseClasses
+  return '' // normal size
 })
 
 onBeforeUnmount(() => {
@@ -162,7 +140,6 @@ onBeforeUnmount(() => {
   <figure ref="figure" :class="[
     isLightboxEnabled ? 'pswp-gallery' : '',
     'flex-grow w-full', // Ensure proper sizing in flex containers
-    ...getContainerClasses
   ]" :data-pswp-uid="isLightboxEnabled ? galleryId : undefined">
     <!-- Conditional wrapper: link or div -->
     <component :is="getLinkHref ? 'a' : 'div'" :href="getLinkHref || undefined"
@@ -175,21 +152,22 @@ onBeforeUnmount(() => {
         aspectRatio: block.content.ratio || undefined,
       }" class="block rounded-sm" :class="[
         isCropDisabled ? '' : 'overflow-hidden',
-        getLinkHref ? 'cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2' : ''
+        getLinkHref ? 'cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2' : '',
+        getImageScale
       ]">
       <NuxtImg
         :src="block.content.location === 'web' ? block.content.src : (block.content.image?.[0]?.url || block.content.src)"
         :width="block.content.image?.[0]?.width || ''" :height="block.content.image?.[0]?.height || ''"
         :sizes="`${width}px`" :alt="block.content.alt || block.content.image?.[0]?.alt || ''"
         class="w-full transition-all duration-300 ease-out" :class="[
-          isCropDisabled ? 'object-contain h-auto max-h-none' : 'object-cover h-full',
+          isCropDisabled ? 'object-contain h-full' : 'object-cover h-full',
           getLinkHref ? 'hover:scale-105 hover:brightness-105' : ''
         ]" :style="{
           objectPosition: block.content.image?.[0]?.focus || 'center center'
         }" loading="lazy" decoding="async" quality="80" @error="(e) => console.warn('Image loading failed:', e)" />
     </component>
 
-    <figcaption v-if="block.content.caption" :class="[...getFigcaptionClasses, { 'custom-text-color': textColor }]"
+    <figcaption v-if="block.content.caption" :class="['mt-2', 'text-sm', 'text-left', { 'custom-text-color': textColor }]"
       :style="{ color: textColor || 'inherit' }" v-html="block.content.caption" />
   </figure>
 </template>

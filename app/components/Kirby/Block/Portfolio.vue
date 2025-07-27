@@ -5,6 +5,7 @@ import { useInfiniteScroll } from '~/composables/useInfiniteScroll'
 import { useInterviewData } from '~/composables/useInterviewData'
 import { useInterviewFilters } from '~/composables/useInterviewFilters'
 import { useMasonryGrid } from '~/composables/useMasonryGrid'
+import { useFormatDate } from '~/composables/useFormatDate'
 import InterviewCard from './Interview/Card.vue'
 import InterviewPhoto from './Interview/Photo.vue'
 
