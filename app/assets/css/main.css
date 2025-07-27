@@ -83,10 +83,10 @@
 :root {
   --ui-width-narrow: 48rem; /* ~768px - Single column, mobile-first (S) */
   --ui-width-sm: 56rem; /* ~896px - Small desktop, tight layouts */
-  --ui-width-base: 60rem; /* ~960px - Default content width (when no width selected) */
-  --ui-width-md: 68rem; /* ~1088px - Medium content width (M) */
-  --ui-width-lg: 76rem; /* ~1216px - Large content width */
-  --ui-width-wide: 84rem; /* ~1344px - Wide layouts, hero sections (L) */
+  --ui-width-base: 64rem; /* ~1024px - Default content width (when no width selected) */
+  --ui-width-md: 72rem; /* ~1152px - Medium content width (M) */
+  --ui-width-lg: 80rem; /* ~1280px - Large content width */
+  --ui-width-wide: 92rem; /* ~1472px - Wide layouts, hero sections (L) */
   --ui-width-full: 100%; /* Full width container (XL) */
   --ui-width-default: var(--ui-width-base);
 
