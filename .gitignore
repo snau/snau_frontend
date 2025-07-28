@@ -7,3 +7,5 @@ node_modules
 .eslintcache
 .DS_Store
 .kiro
+# Local Netlify folder
+.netlify

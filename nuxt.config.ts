@@ -60,6 +60,15 @@ export default defineNuxtConfig({
   nitro: {
     prerender: {
       routes: ['/sitemap.xml'],
+      // Continue prerendering even if some routes fail
+      failOnError: false,
+      // Ignore 404 errors during prerendering
+      ignore: [
+        '/de/datenschutz',
+        '/en/datenschutz',
+        '/de/impressum',
+        '/en/impressum',
+      ],
     },
   },
 
