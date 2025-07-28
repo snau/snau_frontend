@@ -127,15 +127,23 @@ onMounted(() => {
 })
 
 /**
- * Get image scale based on offset_bleed setting
+ * Get image scale based on offset_bleed setting (only for bleed)
  */
 const getImageScale = computed(() => {
-  if (props.block.offset_bleed === 'offset') {
-    return 'scale-95' // 5% smaller
-  } else if (props.block.offset_bleed === 'bleed') {
+  if (props.block.offset_bleed === 'bleed') {
     return 'scale-105' // 5% bigger
   }
   return '' // normal size
+})
+
+/**
+ * Get figure border classes based on offset_bleed setting
+ */
+const getFigureBorderClasses = computed(() => {
+  if (props.block.offset_bleed === 'offset') {
+    return 'border-8 border-transparent' // Transparent border for offset
+  }
+  return '' // no border
 })
 
 onBeforeUnmount(() => {
@@ -151,7 +159,8 @@ onBeforeUnmount(() => {
   <figure :class="[
     'my-6',
     'flex-grow w-full', // Ensure proper sizing in flex containers
-    isLightboxEnabled ? 'pswp-gallery' : ''
+    isLightboxEnabled ? 'pswp-gallery' : '',
+    getFigureBorderClasses
   ]" :data-pswp-uid="isLightboxEnabled ? galleryId : undefined" :style="getImageStyle(block)">
     <!-- Conditional wrapper: link or div -->
     <component :is="getLinkHref ? 'a' : 'div'" :href="getLinkHref || undefined"
