@@ -61,7 +61,7 @@ const formattedDate = computed(() => {
     return new Intl.DateTimeFormat('de-DE', {
       day: '2-digit',
       month: '2-digit',
-      year: 'numeric'
+      year: 'numeric',
     }).format(date)
   } catch {
     return dateValue.value
@@ -106,11 +106,15 @@ const contentClasses = computed(() => {
     const positionClasses = {
       up: 'absolute inset-0 justify-start pt-[22vh]',
       down: 'absolute inset-0 justify-end pb-[10vh]',
-      default: 'absolute inset-0 justify-center'
+      default: 'absolute inset-0 justify-center',
     }
 
-    const position = alignment.value === 'up' ? 'up' :
-      alignment.value === 'down' ? 'down' : 'default'
+    const position =
+      alignment.value === 'up'
+        ? 'up'
+        : alignment.value === 'down'
+          ? 'down'
+          : 'default'
 
     return `${baseClasses} ${positionClasses[position]} w-full h-full`
   }
@@ -120,11 +124,15 @@ const contentClasses = computed(() => {
   const alignmentClasses = {
     up: 'justify-start pt-[22vh]',
     down: 'justify-end pb-[5vh]',
-    default: 'justify-center py-12'
+    default: 'justify-center py-12',
   }
 
-  const alignmentClass = alignment.value === 'up' ? 'up' :
-    alignment.value === 'down' ? 'down' : 'default'
+  const alignmentClass =
+    alignment.value === 'up'
+      ? 'up'
+      : alignment.value === 'down'
+        ? 'down'
+        : 'default'
 
   return `${baseClasses} ${gridClasses} ${orderClass} ${alignmentClasses[alignmentClass]}`
 })
@@ -136,7 +144,7 @@ const backgroundStyles = computed(() => {
 
   if (secondary) {
     return {
-      background: `linear-gradient(to bottom, ${primary}, ${secondary})`
+      background: `linear-gradient(to bottom, ${primary}, ${secondary})`,
     }
   }
 
@@ -144,11 +152,11 @@ const backgroundStyles = computed(() => {
 })
 
 const textStyles = computed(() => ({
-  color: content.value.textcolor || 'inherit'
+  color: content.value.textcolor || 'inherit',
 }))
 
 const subheadingStyles = computed(() => ({
-  color: content.value.secondarytextcolor || 'inherit'
+  color: content.value.secondarytextcolor || 'inherit',
 }))
 
 // Image styling with better performance
@@ -156,7 +164,7 @@ const imageStyles = computed(() => {
   if (!primaryImage.value) return {}
 
   const styles: Record<string, string> = {
-    objectFit: objectFit.value
+    objectFit: objectFit.value,
   }
 
   // Handle focus positioning
@@ -166,8 +174,8 @@ const imageStyles = computed(() => {
   } else if (image.focusX !== undefined && image.focusY !== undefined) {
     styles.objectPosition = `${image.focusX}% ${image.focusY}%`
   } else if (content.value.image_alignment && objectFit.value !== 'none') {
-    styles.objectPosition = content.value.image_alignment === 'up' ?
-      'center 0%' : 'center 100%'
+    styles.objectPosition =
+      content.value.image_alignment === 'up' ? 'center 0%' : 'center 100%'
   }
 
   // Handle 'none' object-fit
@@ -176,7 +184,7 @@ const imageStyles = computed(() => {
       width: 'auto',
       height: 'auto',
       maxWidth: '100%',
-      maxHeight: '100%'
+      maxHeight: '100%',
     })
   }
 
@@ -187,7 +195,7 @@ const imageStyles = computed(() => {
 const getFontClass = (fontStyle?: string): string => {
   const fontMap: Record<string, string> = {
     'font-serif': 'font-serif',
-    'font-mono': 'font-mono'
+    'font-mono': 'font-mono',
   }
   return fontMap[fontStyle || ''] || 'font-sans'
 }
@@ -199,8 +207,8 @@ const getHeadingSizeClass = (size?: string): string => {
 
 const getTextShadowClass = (shadow?: string): string => {
   const shadowMap: Record<string, string> = {
-    'shadow_dark': 'text-shadow-dark',
-    'shadow_light': 'text-shadow-light'
+    shadow_dark: 'text-shadow-dark',
+    shadow_light: 'text-shadow-light',
   }
   return shadowMap[shadow || ''] || ''
 }
@@ -241,8 +249,10 @@ const imageClasses = computed(() => {
 
 // Accessibility helpers
 const getImageAlt = computed(() => {
-  return primaryImage.value?.alt ||
+  return (
+    primaryImage.value?.alt ||
     (headingText.value ? `Hero image for: ${headingText.value}` : 'Hero image')
+  )
 })
 
 const getImageSizes = computed(() => {
@@ -264,39 +274,78 @@ const sanitizeHtml = (html: string): string => {
 </script>
 
 <template>
-  <section class="hero-section" :class="containerClasses" :style="backgroundStyles" role="banner"
-    :aria-label="headingText ? `Hero section: ${headingText}` : 'Hero section'">
+  <section
+    class="hero-section"
+    :class="containerClasses"
+    :style="backgroundStyles"
+    role="banner"
+    :aria-label="headingText ? `Hero section: ${headingText}` : 'Hero section'"
+  >
     <!-- Background Image -->
-    <figure v-if="primaryImage" :class="imageContainerClasses" class="hero-image-container">
-      <img :class="imageClasses" :src="primaryImage.url" :srcset="primaryImage.srcset" :width="primaryImage.width"
-        :height="primaryImage.height" :sizes="getImageSizes" :alt="getImageAlt" :style="imageStyles" loading="lazy"
-        decoding="async" fetchpriority="high" />
+    <figure
+      v-if="primaryImage"
+      :class="imageContainerClasses"
+      class="hero-image-container"
+    >
+      <img
+        :class="imageClasses"
+        :src="primaryImage.url"
+        :srcset="primaryImage.srcset"
+        :width="primaryImage.width"
+        :height="primaryImage.height"
+        :sizes="getImageSizes"
+        :alt="getImageAlt"
+        :style="imageStyles"
+        loading="lazy"
+        decoding="async"
+        fetchpriority="high"
+      />
     </figure>
 
     <!-- Content Overlay -->
     <div :class="contentClasses" class="hero-content">
       <div class="hero-content-inner px-6 sm:px-12 text-center max-w-4xl">
         <!-- Main Heading -->
-        <h1 v-if="headingText" class="hero-heading m-0 pb-0 leading-tight" :class="[
-          getFontClass(content.heading_style),
-          getHeadingSizeClass(content.heading_size),
-          getTextShadowClass(content.text_shadow)
-        ]" :style="textStyles" v-html="sanitizeHtml(headingText)" />
+        <h1
+          v-if="headingText"
+          class="hero-heading m-0 pb-0 leading-tight"
+          :class="[
+            getFontClass(content.heading_style),
+            getHeadingSizeClass(content.heading_size),
+            getTextShadowClass(content.text_shadow),
+          ]"
+          :style="textStyles"
+          v-html="sanitizeHtml(headingText)"
+        />
 
         <!-- Subheading -->
-        <h2 v-if="subheadingText" class="hero-subheading text-lg md:text-xl mt-4 mb-0 leading-relaxed"
-          :class="getFontClass(content.subheading_style)" :style="subheadingStyles"
-          v-html="sanitizeHtml(subheadingText)" />
+        <h2
+          v-if="subheadingText"
+          class="hero-subheading text-lg md:text-xl mt-4 mb-0 leading-relaxed"
+          :class="getFontClass(content.subheading_style)"
+          :style="subheadingStyles"
+          v-html="sanitizeHtml(subheadingText)"
+        />
 
         <!-- Date -->
-        <time v-if="dateValue && formattedDate" class="hero-date block text-base opacity-85 mt-4"
-          :class="getFontClass(content.date_style)" :datetime="dateValue" :style="textStyles">
+        <time
+          v-if="dateValue && formattedDate"
+          class="hero-date block text-base opacity-85 mt-4"
+          :class="getFontClass(content.date_style)"
+          :datetime="dateValue"
+          :style="textStyles"
+        >
           {{ formattedDate }}
         </time>
 
         <!-- Body Text -->
-        <div v-if="bodyText" class="hero-text mt-6 text-base md:text-lg leading-relaxed"
-          :class="getFontClass(content.text_style)" :style="textStyles" v-html="sanitizeHtml(bodyText)" />
+        <div
+          v-if="bodyText"
+          class="hero-text mt-6 text-base md:text-lg leading-relaxed"
+          :class="getFontClass(content.text_style)"
+          :style="textStyles"
+          v-html="sanitizeHtml(bodyText)"
+        />
       </div>
     </div>
   </section>
@@ -386,7 +435,6 @@ const sanitizeHtml = (html: string): string => {
 
 /* High contrast mode support */
 @media (prefers-contrast: high) {
-
   .text-shadow-dark,
   .text-shadow-light {
     text-shadow: none;

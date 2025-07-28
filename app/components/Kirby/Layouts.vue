@@ -31,14 +31,14 @@ interface LayoutAttributes {
   classes?: string // Custom CSS classes
   gradient?: GradientStop[] // Gradient configuration
   gradient_alignment?:
-  | 'up'
-  | 'right-up'
-  | 'right'
-  | 'right-down'
-  | 'down'
-  | 'left-down'
-  | 'left'
-  | 'left-up' // Gradient direction
+    | 'up'
+    | 'right-up'
+    | 'right'
+    | 'right-down'
+    | 'down'
+    | 'left-down'
+    | 'left'
+    | 'left-up' // Gradient direction
   fullscreen?: boolean // Whether the layout should be fullscreen
   customtextcolor?: string // Custom text color for the section
 }
@@ -79,7 +79,11 @@ const getEffectiveTextColor = (layout: KirbyLayoutWithAttrs): string | null => {
     }
 
     // Filter out suspicious debugging colors that might come from browser extensions
-    const suspiciousColors = ['#fc00bd', 'rgb(252, 0, 189)', 'hsl(312, 100%, 49%)']
+    const suspiciousColors = [
+      '#fc00bd',
+      'rgb(252, 0, 189)',
+      'hsl(312, 100%, 49%)',
+    ]
     if (suspiciousColors.includes(trimmed.toLowerCase())) {
       console.warn('Filtered out suspicious color value:', trimmed)
       return false
@@ -101,11 +105,11 @@ const getEffectiveTextColor = (layout: KirbyLayoutWithAttrs): string | null => {
 
   // Debug logging for development
   if (import.meta.dev && (layout.attrs.customtextcolor || generalTextColor)) {
-    console.log('Color values debug:', {
+    console.warn('Color values debug:', {
       customtextcolor: layout.attrs.customtextcolor,
       generaltextcolor: generalTextColor,
       customValid: isValidColor(layout.attrs.customtextcolor),
-      generalValid: isValidColor(generalTextColor)
+      generalValid: isValidColor(generalTextColor),
     })
   }
 
@@ -411,44 +415,67 @@ const hasHeroBlock = (layout: KirbyLayoutWithAttrs): boolean => {
 
 <template>
   <!-- Loop through each layout -->
-  <section v-for="(layout, layoutIndex) in layouts" :id="layout.id" :key="layout.id" :class="[
-    getBackgroundClass(layout),
-    {
-      'min-h-screen':
-        layout.attrs.fullscreen &&
-        isFirstLayout(layoutIndex) &&
-        hasHeroBlock(layout),
-    },
-  ]" :style="getLayoutStyles(layout)" class="layout-section">
+  <section
+    v-for="(layout, layoutIndex) in layouts"
+    :id="layout.id"
+    :key="layout.id"
+    :class="[
+      getBackgroundClass(layout),
+      {
+        'min-h-screen':
+          layout.attrs.fullscreen &&
+          isFirstLayout(layoutIndex) &&
+          hasHeroBlock(layout),
+      },
+    ]"
+    :style="getLayoutStyles(layout)"
+    class="layout-section"
+  >
     <!-- Layout container with width control -->
-    <div :class="[
-      getWidthClass(layout.attrs.width),
-      ...getLayoutClasses(layout, layoutIndex),
-    ]" class="layout-container">
+    <div
+      :class="[
+        getWidthClass(layout.attrs.width),
+        ...getLayoutClasses(layout, layoutIndex),
+      ]"
+      class="layout-container"
+    >
       <!-- Grid for columns -->
       <!-- Special spacing applied when:
            1. This is the first layout on the page (layoutIndex === 0)
            2. The layout has fullscreen attribute set to true
            3. The layout contains a ScrollingStory block or Hero block -->
-      <div id="inner-container" class="grid grid-cols-12 gap-6" :class="{
-        '-mt-20 lg:-mt-64 ':
-          layout.attrs.fullscreen &&
-          isFirstLayout(layoutIndex) &&
-          (hasScrollingStoryBlock(layout) || hasHeroBlock(layout)),
-      }">
+      <div
+        id="inner-container"
+        class="grid grid-cols-12 gap-6"
+        :class="{
+          '-mt-20 lg:-mt-64 ':
+            layout.attrs.fullscreen &&
+            isFirstLayout(layoutIndex) &&
+            (hasScrollingStoryBlock(layout) || hasHeroBlock(layout)),
+        }"
+      >
         <!-- Loop through each column in the layout -->
-        <div v-for="(column, columnIndex) in layout.columns" id="column-container" :key="columnIndex" :class="[
-          getColumnClasses(column.width),
-          {
-            'h-auto': layout.attrs.fullscreen,
-            'min-h-screen':
-              layout.attrs.fullscreen &&
-              isFirstLayout(layoutIndex) &&
-              hasHeroBlock(layout),
-          },
-        ]" class="">
+        <div
+          v-for="(column, columnIndex) in layout.columns"
+          id="column-container"
+          :key="columnIndex"
+          :class="[
+            getColumnClasses(column.width),
+            {
+              'h-auto': layout.attrs.fullscreen,
+              'min-h-screen':
+                layout.attrs.fullscreen &&
+                isFirstLayout(layoutIndex) &&
+                hasHeroBlock(layout),
+            },
+          ]"
+          class=""
+        >
           <!-- Render blocks within the column -->
-          <KirbyBlocks :blocks="column.blocks" :text-color="getEffectiveTextColor(layout) || undefined" />
+          <KirbyBlocks
+            :blocks="column.blocks"
+            :text-color="getEffectiveTextColor(layout) || undefined"
+          />
         </div>
       </div>
     </div>

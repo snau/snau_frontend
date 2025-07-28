@@ -83,7 +83,11 @@ const getEffectiveTextColor = (): string | null => {
     }
 
     // Filter out suspicious debugging colors that might come from browser extensions
-    const suspiciousColors = ['#fc00bd', 'rgb(252, 0, 189)', 'hsl(312, 100%, 49%)']
+    const suspiciousColors = [
+      '#fc00bd',
+      'rgb(252, 0, 189)',
+      'hsl(312, 100%, 49%)',
+    ]
     if (suspiciousColors.includes(trimmed.toLowerCase())) {
       console.warn('Filtered out suspicious color value:', trimmed)
       return false
@@ -100,9 +104,9 @@ const getEffectiveTextColor = (): string | null => {
 
   // Debug logging for development
   if (import.meta.dev && generalTextColor) {
-    console.log('Footer color values debug:', {
+    console.warn('Footer color values debug:', {
       generaltextcolor: generalTextColor,
-      generalValid: isValidColor(generalTextColor)
+      generalValid: isValidColor(generalTextColor),
     })
   }
 
@@ -115,14 +119,19 @@ const effectiveTextColor = computed(() => getEffectiveTextColor())
 </script>
 
 <template>
-  <footer class="relative backdrop-blur-md mt-24" :style="{ color: effectiveTextColor || 'inherit' }">
+  <footer
+    class="relative backdrop-blur-md mt-24"
+    :style="{ color: effectiveTextColor || 'inherit' }"
+  >
     <!-- Gradient overlay for visual depth -->
     <div class="absolute inset-0 pointer-events-none"></div>
 
     <div class="relative max-w-7xl mx-auto px-6 lg:px-8">
       <!-- Main footer content -->
       <div class="py-16">
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12 lg:gap-8">
+        <div
+          class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12 lg:gap-8"
+        >
           <!-- Logo and brand section -->
           <div class="lg:col-span-1">
             <div class="mb-6">
@@ -132,16 +141,22 @@ const effectiveTextColor = computed(() => getEffectiveTextColor())
 
           <!-- Magazin Section -->
           <div v-if="magazinSection" class="lg:col-span-1">
-            <h4 class="text-sm font-semibold text-opacity-50  uppercase tracking-wider mb-6">
-              <NuxtLink :to="magazinSection.to"
-                class="  transition-colors duration-200 hover:underline decoration-1 underline-offset-4">
+            <h4
+              class="text-sm font-semibold text-opacity-50 uppercase tracking-wider mb-6"
+            >
+              <NuxtLink
+                :to="magazinSection.to"
+                class="transition-colors duration-200 hover:underline decoration-1 underline-offset-4"
+              >
                 {{ magazinSection.label }}
               </NuxtLink>
             </h4>
             <ul class="space-y-4">
               <li v-for="child in magazinSection.children" :key="child.to">
-                <NuxtLink :to="child.to"
-                  class="text-sm opacity-50    transition-colors duration-200 hover:underline decoration-1 underline-offset-4">
+                <NuxtLink
+                  :to="child.to"
+                  class="text-sm opacity-50 transition-colors duration-200 hover:underline decoration-1 underline-offset-4"
+                >
                   {{ child.label }}
                 </NuxtLink>
               </li>
@@ -150,16 +165,22 @@ const effectiveTextColor = computed(() => getEffectiveTextColor())
 
           <!-- Portfolio Section -->
           <div v-if="portfolioSection" class="lg:col-span-1">
-            <h4 class="text-sm font-semibold dark:white uppercase tracking-wider mb-6">
-              <NuxtLink :to="portfolioSection.to"
-                class="  transition-colors duration-200 hover:underline decoration-1 underline-offset-4">
+            <h4
+              class="text-sm font-semibold dark:white uppercase tracking-wider mb-6"
+            >
+              <NuxtLink
+                :to="portfolioSection.to"
+                class="transition-colors duration-200 hover:underline decoration-1 underline-offset-4"
+              >
                 {{ portfolioSection.label }}
               </NuxtLink>
             </h4>
             <ul class="space-y-4">
               <li v-for="child in portfolioSection.children" :key="child.to">
-                <NuxtLink :to="child.to"
-                  class="text-sm opacity-50    transition-colors duration-200 hover:underline decoration-1 underline-offset-4">
+                <NuxtLink
+                  :to="child.to"
+                  class="text-sm opacity-50 transition-colors duration-200 hover:underline decoration-1 underline-offset-4"
+                >
                   {{ child.label }}
                 </NuxtLink>
               </li>
@@ -168,16 +189,22 @@ const effectiveTextColor = computed(() => getEffectiveTextColor())
 
           <!-- Über Uns Section -->
           <div v-if="uberUnsSection" class="lg:col-span-1">
-            <h4 class="text-sm font-semibold dark:white uppercase tracking-wider mb-6">
-              <NuxtLink :to="uberUnsSection.to"
-                class="  transition-colors duration-200 hover:underline decoration-1 underline-offset-4">
+            <h4
+              class="text-sm font-semibold dark:white uppercase tracking-wider mb-6"
+            >
+              <NuxtLink
+                :to="uberUnsSection.to"
+                class="transition-colors duration-200 hover:underline decoration-1 underline-offset-4"
+              >
                 {{ uberUnsSection.label }}
               </NuxtLink>
             </h4>
             <ul class="space-y-4">
               <li v-for="child in uberUnsSection.children" :key="child.to">
-                <NuxtLink :to="child.to"
-                  class="text-sm opacity-50    transition-colors duration-200 hover:underline decoration-1 underline-offset-4">
+                <NuxtLink
+                  :to="child.to"
+                  class="text-sm opacity-50 transition-colors duration-200 hover:underline decoration-1 underline-offset-4"
+                >
                   {{ child.label }}
                 </NuxtLink>
               </li>
@@ -186,16 +213,22 @@ const effectiveTextColor = computed(() => getEffectiveTextColor())
 
           <!-- Kontakt Section -->
           <div v-if="kontaktSection" class="lg:col-span-1">
-            <h4 class="text-sm font-semibold dark:white uppercase tracking-wider mb-6">
-              <NuxtLink :to="kontaktSection.to"
-                class="  transition-colors duration-200 hover:underline decoration-1 underline-offset-4">
+            <h4
+              class="text-sm font-semibold dark:white uppercase tracking-wider mb-6"
+            >
+              <NuxtLink
+                :to="kontaktSection.to"
+                class="transition-colors duration-200 hover:underline decoration-1 underline-offset-4"
+              >
                 {{ kontaktSection.label }}
               </NuxtLink>
             </h4>
             <ul class="space-y-4">
               <li v-for="child in kontaktSection.children" :key="child.to">
-                <NuxtLink :to="child.to"
-                  class="text-sm opacity-50    transition-colors duration-200 hover:underline decoration-1 underline-offset-4">
+                <NuxtLink
+                  :to="child.to"
+                  class="text-sm opacity-50 transition-colors duration-200 hover:underline decoration-1 underline-offset-4"
+                >
                   {{ child.label }}
                 </NuxtLink>
               </li>
@@ -206,17 +239,23 @@ const effectiveTextColor = computed(() => getEffectiveTextColor())
 
       <!-- Bottom section with copyright and legal links -->
       <div class="py-8 mb-24">
-        <div class="flex flex-col md:flex-row md:items-center md:justify-center gap-4">
+        <div
+          class="flex flex-col md:flex-row md:items-center md:justify-center gap-4"
+        >
           <!-- Copyright -->
-          <span class="text-sm  opacity-50">
+          <span class="text-sm opacity-50">
             &copy; {{ currentYear }} {{ site.title }}.
             {{ t('footer.copyright') }}
           </span>
 
           <!-- Legal links -->
           <div class="flex flex-wrap items-center gap-6">
-            <NuxtLink v-for="link in legalLinks" :key="link.to" :to="link.to"
-              class="text-sm opacity-50  transition-colors duration-200 hover:underline decoration-1 underline-offset-4">
+            <NuxtLink
+              v-for="link in legalLinks"
+              :key="link.to"
+              :to="link.to"
+              class="text-sm opacity-50 transition-colors duration-200 hover:underline decoration-1 underline-offset-4"
+            >
               {{ link.label }}
             </NuxtLink>
           </div>

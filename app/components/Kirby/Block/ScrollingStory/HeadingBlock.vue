@@ -25,8 +25,11 @@ const getClasses = (block: HeadingBlockProps['block']) => {
 </script>
 
 <template>
-  <component :is="block.level || 'h2'" :class="[getClasses(block), { 'custom-text-color': textColor }]"
-    :style="{ color: textColor || 'inherit' }">
+  <component
+    :is="block.level || 'h2'"
+    :class="[getClasses(block), { 'custom-text-color': textColor }]"
+    :style="{ color: textColor || 'inherit' }"
+  >
     <span v-html="block.content"></span>
   </component>
 </template>

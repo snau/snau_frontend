@@ -154,7 +154,10 @@ const imageStyle = computed(() => {
     style.objectPosition = imageData.value.focus
   } else if (imageData.value.focusX && imageData.value.focusY) {
     style.objectPosition = `${imageData.value.focusX}% ${imageData.value.focusY}%`
-  } else if ((objectFit.value === 'cover' || objectFit.value === 'contain') && content.value.image_alignment) {
+  } else if (
+    (objectFit.value === 'cover' || objectFit.value === 'contain') &&
+    content.value.image_alignment
+  ) {
     if (content.value.image_alignment === 'up') {
       style.objectPosition = 'center 0%'
     } else if (content.value.image_alignment === 'down') {
@@ -176,9 +179,12 @@ const imageStyle = computed(() => {
 // Optimized: Utility functions with better performance
 const fontClass = (style?: string): string => {
   switch (style) {
-    case 'font-serif': return 'font-serif'
-    case 'font-mono': return 'font-mono'
-    default: return 'font-sans'
+    case 'font-serif':
+      return 'font-serif'
+    case 'font-mono':
+      return 'font-mono'
+    default:
+      return 'font-sans'
   }
 }
 
@@ -216,9 +222,12 @@ const textShadowClass = computed(() => {
   if (!shadow) return ''
 
   switch (shadow) {
-    case 'shadow_dark': return 'text-shadow-dark'
-    case 'shadow_light': return 'text-shadow-light'
-    default: return ''
+    case 'shadow_dark':
+      return 'text-shadow-dark'
+    case 'shadow_light':
+      return 'text-shadow-light'
+    default:
+      return ''
   }
 })
 
@@ -226,18 +235,26 @@ const textShadowClass = computed(() => {
 const imageTailwindClasses = computed(() => {
   if (layout.value === 'centered') {
     switch (objectFit.value) {
-      case 'cover': return ['object-cover', 'h-full', 'w-screen']
-      case 'contain': return ['object-contain', 'h-full', 'w-screen']
-      case 'none': return ['max-w-full', 'max-h-full']
-      default: return ['object-cover', 'h-full', 'w-screen']
+      case 'cover':
+        return ['object-cover', 'h-full', 'w-screen']
+      case 'contain':
+        return ['object-contain', 'h-full', 'w-screen']
+      case 'none':
+        return ['max-w-full', 'max-h-full']
+      default:
+        return ['object-cover', 'h-full', 'w-screen']
     }
   } else {
     // For side-by-side layout, use w-full instead of w-screen
     switch (objectFit.value) {
-      case 'cover': return ['object-cover', 'h-full', 'w-full']
-      case 'contain': return ['object-contain', 'h-full', 'w-full']
-      case 'none': return ['max-w-full', 'max-h-full']
-      default: return ['object-cover', 'h-full', 'w-full']
+      case 'cover':
+        return ['object-cover', 'h-full', 'w-full']
+      case 'contain':
+        return ['object-contain', 'h-full', 'w-full']
+      case 'none':
+        return ['max-w-full', 'max-h-full']
+      default:
+        return ['object-cover', 'h-full', 'w-full']
     }
   }
 })
@@ -247,7 +264,7 @@ const imageClassList = computed(() => [
   { kenburns: content.value.kenburns === 'effect_on' },
   { 'hero-fade-top': heroFade.value === 'top' },
   { 'hero-fade-bottom': heroFade.value === 'bottom' },
-  ...imageTailwindClasses.value
+  ...imageTailwindClasses.value,
 ])
 
 // Optimized: Better alt text handling
@@ -257,38 +274,74 @@ const imageAlt = computed(() => {
 
 // Optimized: Better sizes attribute
 const imageSizes = computed(() => {
-  return layout.value === 'centered' ? '100vw' : '(min-width: 640px) 50vw, 100vw'
+  return layout.value === 'centered'
+    ? '100vw'
+    : '(min-width: 640px) 50vw, 100vw'
 })
 </script>
 
 <template>
-  <div class="h-screen min-h-[100]" :class="containerClasses" :style="backgroundStyle">
+  <div
+    class="h-screen min-h-[100]"
+    :class="containerClasses"
+    :style="backgroundStyle"
+  >
     <figure v-if="imageData" :class="imageClasses">
-      <NuxtImg :class="imageClassList" loading="lazy" :src="imageData.url" :width="imageData.width"
-        :height="imageData.height" :sizes="imageSizes" :alt="imageAlt" :style="imageStyle" quality="80"
-        @error="(e) => console.warn('Hero image loading failed:', e)" />
+      <NuxtImg
+        :class="imageClassList"
+        loading="lazy"
+        :src="imageData.url"
+        :width="imageData.width"
+        :height="imageData.height"
+        :sizes="imageSizes"
+        :alt="imageAlt"
+        :style="imageStyle"
+        quality="80"
+        @error="(e) => console.warn('Hero image loading failed:', e)"
+      />
     </figure>
 
     <div :class="contentClasses">
       <div class="column px-12 text-center">
-        <h1 class="m-auto pb-0 md:max-w-[22ch] leaading-tight" :class="[
-          fontClass(content.heading_style),
-          headingSizeClass(content.heading_size),
-          textShadowClass
-        ]" :style="textColorStyle" v-html="heading" />
+        <h1
+          class="m-auto pb-0 md:max-w-[22ch] leaading-tight"
+          :class="[
+            fontClass(content.heading_style),
+            headingSizeClass(content.heading_size),
+            textShadowClass,
+          ]"
+          :style="textColorStyle"
+          v-html="heading"
+        />
 
-        <h2 v-if="subheading" :style="h2Color" class="pb-0" :class="[
-          fontClass(content.subheading_style),
-          subheadingSizeClass(content.subheading_size),
-          subheadingLineHeightClass
-        ]" v-html="subheading" />
+        <h2
+          v-if="subheading"
+          :style="h2Color"
+          class="pb-0"
+          :class="[
+            fontClass(content.subheading_style),
+            subheadingSizeClass(content.subheading_size),
+            subheadingLineHeightClass,
+          ]"
+          v-html="subheading"
+        />
 
-        <span v-if="date" class="text-base opacity-85 lg:text-base pt-4" :class="fontClass(content.date_style)"
-          :datetime="date">
+        <span
+          v-if="date"
+          class="text-base opacity-85 lg:text-base pt-4"
+          :class="fontClass(content.date_style)"
+          :datetime="date"
+        >
           {{ formattedDate }}
         </span>
 
-        <div v-if="text" class="pt-4" :class="fontClass(content.text_style)" :style="textColorStyle" v-html="text" />
+        <div
+          v-if="text"
+          class="pt-4"
+          :class="fontClass(content.text_style)"
+          :style="textColorStyle"
+          v-html="text"
+        />
       </div>
     </div>
   </div>

@@ -72,7 +72,11 @@ useInternalLinks(content)
   <div ref="content">
     <template v-for="(block, index) in blocks" :key="index">
       <FadeIn>
-        <component :is="blockComponents[block.type]" :block="block" :text-color="textColor" />
+        <component
+          :is="blockComponents[block.type]"
+          :block="block"
+          :text-color="textColor"
+        />
       </FadeIn>
     </template>
   </div>

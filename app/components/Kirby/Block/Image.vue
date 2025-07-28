@@ -35,8 +35,10 @@ let lightbox: any = null
  * Generate a stable gallery ID for PhotoSwipe grouping
  */
 const galleryId = computed(() => {
-  const imageUrl = props.block.content.image?.[0]?.url || props.block.content.src
-  const hash = imageUrl?.split('/').pop() || Math.random().toString(36).substring(2, 11)
+  const imageUrl =
+    props.block.content.image?.[0]?.url || props.block.content.src
+  const hash =
+    imageUrl?.split('/').pop() || Math.random().toString(36).substring(2, 11)
   return `image-${hash}`
 })
 
@@ -45,7 +47,11 @@ const galleryId = computed(() => {
  */
 const isLightboxEnabled = computed(() => {
   const lightboxValue = props.block.content.lightbox
-  return lightboxValue === true || lightboxValue === 'yes' || lightboxValue === '1'
+  return (
+    lightboxValue === true ||
+    String(lightboxValue) === 'yes' ||
+    String(lightboxValue) === '1'
+  )
 })
 
 /**
@@ -104,7 +110,13 @@ const getLinkHref = computed(() => {
  */
 const isCropDisabled = computed(() => {
   const cropValue = props.block.content.crop
-  return cropValue === false || cropValue === 'false' || cropValue === '0' || cropValue === 0 || cropValue === null
+  return (
+    cropValue === false ||
+    String(cropValue) === 'false' ||
+    String(cropValue) === '0' ||
+    Number(cropValue) === 0 ||
+    cropValue === null
+  )
 })
 
 onMounted(() => {
@@ -130,11 +142,11 @@ const getImageScale = computed(() => {
  */
 const getFigureBorderClasses = computed(() => {
   const classes = []
-  
+
   if (props.block.content.offset_bleed === 'offset') {
     classes.push('md:border-8', 'md:border-transparent', 'md:scale-90') // Border + scale entire figure
   }
-  
+
   return classes.join(' ')
 })
 
@@ -148,38 +160,78 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <figure ref="figure" :class="[
-    isLightboxEnabled ? 'pswp-gallery' : '',
-    'flex-grow w-full', // Ensure proper sizing in flex containers
-    getFigureBorderClasses
-  ]" :data-pswp-uid="isLightboxEnabled ? galleryId : undefined">
+  <figure
+    ref="figure"
+    class="flex-grow w-full"
+    :class="[
+      isLightboxEnabled ? 'pswp-gallery' : '', // Ensure proper sizing in flex containers
+      getFigureBorderClasses,
+    ]"
+    :data-pswp-uid="isLightboxEnabled ? galleryId : undefined"
+  >
     <!-- Conditional wrapper: link or div -->
-    <component :is="getLinkHref ? 'a' : 'div'" :href="getLinkHref || undefined"
-      :data-pswp-width="isLightboxEnabled ? (block.content.image?.[0]?.width) : undefined"
-      :data-pswp-height="isLightboxEnabled ? (block.content.image?.[0]?.height) : undefined"
-      :data-pswp-srcset="isLightboxEnabled ? (block.content.image?.[0]?.srcset) : undefined"
+    <component
+      :is="getLinkHref ? 'a' : 'div'"
+      :href="getLinkHref || undefined"
+      :data-pswp-width="
+        isLightboxEnabled ? block.content.image?.[0]?.width : undefined
+      "
+      :data-pswp-height="
+        isLightboxEnabled ? block.content.image?.[0]?.height : undefined
+      "
+      :data-pswp-srcset="
+        isLightboxEnabled ? block.content.image?.[0]?.srcset : undefined
+      "
       :data-contain="isCropDisabled || undefined"
       :target="!isLightboxEnabled && block.content.link ? '_blank' : undefined"
-      :rel="!isLightboxEnabled && block.content.link ? 'noopener noreferrer' : undefined" :style="{
+      :rel="
+        !isLightboxEnabled && block.content.link
+          ? 'noopener noreferrer'
+          : undefined
+      "
+      :style="{
         aspectRatio: block.content.ratio || undefined,
-      }" class="block rounded-sm" :class="[
+      }"
+      class="block rounded-sm"
+      :class="[
         isCropDisabled ? '' : 'overflow-hidden',
-        getLinkHref ? 'cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2' : '',
-        getImageScale
-      ]">
+        getLinkHref
+          ? 'cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2'
+          : '',
+        getImageScale,
+      ]"
+    >
       <NuxtImg
-        :src="block.content.location === 'web' ? block.content.src : (block.content.image?.[0]?.url || block.content.src)"
-        :width="block.content.image?.[0]?.width || ''" :height="block.content.image?.[0]?.height || ''"
-        :sizes="`${width}px`" :alt="block.content.alt || block.content.image?.[0]?.alt || ''"
-        class="w-full transition-all duration-300 ease-out" :class="[
+        :src="
+          block.content.location === 'web'
+            ? block.content.src
+            : block.content.image?.[0]?.url || block.content.src
+        "
+        :width="block.content.image?.[0]?.width || ''"
+        :height="block.content.image?.[0]?.height || ''"
+        :sizes="`${width}px`"
+        :alt="block.content.alt || block.content.image?.[0]?.alt || ''"
+        class="w-full transition-all duration-300 ease-out"
+        :class="[
           isCropDisabled ? 'object-contain h-full' : 'object-cover h-full',
-          getLinkHref ? 'hover:scale-105 hover:brightness-105' : ''
-        ]" :style="{
-          objectPosition: block.content.image?.[0]?.focus || 'center center'
-        }" loading="lazy" decoding="async" quality="80" @error="(e) => console.warn('Image loading failed:', e)" />
+          getLinkHref ? 'hover:scale-105 hover:brightness-105' : '',
+        ]"
+        :style="{
+          objectPosition: block.content.image?.[0]?.focus || 'center center',
+        }"
+        loading="lazy"
+        decoding="async"
+        quality="80"
+        @error="(e) => console.warn('Image loading failed:', e)"
+      />
     </component>
 
-    <figcaption v-if="block.content.caption" :class="['mt-2', 'text-sm', 'text-left', { 'custom-text-color': textColor }]"
-      :style="{ color: textColor || 'inherit' }" v-html="block.content.caption" />
+    <figcaption
+      v-if="block.content.caption"
+      class="mt-2 text-sm text-left"
+      :class="[{ 'custom-text-color': textColor }]"
+      :style="{ color: textColor || 'inherit' }"
+      v-html="block.content.caption"
+    />
   </figure>
 </template>

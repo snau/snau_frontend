@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import type { KirbyBlock } from '#nuxt-kql'
 import { computed, nextTick, ref, watch } from 'vue'
+import { useFormatDate } from '~/composables/useFormatDate'
 import { useInfiniteScroll } from '~/composables/useInfiniteScroll'
 import { useInterviewData } from '~/composables/useInterviewData'
 import { useInterviewFilters } from '~/composables/useInterviewFilters'
 import { useMasonryGrid } from '~/composables/useMasonryGrid'
-import { useFormatDate } from '~/composables/useFormatDate'
 import InterviewCard from './Interview/Card.vue'
 import InterviewPhoto from './Interview/Photo.vue'
 

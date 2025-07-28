@@ -11,7 +11,7 @@ export function useFormatDate() {
       const dateObj = date instanceof Date ? date : new Date(date)
 
       // Check if the date is valid
-      if (isNaN(dateObj.getTime())) {
+      if (Number.isNaN(dateObj.getTime())) {
         console.warn('Invalid date provided to formatDateShort:', date)
         return 'Invalid Date'
       }

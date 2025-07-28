@@ -43,6 +43,7 @@ if (page) {
     gradient: [],
     gradient_alignment: '',
     customtextcolor: '',
+    generaltextcolor: '',
     intro: '',
     role: '',
     blocks: [],
@@ -56,8 +57,15 @@ if (page) {
 <template>
   <div>
     <KirbyLayouts v-if="page?.layouts?.length" :layouts="page.layouts" />
-    <KirbyBlocks v-else-if="page?.blocks" :blocks="page.blocks"
-      :text-color="page.generaltextcolor && page.generaltextcolor.trim() !== '' ? page.generaltextcolor : undefined" />
+    <KirbyBlocks
+      v-else-if="page?.blocks"
+      :blocks="page.blocks"
+      :text-color="
+        page.generaltextcolor && page.generaltextcolor.trim() !== ''
+          ? page.generaltextcolor
+          : undefined
+      "
+    />
     <div v-else-if="fetchError" class="error-fallback">
       <h1>Welcome</h1>
       <p>Content is currently unavailable. Please try again later.</p>
