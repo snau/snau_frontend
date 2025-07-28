@@ -116,23 +116,26 @@ onMounted(() => {
 })
 
 /**
- * Get image scale based on offset_bleed setting (only for bleed)
+ * Get image scale based on offset_bleed setting (only for bleed, not on mobile)
  */
 const getImageScale = computed(() => {
   if (props.block.content.offset_bleed === 'bleed') {
-    return 'scale-105' // 5% bigger
+    return 'md:scale-105' // 5% bigger on medium screens and up
   }
   return '' // normal size
 })
 
 /**
- * Get figure border classes based on offset_bleed setting
+ * Get figure classes based on offset_bleed setting (not on mobile)
  */
 const getFigureBorderClasses = computed(() => {
+  const classes = []
+  
   if (props.block.content.offset_bleed === 'offset') {
-    return 'border-8 border-transparent' // Transparent border for offset
+    classes.push('md:border-8', 'md:border-transparent', 'md:scale-90') // Border + scale entire figure
   }
-  return '' // no border
+  
+  return classes.join(' ')
 })
 
 onBeforeUnmount(() => {
