@@ -24,7 +24,36 @@ const fetchError = pageError.value
 // Store page data if available
 const page = data?.result
 if (page) {
-  setPage(page)
+  try {
+    setPage(page)
+  } catch (error) {
+    console.error('Error setting page data:', error)
+    // Provide minimal fallback
+    const fallbackPage: KirbySharedPageData = {
+      uri: 'home',
+      title: 'Home',
+      intendedTemplate: 'home',
+      description: '',
+      biography: '',
+      biolinks: [],
+      date: new Date().toISOString(),
+      backgroundcolor: '',
+      secondarybackgroundcolor: '',
+      textcolor: '',
+      secondarytextcolor: '',
+      colors: '',
+      gradient: [],
+      gradient_alignment: '',
+      customtextcolor: '',
+      generaltextcolor: '',
+      intro: '',
+      role: '',
+      blocks: [],
+      layouts: [],
+      i18nMeta: {},
+    }
+    setPage(fallbackPage)
+  }
 } else {
   // Provide minimal page data for static generation
   const fallbackPage: KirbySharedPageData = {

@@ -7,7 +7,12 @@ import { joinURL } from 'ufo'
  * Returns static data prefetched at build time
  */
 export function useKirbyStaticData() {
-  return kirbyStatic
+  try {
+    return kirbyStatic
+  } catch (error) {
+    console.warn('KirbyStatic data not available:', error)
+    return { languages: [] }
+  }
 }
 
 /**
@@ -23,69 +28,88 @@ export function usePage<T extends Record<string, any> = Record<string, any>>() {
 export function setPage<T extends KirbySharedPageData & Record<string, any>>(
   page: T,
 ) {
-  usePage().value = page
+  try {
+    usePage().value = page
 
-  // Build the page meta tags
-  const { siteUrl } = useRuntimeConfig().public
-  const { $i18n: i18n } = useNuxtApp()
-  const { defaultLocale } = i18n
-  const site = useSite()
-  const title = page.title
-    ? `${page.title} – ${site.value.title}`
-    : site.value.title
-  const description = page.description || site.value.description
-  const url = joinURL(siteUrl, useRoute().path)
-  const image = page?.cover?.url
+    // Build the page meta tags
+    const { siteUrl } = useRuntimeConfig().public
+    const { $i18n: i18n } = useNuxtApp()
+    const { defaultLocale } = i18n
+    const site = useSite()
+    const title = page.title
+      ? `${page.title} – ${site.value.title}`
+      : site.value.title
+    const description = page.description || site.value.description
+    const url = joinURL(siteUrl, useRoute().path)
+    const image = page?.cover?.url
 
-  // Build alternate URL
-  const alternateUrls = Object.entries(page.i18nMeta).map(([lang, meta]) => {
-    // Remove homepage slug and add leading language prefix
-    const uri = getLocalizedPath(meta.uri.replace(/^home/, '/'), lang)
+    // Build alternate URL with error handling
+    const alternateUrls = []
+    try {
+      if (page.i18nMeta && typeof page.i18nMeta === 'object') {
+        Object.entries(page.i18nMeta).forEach(([lang, meta]) => {
+          if (meta && typeof meta === 'object' && meta.uri) {
+            // Remove homepage slug and add leading language prefix
+            const uri = getLocalizedPath(meta.uri.replace(/^home/, '/'), lang)
 
-    return {
-      rel: 'alternate',
-      hreflang: lang,
-      href: joinURL(siteUrl, uri),
+            alternateUrls.push({
+              rel: 'alternate',
+              hreflang: lang,
+              href: joinURL(siteUrl, uri),
+            })
+          }
+        })
+      }
+    } catch (error) {
+      console.warn('Error building alternate URLs:', error)
     }
-  })
 
-  // Add primary locale as `x-default` for SEO
-  alternateUrls.push({
-    ...alternateUrls.find((i) => i.hreflang === defaultLocale)!,
-    hreflang: 'x-default',
-  })
+    // Add primary locale as `x-default` for SEO
+    if (alternateUrls.length > 0) {
+      const defaultUrl = alternateUrls.find((i) => i.hreflang === defaultLocale)
+      if (defaultUrl) {
+        alternateUrls.push({
+          ...defaultUrl,
+          hreflang: 'x-default',
+        })
+      }
+    }
 
-  useHead({
-    bodyAttrs: {
-      'data-template': page.intendedTemplate || 'default',
-    },
-  })
+    useHead({
+      bodyAttrs: {
+        'data-template': page.intendedTemplate || 'default',
+      },
+    })
 
-  useServerHead({
-    link: [{ rel: 'canonical', href: url }, ...alternateUrls],
-  })
+    useServerHead({
+      link: [{ rel: 'canonical', href: url }, ...alternateUrls],
+    })
 
-  useSeoMeta({
-    title,
-  })
+    useSeoMeta({
+      title,
+    })
 
-  useServerSeoMeta({
-    description,
-    ogTitle: title,
-    ogDescription: description,
-    ogUrl: url,
-    ogType: 'website',
-    ...(image && { ogImage: image }),
-    twitterTitle: title,
-    twitterDescription: description,
-    twitterCard: image ? 'summary_large_image' : 'summary',
-    ...(image && { twitterImage: image }),
-  })
+    useServerSeoMeta({
+      description,
+      ogTitle: title,
+      ogDescription: description,
+      ogUrl: url,
+      ogType: 'website',
+      ...(image && { ogImage: image }),
+      twitterTitle: title,
+      twitterDescription: description,
+      twitterCard: image ? 'summary_large_image' : 'summary',
+      ...(image && { twitterImage: image }),
+    })
 
-  // Resolve components that depend on the full page data
-  const nuxtApp = useNuxtApp()
-  nuxtApp._pageDependenciesRendered = true
-  return nuxtApp.callHook('page-dependencies:rendered')
+    // Resolve components that depend on the full page data
+    const nuxtApp = useNuxtApp()
+    nuxtApp._pageDependenciesRendered = true
+    return nuxtApp.callHook('page-dependencies:rendered')
+  } catch (error) {
+    console.error('Error in setPage:', error)
+    throw error
+  }
 }
 
 /**

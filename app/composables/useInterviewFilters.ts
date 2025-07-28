@@ -98,16 +98,16 @@ export function useInterviewFilters(
         // Matches block-level tags
         const matchesBlockTags =
           blockTags.length === 0 ||
-          blockTags.some((tag: string) => interview.tags.includes(tag))
+          blockTags.some((tag: string) => interview.tags?.includes(tag))
 
         // Matches user-selected tag
         const matchesUserTag =
-          !userSelectedTag || interview.tags.includes(userSelectedTag)
+          !userSelectedTag || interview.tags?.includes(userSelectedTag)
 
         // Matches category
         const matchesCategory =
           !selectedCategory.value ||
-          interview.categories.includes(selectedCategory.value)
+          interview.categories?.includes(selectedCategory.value)
 
         return matchesBlockTags && matchesUserTag && matchesCategory
       })

@@ -4,7 +4,7 @@ export function useTags(interviews: Ref<any[]>) {
   const uniqueTags = computed(() => {
     const tags = new Set<string>([''])
     interviews.value?.forEach((interview) => {
-      interview.tags.forEach((tag: string) => tags.add(tag))
+      interview.tags?.forEach((tag: string) => tags.add(tag))
     })
     return Array.from(tags)
   })
@@ -26,7 +26,7 @@ export function useTags(interviews: Ref<any[]>) {
     const tags = uniqueTags.value.filter((tag) => tag !== '')
     return [''].concat(
       tags.filter((tag) =>
-        interviews.value?.some((interview) => interview.tags.includes(tag)),
+        interviews.value?.some((interview) => interview.tags?.includes(tag)),
       ),
     )
   })

@@ -42,9 +42,11 @@ export default defineNuxtConfig({
         },
       },
     },
+    // Domains that should bypass optimization
+    domains: ['backend.snau.net'],
   },
 
-  // Ensure ssr is true (this is the default, but explicit is good)
+  // Enable SSR for generation
   ssr: true,
 
   css: ['~/assets/css/main.css'],
@@ -58,8 +60,9 @@ export default defineNuxtConfig({
 
   // Nitro configuration for static site generation
   nitro: {
+    preset: 'static',
     prerender: {
-      routes: ['/sitemap.xml'],
+      routes: ['/sitemap.xml', '/', '/en', '/de'],
       // Continue prerendering even if some routes fail
       failOnError: false,
       // Ignore 404 errors during prerendering
@@ -82,7 +85,6 @@ export default defineNuxtConfig({
     experimental: {
       wasm: false,
     },
-    // Remove error handler for now
   },
 
   runtimeConfig: {
@@ -102,6 +104,10 @@ export default defineNuxtConfig({
     client: {
       timeout: 30000, // 30 second timeout
     },
+    // Add error handling for failed requests
+    server: {
+      cache: true,
+    },
   },
 
   i18n: {
@@ -117,7 +123,7 @@ export default defineNuxtConfig({
     ],
     defaultLocale: 'en',
     lazy: true,
-    strategy: 'prefix',
+    strategy: 'prefix_except_default',
     compilation: {
       strictMessage: false,
     },

@@ -4,7 +4,7 @@ export function useCategories(interviews: Ref<any[]>) {
   const uniqueCategories = computed(() => {
     const categories = new Set<string>([''])
     interviews.value?.forEach((interview) => {
-      interview.categories.forEach((category: string) =>
+      interview.categories?.forEach((category: string) =>
         categories.add(category),
       )
     })
@@ -29,7 +29,7 @@ export function useCategories(interviews: Ref<any[]>) {
     return [''].concat(
       categories.filter((category) =>
         interviews.value?.some((interview) =>
-          interview.categories.includes(category),
+          interview.categories?.includes(category),
         ),
       ),
     )

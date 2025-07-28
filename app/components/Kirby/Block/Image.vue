@@ -150,6 +150,23 @@ const getFigureBorderClasses = computed(() => {
   return classes.join(' ')
 })
 
+/**
+ * Get the image URL
+ */
+const imageUrl = computed(() => {
+  return props.block.content.location === 'web'
+    ? props.block.content.src
+    : props.block.content.image?.[0]?.url || props.block.content.src
+})
+
+/**
+ * Check if the image URL is external
+ */
+const isExternalUrl = computed(() => {
+  const url = imageUrl.value
+  return url && (url.startsWith('http://') || url.startsWith('https://'))
+})
+
 onBeforeUnmount(() => {
   // Clean up PhotoSwipe instance
   if (lightbox) {
@@ -201,14 +218,29 @@ onBeforeUnmount(() => {
         getImageScale,
       ]"
     >
+      <!-- Use regular img tag for external URLs to avoid optimization issues -->
+      <img
+        v-if="isExternalUrl"
+        :src="imageUrl"
+        :alt="block.content.alt || block.content.image?.[0]?.alt || ''"
+        class="w-full transition-all duration-300 ease-out"
+        :class="[
+          isCropDisabled ? 'object-contain h-full' : 'object-cover h-full',
+          getLinkHref ? 'hover:scale-105 hover:brightness-105' : '',
+        ]"
+        :style="{
+          objectPosition: block.content.image?.[0]?.focus || 'center center',
+        }"
+        loading="lazy"
+        decoding="async"
+        @error="(e) => console.warn('Image loading failed:', e)"
+      />
+      <!-- Use NuxtImg for local images -->
       <NuxtImg
-        :src="
-          block.content.location === 'web'
-            ? block.content.src
-            : block.content.image?.[0]?.url || block.content.src
-        "
-        :width="block.content.image?.[0]?.width || ''"
-        :height="block.content.image?.[0]?.height || ''"
+        v-else
+        :src="imageUrl"
+        :width="block.content.image?.[0]?.width && block.content.image?.[0]?.width > 0 ? block.content.image?.[0]?.width : undefined"
+        :height="block.content.image?.[0]?.height && block.content.image?.[0]?.height > 0 ? block.content.image?.[0]?.height : undefined"
         :sizes="`${width}px`"
         :alt="block.content.alt || block.content.image?.[0]?.alt || ''"
         class="w-full transition-all duration-300 ease-out"
