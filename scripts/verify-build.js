@@ -7,6 +7,7 @@
 
 import { existsSync, statSync } from 'node:fs'
 import { join } from 'node:path'
+import process from 'node:process'
 
 const OUTPUT_DIR = '.output/public'
 const REQUIRED_FILES = ['200.html', '404.html', 'sitemap.xml']
