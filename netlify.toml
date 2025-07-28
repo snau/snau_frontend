@@ -1,35 +1,54 @@
-# Corrected netlify.toml for Static Site Generation (SSG)
-
 [build]
-  command = "pnpm run generate"
+  # Build command
+  command = "pnpm generate"
+  
+  # Directory to publish (Nuxt 3 SSG output)
   publish = ".output/public"
+  
+  # Node.js version
+  environment = { NODE_VERSION = "22" }
 
 [build.environment]
-  NODE_VERSION = "22"
-  # Using PNPM as defined in your package.json
-  PNPM_VERSION = "10.11.0"
-  # This flag is not needed for `pnpm install`
-  # NPM_FLAGS = "--prefer-offline --no-audit --no-fund"
+  # Enable pnpm
+  NPM_FLAGS = "--version" # This enables pnpm detection
+  PNPM_VERSION = "10.13.1"
 
-# This redirect rule is crucial for single-page applications (SPA)
-# It ensures that direct visits to sub-pages (e.g., /about) work correctly.
+# Redirect rules for SPA-like behavior (optional, for client-side routing)
 [[redirects]]
   from = "/*"
   to = "/index.html"
-  status = 200
+  status = 404
 
-# Security headers (these are good, we'll keep them)
+# Headers for security and performance
 [[headers]]
   for = "/*"
   [headers.values]
+    # Security headers
     X-Frame-Options = "DENY"
-    X-XSS-Protection = "1; mode=block"
     X-Content-Type-Options = "nosniff"
     Referrer-Policy = "strict-origin-when-cross-origin"
-    Permissions-Policy = "camera=(), microphone=(), geolocation=()"
-
-# Cache static assets (good practice)
-[[headers]]
-  for = "/_nuxt/*"
-  [headers.values]
+    
+    # Cache static assets for 1 year
     Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "*.html"
+  [headers.values]
+    # Don't cache HTML files
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+[[headers]]
+  for = "/sw.js"
+  [headers.values]
+    # Don't cache service worker
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+# Environment-specific settings
+[context.production]
+  command = "pnpm generate"
+
+[context.deploy-preview]
+  command = "pnpm generate"
+
+[context.branch-deploy]
+  command = "pnpm generate"

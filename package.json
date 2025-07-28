@@ -14,7 +14,9 @@
     "format:check": "prettier \"**/*.{css,html,json,md,mjs,ts,vue,yml}\" --check",
     "test:types": "vue-tsc --noEmit",
     "prepare": "nuxi prepare",
-    "check:all": "pnpm run lint && pnpm run format:check && pnpm run test:types"
+    "check:all": "pnpm run lint && pnpm run format:check && pnpm run test:types",
+    "verify-build": "node scripts/verify-build.js",
+    "deploy:build": "pnpm generate && pnpm verify-build"
   },
   "dependencies": {
     "@nuxt/image": "^1.10.0",

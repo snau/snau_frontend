@@ -56,10 +56,11 @@ export default defineNuxtConfig({
     enabled: true,
   },
 
-  // Make sure there are no SSG-specific settings here.
-  // The default Nitro preset for Cloudflare Pages will be used automatically.
+  // Nitro configuration for static site generation
   nitro: {
-    // REMOVE any `preset: 'static'` or `prerender` blocks you may have..
+    prerender: {
+      routes: ['/sitemap.xml'],
+    },
   },
 
   runtimeConfig: {
