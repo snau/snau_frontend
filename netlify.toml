@@ -1,10 +1,12 @@
 [build]
-  command = "pnpm generate"
+  command = "bash scripts/netlify-build.sh"
   publish = ".output/public"
 
 [build.environment]
   NODE_VERSION = "22"
   PNPM_VERSION = "10.13.1"
+  # Increase Node.js memory limit for large builds
+  NODE_OPTIONS = "--max-old-space-size=4096"
 
 [[redirects]]
   from = "/*"

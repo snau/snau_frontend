@@ -69,7 +69,20 @@ export default defineNuxtConfig({
         '/de/impressum',
         '/en/impressum',
       ],
+      // Crawl links to discover routes
+      crawlLinks: true,
+      // Concurrency limit to avoid overwhelming the server
+      concurrency: 1,
+      // Retry failed routes
+      retry: 3,
+      // Timeout for each route
+      timeout: 60000,
     },
+    // Handle errors gracefully
+    experimental: {
+      wasm: false,
+    },
+    // Remove error handler for now
   },
 
   runtimeConfig: {
@@ -84,6 +97,10 @@ export default defineNuxtConfig({
     prefetch: {
       kirbyStatic: prefetchQuery,
       kirbySite: siteQuery,
+    },
+    // Add timeout and retry settings for better reliability
+    client: {
+      timeout: 30000, // 30 second timeout
     },
   },
 
