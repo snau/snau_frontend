@@ -113,3 +113,39 @@ Your site is already optimized with:
 
 - **Netlify Docs**: https://docs.netlify.com
 - **Nuxt 3 Deployment**: https://nuxt.com/docs/getting-started/deployment#static-hosting
+
+## 🔧 Troubleshooting netlify.toml Issues
+
+If you encounter TOML parsing errors:
+
+### Option 1: Use the Simple Configuration
+
+Rename `netlify-simple.toml` to `netlify.toml`:
+
+```bash
+mv netlify.toml netlify-backup.toml
+mv netlify-simple.toml netlify.toml
+```
+
+### Option 2: Manual Configuration in Netlify UI
+
+If TOML issues persist, delete `netlify.toml` and configure manually in Netlify:
+
+**Build Settings:**
+
+- Build command: `pnpm generate`
+- Publish directory: `.output/public`
+- Node version: 22 (in Environment variables)
+
+**Environment Variables:**
+
+- `NODE_VERSION`: `22`
+- `PNPM_VERSION`: `10.13.1`
+
+### Option 3: Validate TOML Syntax
+
+Test your TOML file locally:
+
+```bash
+python3 -c "import tomllib; f=open('netlify.toml','rb'); tomllib.load(f); print('✅ Valid')"
+```

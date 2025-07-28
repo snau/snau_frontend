@@ -1,54 +1,29 @@
 [build]
-  # Build command
   command = "pnpm generate"
-  
-  # Directory to publish (Nuxt 3 SSG output)
   publish = ".output/public"
-  
-  # Node.js version
-  environment = { NODE_VERSION = "22" }
 
 [build.environment]
-  # Enable pnpm
-  NPM_FLAGS = "--version" # This enables pnpm detection
+  NODE_VERSION = "22"
   PNPM_VERSION = "10.13.1"
 
-# Redirect rules for SPA-like behavior (optional, for client-side routing)
 [[redirects]]
   from = "/*"
-  to = "/index.html"
-  status = 404
+  to = "/200.html"
+  status = 200
 
-# Headers for security and performance
 [[headers]]
   for = "/*"
   [headers.values]
-    # Security headers
     X-Frame-Options = "DENY"
     X-Content-Type-Options = "nosniff"
     Referrer-Policy = "strict-origin-when-cross-origin"
-    
-    # Cache static assets for 1 year
-    Cache-Control = "public, max-age=31536000, immutable"
 
 [[headers]]
   for = "*.html"
   [headers.values]
-    # Don't cache HTML files
     Cache-Control = "public, max-age=0, must-revalidate"
 
 [[headers]]
-  for = "/sw.js"
+  for = "/_nuxt/*"
   [headers.values]
-    # Don't cache service worker
-    Cache-Control = "public, max-age=0, must-revalidate"
-
-# Environment-specific settings
-[context.production]
-  command = "pnpm generate"
-
-[context.deploy-preview]
-  command = "pnpm generate"
-
-[context.branch-deploy]
-  command = "pnpm generate"
+    Cache-Control = "public, max-age=31536000, immutable"
