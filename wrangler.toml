@@ -6,7 +6,7 @@ compatibility_date = "2025-07-30"
 compatibility_flags = ["nodejs_compat", "no_nodejs_compat_v2"]
 
 routes = [
-  { pattern = "dev.snau.net", custom_domain = true }
+  { pattern = "snau-frontend.pages.dev", custom_domain = true }
 ]
 
 [assets]
