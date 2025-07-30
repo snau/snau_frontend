@@ -9,3 +9,5 @@ node_modules
 .kiro
 # Local Netlify folder
 .netlify
+# Cloudflare Workers configuration (contains sensitive tokens)
+wrangler.toml
