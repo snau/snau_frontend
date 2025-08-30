@@ -120,91 +120,51 @@ const hasCoverImage = computed(() => Boolean(page.value?.cover?.url))
 </script>
 
 <template>
-  <section
-    id="interview-header"
-    class="block -mt-32 md:grid grid-cols-12 w-screen h-[100vh] md:h-[80vh] md:max-h-[100vh] md:w-full overflow-hidden md:-mt-12"
-    :style="{
+  <section id="interview-header"
+    class="grid grid-cols-1 md:grid-cols-2 w-full md:h-[80vh] md:max-h-[100vh] overflow-hidden md:-mt-12" :style="{
       ...interviewHeaderStyle,
       // 'view-transition-name': `card-${route.path.replace(/^\/|\/$/g, '').replace(/\//g, '-')}`,
-    }"
-    aria-labelledby="interview-title"
-    role="banner"
-  >
+    }" aria-labelledby="interview-title" role="banner">
     <!-- Cover image container -->
-    <figure
-      v-if="hasCoverImage"
-      id="interview-header-image"
-      class="absolute -mt-32 md:mt-0 top-0 left-0 right-0 bottom-0 md:static column group col-span-12 order-1 md:h-full m-0 overflow-hidden md:col-span-6 md:order-2"
-    >
+    <figure v-if="hasCoverImage" id="interview-header-image"
+      class="md:col-span-1 order-1 m-0 overflow-hidden md:h-full">
       <!-- Cover image with lazy loading and responsive sizing -->
-      <img
-        loading="eager"
-        decoding="async"
-        class="w-full h-full object-cover"
-        sizes="(min-width: 768px) 50vw, 100vw"
-        :style="{
+      <img loading="eager" decoding="async" class="w-full h-auto md:h-full object-cover"
+        sizes="(min-width: 768px) 50vw, 100vw" :style="{
           ...imageAttrs.style,
           // 'view-transition-name': `image-${route.path.replace(/^\/|\/$/g, '').replace(/\//g, '-')}`,
-        }"
-        v-bind="{ ...imageAttrs, style: undefined }"
-      />
-
-      <!-- Gradient overlay for text on mobile - only visible below md breakpoint -->
-      <div
-        class="absolute top-0 left-0 right-0 bottom-0 z-[5] md:hidden"
-        style="
-          background-image: linear-gradient(
-            to bottom,
-            rgba(0, 0, 0, 0) 25%,
-            rgba(0, 0, 0, 0.7)
-          );
-          pointer-events: none;
-        "
-        aria-hidden="true"
-      ></div>
+        }" v-bind="{ ...imageAttrs, style: undefined }" />
     </figure>
 
     <!-- Interview text content -->
-    <div
-      id="interview-header-text"
-      class="relative column not-prose order-2 grid col-span-12 items-end md:items-center justify-center justify-items-center py-36 md:py-12 text-center md:order-1 md:col-span-6 h-full z-[10]"
-    >
+    <div id="interview-header-text"
+      class="relative not-prose order-2 grid md:col-span-1 items-end md:items-center justify-center justify-items-center py-36 md:py-12 text-center h-full z-[10]">
       <div class="column px-4" style="--columns: 12">
         <!-- Interview quote -->
         <h1
           class="transition-colors duration-300 px-2 text-lg font-bold font-sans italic md:max-w-[22ch] lg:text-3xl xl:text-4xl"
-          :class="[useDefaultTextColor ? 'text-white' : '']"
-          :style="{
+          :class="[useDefaultTextColor ? 'text-white' : '']" :style="{
             ...textColorStyle,
             // 'view-transition-name': `intro-${route.path.replace(/^\/|\/$/g, '').replace(/\//g, '-')}`,
-          }"
-        >
+          }">
           <span class="backdrop-opacity-70" aria-hidden="true">»</span>
           <span>{{ page.intro }}</span>
           <span class="opacity-70" aria-hidden="true">«</span>
         </h1>
 
         <!-- Interview title -->
-        <h2
-          id="interview-title"
+        <h2 id="interview-title"
           class="transition-colors duration-300 opacity-85 mt-4 text-base font-bold tracking-wider font-sans"
-          :class="[useDefaultTextColor ? 'text-white' : '']"
-          :style="{
+          :class="[useDefaultTextColor ? 'text-white' : '']" :style="{
             ...textColorStyle,
             // 'view-transition-name': `title-${route.path.replace(/^\/|\/$/g, '').replace(/\//g, '-')}`,
-          }"
-        >
+          }">
           {{ page.title }}
         </h2>
 
         <!-- Interview date (if available) -->
-        <time
-          v-if="page.date"
-          class="transition-colors duration-300 text-base opacity-85 block md:mt-2"
-          :class="[useDefaultTextColor ? 'text-white' : '']"
-          :style="textColorStyle"
-          :datetime="page.date"
-        >
+        <time v-if="page.date" class="transition-colors duration-300 text-base opacity-85 block md:mt-2"
+          :class="[useDefaultTextColor ? 'text-white' : '']" :style="textColorStyle" :datetime="page.date">
           {{ formatDateShort(new Date(page.date)) }}
         </time>
       </div>
