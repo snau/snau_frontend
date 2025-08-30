@@ -109,56 +109,36 @@ watch([selectedCategory, selectedTag], () => {
 </script>
 
 <template>
-  <div class="px-8 max-w-screen-4xl mx-auto pb-32">
+  <div class="max-w-screen-4xl mx-auto pb-32">
     <!-- Add this message before the grid -->
-    <div
-      v-if="filteredInterviews.length === 0"
-      class="mt-8 text-center text-stone-500"
-    >
+    <div v-if="filteredInterviews.length === 0" class="mt-8 text-center text-stone-500">
       No items match the selected filters.
     </div>
 
     <!-- Regular grid for card layout -->
-    <div
-      v-if="filteredInterviews.length > 0 && !usePhotoLayout"
-      ref="containerRef"
-      class="not-prose mt-6 grid grid-cols-[repeat(auto-fit,minmax(20rem,1fr))] gap-3"
-    >
-      <template
-        v-for="(interview, index) in visibleInterviews"
-        :key="interview.uri"
-      >
-        <div
-          :ref="
-            (el) => {
-              if (index === 0) {
-                firstInterviewRef = el as HTMLElement
-                if (el) (el as HTMLElement).style.scrollMarginTop = '8rem'
-              }
-              el && handleItemVisibility(el as HTMLElement, interview.uri)
+    <div v-if="filteredInterviews.length > 0 && !usePhotoLayout" ref="containerRef"
+      class="not-prose mt-6 grid grid-cols-[repeat(auto-fit,minmax(20rem,1fr))] gap-3">
+      <template v-for="(interview, index) in visibleInterviews" :key="interview.uri">
+        <div :ref="(el) => {
+            if (index === 0) {
+              firstInterviewRef = el as HTMLElement
+              if (el) (el as HTMLElement).style.scrollMarginTop = '8rem'
             }
-          "
-          class="transition-opacity duration-500"
-          :class="{
+            el && handleItemVisibility(el as HTMLElement, interview.uri)
+          }
+          " class="transition-opacity duration-500" :class="{
             'opacity-0': !isItemVisible(interview.uri),
             'opacity-100': isItemVisible(interview.uri),
-          }"
-        >
+          }">
           <div class="h-full">
-            <InterviewCard
-              :interview="interview"
-              :format-date="formatDateShort"
-            />
+            <InterviewCard :interview="interview" :format-date="formatDateShort" />
           </div>
         </div>
       </template>
 
       <!-- Loading indicator -->
       <div v-if="hasMore" ref="loaderRef" class="flex flex-col items-center py-4 gap-2">
-        <div
-          v-if="isLoading"
-          class="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-stone-900"
-        ></div>
+        <div v-if="isLoading" class="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-stone-900"></div>
         <div class="text-sm text-stone-500">
           Showing {{ visibleInterviews.length }} of
           {{ filteredInterviews.length }} interviews
@@ -167,47 +147,29 @@ watch([selectedCategory, selectedTag], () => {
     </div>
 
     <!-- Masonry (CSS columns) for photo layout only -->
-    <div
-      v-else-if="filteredInterviews.length > 0 && usePhotoLayout"
-      ref="containerRef"
-      class="not-prose cards masonry mt-6 columns-1 sm:columns-2 lg:columns-3"
-      :style="{ columnGap: gapValue }"
-    >
-      <template
-        v-for="(interview, index) in visibleInterviews"
-        :key="interview.uri"
-      >
+    <div v-else-if="filteredInterviews.length > 0 && usePhotoLayout" ref="containerRef"
+      class="not-prose cards masonry mt-6 columns-1 sm:columns-2 lg:columns-3" :style="{ columnGap: gapValue }">
+      <template v-for="(interview, index) in visibleInterviews" :key="interview.uri">
         <!-- Content for masonry grid items -->
-        <div
-          :ref="
-            (el) => {
-              if (index === 0) {
-                firstInterviewRef = el as HTMLElement
-                if (el) (el as HTMLElement).style.scrollMarginTop = '8rem'
-              }
-              el && handleItemVisibility(el as HTMLElement, interview.uri)
+        <div :ref="(el) => {
+            if (index === 0) {
+              firstInterviewRef = el as HTMLElement
+              if (el) (el as HTMLElement).style.scrollMarginTop = '8rem'
             }
-          "
-          class="transition-opacity duration-500 break-inside-avoid inline-block w-full"
-          :style="{ breakInside: 'avoid' }"
-          :class="{
+            el && handleItemVisibility(el as HTMLElement, interview.uri)
+          }
+          " class="transition-opacity duration-500 break-inside-avoid inline-block w-full"
+          :style="{ breakInside: 'avoid' }" :class="{
             'opacity-0': !isItemVisible(interview.uri),
             'opacity-100': isItemVisible(interview.uri),
-          }"
-        >
-          <InterviewPhoto
-            :interview="interview"
-            :format-date="formatDateShort"
-          />
+          }">
+          <InterviewPhoto :interview="interview" :format-date="formatDateShort" />
         </div>
       </template>
 
       <!-- Loading indicator -->
       <div v-if="hasMore" ref="loaderRef" class="flex flex-col items-center py-4 gap-2">
-        <div
-          v-if="isLoading"
-          class="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-stone-900"
-        ></div>
+        <div v-if="isLoading" class="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-stone-900"></div>
         <div class="text-sm text-stone-500">
           Showing {{ visibleInterviews.length }} of
           {{ filteredInterviews.length }} interviews
@@ -219,7 +181,7 @@ watch([selectedCategory, selectedTag], () => {
 
 <style scoped>
 /* Ensure a bit of spacing between items in columns layout (photo layout) */
-.masonry.cards > * {
+.masonry.cards>* {
   margin-bottom: 1.5rem;
 }
 </style>
