@@ -122,7 +122,7 @@ watch([selectedCategory, selectedTag], () => {
     <div
       v-if="filteredInterviews.length > 0 && !usePhotoLayout"
       ref="containerRef"
-      class="not-prose mt-6 grid grid-cols-[repeat(auto-fill,minmax(20rem,1fr))] gap-4"
+      class="not-prose mt-6 grid grid-cols-[repeat(auto-fit,minmax(12rem,1fr))] gap-3"
     >
       <template
         v-for="(interview, index) in visibleInterviews"
@@ -170,7 +170,7 @@ watch([selectedCategory, selectedTag], () => {
     <div
       v-else-if="filteredInterviews.length > 0 && usePhotoLayout"
       ref="containerRef"
-      class="not-prose cards masonry mt-6 columns-1 sm:columns-2 lg:columns-3 xl:columns-4"
+      class="not-prose cards masonry mt-6 columns-1 sm:columns-2 lg:columns-3"
       :style="{ columnGap: gapValue }"
     >
       <template
