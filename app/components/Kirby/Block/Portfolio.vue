@@ -122,7 +122,7 @@ watch([selectedCategory, selectedTag], () => {
     <div
       v-if="filteredInterviews.length > 0 && !usePhotoLayout"
       ref="containerRef"
-      class="not-prose mt-6 grid grid-cols-[repeat(auto-fit,minmax(12rem,1fr))] gap-3"
+      class="not-prose mt-6 grid grid-cols-[repeat(auto-fit,minmax(20rem,1fr))] gap-3"
     >
       <template
         v-for="(interview, index) in visibleInterviews"
