@@ -34,7 +34,7 @@ export function useInterviewData(
         uri: true,
         title: true,
         children: {
-          query: 'page.children' as const,
+          query: 'page.children.listed' as const,
           select: {
             uri: true,
             title: true,
