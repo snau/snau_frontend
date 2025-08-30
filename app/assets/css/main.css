@@ -295,7 +295,7 @@ p > strong {
 }
 
 main {
-  @apply mt-42 xl:mt-64;
+  @apply mt-24 xl:mt-64;
 }
 [data-template='interview'] main {
   @apply mt-0;
