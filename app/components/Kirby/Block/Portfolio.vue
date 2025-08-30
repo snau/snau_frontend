@@ -5,7 +5,6 @@ import { useFormatDate } from '~/composables/useFormatDate'
 import { useInfiniteScroll } from '~/composables/useInfiniteScroll'
 import { useInterviewData } from '~/composables/useInterviewData'
 import { useInterviewFilters } from '~/composables/useInterviewFilters'
-import { useMasonryGrid } from '~/composables/useMasonryGrid'
 import InterviewCard from './Interview/Card.vue'
 import InterviewPhoto from './Interview/Photo.vue'
 
@@ -26,6 +25,8 @@ const { formatDateShort } = useFormatDate()
 
 // Add ref for the first interview element
 const firstInterviewRef = ref<HTMLElement | null>(null)
+
+// No JS masonry: use CSS multi-column responsive masonry instead
 
 // Fetch and process interview data
 const { processedInterviews } = useInterviewData(props.block)
@@ -56,27 +57,7 @@ const gapValue = computed(() => {
   return `var(--ui-gap-${gap})`
 })
 
-// Get the item size value based on the selected option
-const itemSizeValue = computed(() => {
-  // Only apply item size for photo layout
-  if (props.block.content.card_layout !== 'photo') {
-    return 500
-  }
-
-  const itemSize = props.block.content.item_size || 'medium'
-  if (process.client) {
-    return getComputedStyle(document.documentElement)
-      .getPropertyValue(`--ui-itemsize-${itemSize}`)
-      .trim()
-  }
-  return '500'
-})
-
-// Initialize masonry grid for photo layout
-const { masonryGrid, handleImageLoaded, resetGrid } = useMasonryGrid({
-  columnWidth: Number(itemSizeValue.value),
-  gap: gapValue.value,
-})
+// CSS columns-based masonry handles responsiveness; no JS needed
 
 // Initialize infinite scroll
 const {
@@ -116,9 +97,6 @@ watch(visibleInterviews, (newValue) => {
 watch([selectedCategory, selectedTag], () => {
   currentPage.value = 1
   hasMore.value = true
-  if (usePhotoLayout.value) {
-    resetGrid()
-  }
 
   // Smooth scroll to the first interview after a short delay to ensure the DOM has updated
   nextTick(() => {
@@ -144,7 +122,7 @@ watch([selectedCategory, selectedTag], () => {
     <div
       v-if="filteredInterviews.length > 0 && !usePhotoLayout"
       ref="containerRef"
-      class="not-prose cards mt-6 grid grid-cols-[repeat(auto-fill,minmax(20rem,1fr))] gap-4"
+      class="not-prose mt-6 grid grid-cols-[repeat(auto-fill,minmax(20rem,1fr))] gap-4"
     >
       <template
         v-for="(interview, index) in visibleInterviews"
@@ -176,11 +154,7 @@ watch([selectedCategory, selectedTag], () => {
       </template>
 
       <!-- Loading indicator -->
-      <div
-        v-if="hasMore"
-        ref="loaderRef"
-        class="col-span-full flex flex-col items-center py-4 gap-2"
-      >
+      <div v-if="hasMore" ref="loaderRef" class="flex flex-col items-center py-4 gap-2">
         <div
           v-if="isLoading"
           class="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-stone-900"
@@ -192,12 +166,12 @@ watch([selectedCategory, selectedTag], () => {
       </div>
     </div>
 
-    <!-- Masonry grid for photo layout -->
+    <!-- Masonry (CSS columns) for photo layout only -->
     <div
       v-else-if="filteredInterviews.length > 0 && usePhotoLayout"
-      ref="masonryGrid"
-      class="masonry-grid mt-6 gap-4"
-      style="opacity: 0; visibility: hidden"
+      ref="containerRef"
+      class="not-prose cards masonry mt-6 columns-1 sm:columns-2 lg:columns-3 xl:columns-4"
+      :style="{ columnGap: gapValue }"
     >
       <template
         v-for="(interview, index) in visibleInterviews"
@@ -214,7 +188,8 @@ watch([selectedCategory, selectedTag], () => {
               el && handleItemVisibility(el as HTMLElement, interview.uri)
             }
           "
-          class="masonry-item transition-opacity duration-500"
+          class="transition-opacity duration-500 break-inside-avoid inline-block w-full"
+          :style="{ breakInside: 'avoid' }"
           :class="{
             'opacity-0': !isItemVisible(interview.uri),
             'opacity-100': isItemVisible(interview.uri),
@@ -223,17 +198,12 @@ watch([selectedCategory, selectedTag], () => {
           <InterviewPhoto
             :interview="interview"
             :format-date="formatDateShort"
-            @image-loaded="handleImageLoaded"
           />
         </div>
       </template>
 
       <!-- Loading indicator -->
-      <div
-        v-if="hasMore"
-        ref="loaderRef"
-        class="col-span-full flex flex-col items-center py-4 gap-2"
-      >
+      <div v-if="hasMore" ref="loaderRef" class="flex flex-col items-center py-4 gap-2">
         <div
           v-if="isLoading"
           class="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-stone-900"
@@ -246,3 +216,10 @@ watch([selectedCategory, selectedTag], () => {
     </div>
   </div>
 </template>
+
+<style scoped>
+/* Ensure a bit of spacing between items in columns layout (photo layout) */
+.masonry.cards > * {
+  margin-bottom: 1.5rem;
+}
+</style>

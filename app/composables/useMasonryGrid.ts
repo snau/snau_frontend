@@ -1,15 +1,15 @@
-import { nextTick, onMounted, onUpdated, ref } from 'vue'
+import { nextTick, onMounted, onUnmounted, ref } from 'vue'
 
 interface MasonryGridOptions {
-  columnWidth?: number
+  columnWidth?: number // This will be the target width for each column
   gap?: number | string
   minColumns?: number
 }
 
 export function useMasonryGrid(options: MasonryGridOptions = {}) {
   const {
-    columnWidth = 500,
-    gap = 'var(--ui-gap-medium)',
+    columnWidth = 250, // Target column width
+    gap = 16, // Default gap in pixels
     minColumns = 1,
   } = options
 
@@ -21,49 +21,56 @@ export function useMasonryGrid(options: MasonryGridOptions = {}) {
   const createMasonryGrid = () => {
     if (!masonryGrid.value) return
 
-    const gridWidth = masonryGrid.value.offsetWidth
-    const columns = Math.max(Math.floor(gridWidth / columnWidth), minColumns)
+    const grid = masonryGrid.value
+    const items = Array.from(grid.children) as HTMLElement[]
 
-    // Apply initial styles to prevent flickering
-    if (!isGridInitialized.value) {
-      masonryGrid.value.style.opacity = '0'
-      masonryGrid.value.style.visibility = 'hidden'
-    }
+    // Calculate actual column width and number of columns
+    const gridWidth = grid.offsetWidth
+    const numColumns = Math.max(
+      Math.floor((gridWidth + (typeof gap === 'number' ? gap : 0)) / (columnWidth + (typeof gap === 'number' ? gap : 0))),
+      minColumns
+    )
+    const actualColumnWidth = (gridWidth - (numColumns - 1) * (typeof gap === 'number' ? gap : 0)) / numColumns
 
-    // Reset the grid layout
-    masonryGrid.value.style.columnCount = columns.toString()
-    masonryGrid.value.style.columnGap =
-      typeof gap === 'number' ? `${gap}px` : gap
-    masonryGrid.value.style.display = 'block'
+    // Initialize column heights
+    const columnHeights = Array(numColumns).fill(0)
 
-    // Apply styles to each item
-    const items = Array.from(masonryGrid.value.children)
-    items.forEach((item, index) => {
-      const htmlItem = item as HTMLElement
-      htmlItem.style.gridRowStart = ''
-      htmlItem.style.gridColumnStart = ''
-      htmlItem.style.breakInside = 'avoid'
-      htmlItem.style.marginBottom = typeof gap === 'number' ? `${gap}px` : gap
-      htmlItem.dataset.visualIndex = (
-        (index % columns) * Math.ceil(items.length / columns) +
-        Math.floor(index / columns)
-      ).toString()
+    // Set container styles
+    grid.style.position = 'relative'
+    grid.style.height = '0' // Will be updated later
+
+    items.forEach((item) => {
+      // Find the shortest column
+      const minHeight = Math.min(...columnHeights)
+      const columnIndex = columnHeights.indexOf(minHeight)
+
+      // Set item position
+      item.style.position = 'absolute'
+      item.style.width = `${actualColumnWidth}px`
+      item.style.left = `${columnIndex * (actualColumnWidth + (typeof gap === 'number' ? gap : 0))}px`
+      item.style.top = `${minHeight}px`
+
+      // Update column height
+      columnHeights[columnIndex] += item.offsetHeight + (typeof gap === 'number' ? gap : 0)
     })
+
+    // Set container height to the height of the tallest column
+    grid.style.height = `${Math.max(...columnHeights)}px`
 
     // Show the grid immediately after layout is applied
     if (!isGridInitialized.value) {
-      masonryGrid.value.style.opacity = '1'
-      masonryGrid.value.style.visibility = 'visible'
-      masonryGrid.value.style.transition = 'opacity 0.2s ease-out'
+      grid.style.opacity = '1'
+      grid.style.visibility = 'visible'
+      grid.style.transition = 'opacity 0.2s ease-out'
       isGridInitialized.value = true
     }
   }
 
   const handleImageLoaded = () => {
     loadedImagesCount.value++
-    if (loadedImagesCount.value >= 2 && !isGridInitialized.value) {
-      createMasonryGrid()
-    }
+    // Recalculate layout after images are loaded
+    // This is crucial for correct masonry layout as item heights depend on image loads
+    createMasonryGrid()
   }
 
   const resetGrid = () => {
@@ -76,17 +83,20 @@ export function useMasonryGrid(options: MasonryGridOptions = {}) {
 
   // Initialize and update the masonry grid when needed
   onMounted(() => {
-    setTimeout(createMasonryGrid, 500)
-  })
-
-  onUpdated(() => {
+    // Initial layout after component is mounted
     createMasonryGrid()
   })
 
-  // Update layout on window resize
+  // Recalculate on window resize
   if (import.meta.client) {
     window.addEventListener('resize', createMasonryGrid)
   }
+
+  onUnmounted(() => {
+    if (import.meta.client) {
+      window.removeEventListener('resize', createMasonryGrid)
+    }
+  })
 
   return {
     masonryGrid,
