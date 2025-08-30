@@ -1,15 +1,20 @@
 {
-  "keep": {
-    "days": true,
-    "amount": 14
-  },
-  "auditLog": "/Users/saschanau/Web/snau_frontend/logs/.6419de121d8d16b3cc62c5068e41ac4099eab6a0-audit.json",
-  "files": [
-    {
-      "date": 1753449005931,
-      "name": "/Users/saschanau/Web/snau_frontend/logs/mcp-puppeteer-2025-07-25.log",
-      "hash": "3840b964ad543e50eb64587d79684106b1c03fd392f9a3108a6ad248eb8e1e7f"
-    }
-  ],
-  "hashType": "sha256"
+    "keep": {
+        "days": true,
+        "amount": 14
+    },
+    "auditLog": "/Users/saschanau/Web/snau_frontend/logs/.6419de121d8d16b3cc62c5068e41ac4099eab6a0-audit.json",
+    "files": [
+        {
+            "date": 1753449005931,
+            "name": "/Users/saschanau/Web/snau_frontend/logs/mcp-puppeteer-2025-07-25.log",
+            "hash": "3840b964ad543e50eb64587d79684106b1c03fd392f9a3108a6ad248eb8e1e7f"
+        },
+        {
+            "date": 1754580413847,
+            "name": "/Users/saschanau/Web/snau_frontend/logs/mcp-puppeteer-2025-08-07.log",
+            "hash": "96565896dcc62ed614b6bade7bd289b87b046906750e05839c1437bb2216cf82"
+        }
+    ],
+    "hashType": "sha256"
 }

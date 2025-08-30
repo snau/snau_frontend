@@ -492,3 +492,16 @@ figcaption {
   ) !important;
   line-height: 1.4 !important;
 }
+
+/* External links styling */
+a[href^='http']:not([href*='localhost']):not([href*='127.0.0.1']),
+a[href^='https']:not([href*='localhost']):not([href*='127.0.0.1']),
+a[target='_blank'] {
+  text-decoration: underline;
+}
+
+a[href^='http']:not([href*='localhost']):not([href*='127.0.0.1']):hover,
+a[href^='https']:not([href*='localhost']):not([href*='127.0.0.1']):hover,
+a[target='_blank']:hover {
+  text-decoration: none;
+}

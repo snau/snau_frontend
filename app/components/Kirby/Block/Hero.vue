@@ -281,67 +281,33 @@ const imageSizes = computed(() => {
 </script>
 
 <template>
-  <div
-    class="h-screen min-h-[100]"
-    :class="containerClasses"
-    :style="backgroundStyle"
-  >
+  <div class="h-screen min-h-[100]" :class="containerClasses" :style="backgroundStyle">
     <figure v-if="imageData" :class="imageClasses">
-      <NuxtImg
-        :class="imageClassList"
-        loading="lazy"
-        :src="imageData.url"
-        :width="imageData.width"
-        :height="imageData.height"
-        :sizes="imageSizes"
-        :alt="imageAlt"
-        :style="imageStyle"
-        quality="80"
-        @error="(e) => console.warn('Hero image loading failed:', e)"
-      />
+      <NuxtImg :class="imageClassList" loading="lazy" :src="imageData.url" :width="imageData.width"
+        :height="imageData.height" :sizes="imageSizes" :alt="imageAlt" :style="imageStyle" quality="80"
+        @error="(e) => console.warn('Hero image loading failed:', e)" />
     </figure>
 
     <div :class="contentClasses">
       <div class="column px-12 text-center">
-        <h1
-          class="m-auto pb-0 md:max-w-[22ch] leaading-tight"
-          :class="[
-            fontClass(content.heading_style),
-            headingSizeClass(content.heading_size),
-            textShadowClass,
-          ]"
-          :style="textColorStyle"
-          v-html="heading"
-        />
+        <h1 class="m-auto pb-0 md:max-w-[22ch] leaading-tight" :class="[
+          fontClass(content.heading_style),
+          headingSizeClass(content.heading_size),
+          textShadowClass,
+        ]" :style="textColorStyle" v-html="heading" />
 
-        <h2
-          v-if="subheading"
-          :style="h2Color"
-          class="pb-0"
-          :class="[
-            fontClass(content.subheading_style),
-            subheadingSizeClass(content.subheading_size),
-            subheadingLineHeightClass,
-          ]"
-          v-html="subheading"
-        />
+        <h2 v-if="subheading" :style="h2Color" class="pb-0" :class="[
+          fontClass(content.subheading_style),
+          subheadingSizeClass(content.subheading_size),
+          subheadingLineHeightClass,
+        ]" v-html="subheading" />
 
-        <span
-          v-if="date"
-          class="text-base opacity-85 lg:text-base pt-4"
-          :class="fontClass(content.date_style)"
-          :datetime="date"
-        >
+        <span v-if="date" class="text-base opacity-85 lg:text-base pt-4" :class="fontClass(content.date_style)"
+          :datetime="date">
           {{ formattedDate }}
         </span>
 
-        <div
-          v-if="text"
-          class="pt-4"
-          :class="fontClass(content.text_style)"
-          :style="textColorStyle"
-          v-html="text"
-        />
+        <div v-if="text" class="pt-4" :class="fontClass(content.text_style)" :style="textColorStyle" v-html="text" />
       </div>
     </div>
   </div>
@@ -380,8 +346,8 @@ const imageSizes = computed(() => {
 }
 
 .hero-fade-bottom {
-  mask: linear-gradient(to top, transparent 0%, black 30%);
-  -webkit-mask: linear-gradient(to top, transparent 0%, black 30%);
+  mask: linear-gradient(to top, transparent 5%, black 30%);
+  -webkit-mask: linear-gradient(to top, transparent 5%, black 30%);
 }
 
 .text-shadow-dark,

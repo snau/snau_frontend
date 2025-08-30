@@ -16,7 +16,11 @@
     "prepare": "nuxi prepare",
     "check:all": "pnpm run lint && pnpm run format:check && pnpm run test:types",
     "verify-build": "node scripts/verify-build.js",
-    "deploy:build": "pnpm generate && pnpm verify-build"
+    "deploy:build": "pnpm generate && pnpm verify-build",
+    "build:worker": "nuxt build",
+    "deploy:worker": "nuxt build && npx wrangler pages deploy .output/public",
+    "deploy:worker:staging": "nuxt build && npx wrangler pages deploy .output/public --branch staging",
+    "preview:worker": "nuxi preview"
   },
   "dependencies": {
     "@nuxt/image": "^1.10.0",

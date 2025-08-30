@@ -58,6 +58,7 @@ export default defineNuxtConfig({
 
   // Nitro configuration for static site generation
   nitro: {
+    preset: 'cloudflare_pages', // This is the key change
     prerender: {
       routes: ['/sitemap.xml'],
       // Continue prerendering even if some routes fail

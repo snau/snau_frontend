@@ -11,3 +11,5 @@ node_modules
 .netlify
 # Cloudflare Workers configuration (contains sensitive tokens)
 wrangler.toml
+# Crush directory
+.crush

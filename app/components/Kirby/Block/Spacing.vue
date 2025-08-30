@@ -8,7 +8,7 @@ const props = defineProps<{
 
 const spacingClasses = computed(() => {
   const sizeMap: Record<SpacingSize, { desktop: string; mobile: string }> = {
-    small: { desktop: 'h-8', mobile: 'h-4' },
+    small: { desktop: 'h-6', mobile: 'h-4' },
     medium: { desktop: 'h-16', mobile: 'h-8' },
     large: { desktop: 'h-24', mobile: 'h-12' },
     xlarge: { desktop: 'h-32', mobile: 'h-16' },
