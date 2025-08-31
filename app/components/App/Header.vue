@@ -119,7 +119,7 @@ const menuItems = computed(() => {
           <div
             class="absolute inset-0 bg-white/60 dark:bg-black/25 backdrop-blur-md backdrop-saturate-150 border border-white/25 dark:border-white/15 rounded-2xl transition-[background-color,border-color,box-shadow,backdrop-filter] duration-150 ease-out will-change-[background,border,box-shadow,backdrop-filter] transform-gpu"
             style="contain: layout style paint" :class="{
-              'bg-white/30 dark:bg-black/10 !backdrop-blur-sm !backdrop-saturate-125 border-white/10 dark:border-white/5 shadow-md':
+              'bg-white/30 dark:bg-black/10 !backdrop-blur-sm !backdrop-saturate-125 border-white/10 dark:border-white/5':
                 hasScrolledBackground,
             }"></div>
         </div>
