@@ -105,22 +105,17 @@ watch([selectedCategories, selectedTag], () => {
 <template>
   <div class="max-w-screen-4xl mx-auto pb-32">
     <div v-if="showCategoryFilter" class="mb-4">
-      <div class="no-scrollbar -mx-2 flex w-auto gap-2 overflow-x-auto px-2 [scrollbar-width:none] [-ms-overflow-style:none]" role="group" aria-label="Filter categories">
-        <button
-          v-for="category in categoriesWithInterviews"
-          :key="category"
-          type="button"
-          class="whitespace-nowrap rounded-full border px-3.5 py-1.5 text-sm font-medium transition-colors duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-stone-400/60"
-          :class="
-            selectedCategories.includes(category)
-              ? 'border-stone-900 bg-stone-900 text-white shadow-sm dark:border-stone-100 dark:bg-stone-100 dark:text-stone-900'
-              : 'border-stone-200 bg-transparent text-stone-700 hover:border-stone-300 hover:bg-white dark:border-stone-800 dark:text-stone-300 dark:hover:border-stone-700'
-          "
-          :aria-pressed="selectedCategories.includes(category)"
-          @click="selectedCategories = selectedCategories.includes(category)
-            ? selectedCategories.filter((c) => c !== category)
-            : [...selectedCategories, category]"
-        >
+      <div
+        class="no-scrollbar -mx-2 flex w-auto gap-2 overflow-x-auto px-2 [scrollbar-width:none] [-ms-overflow-style:none]"
+        role="group" aria-label="Filter categories">
+        <button v-for="category in categoriesWithInterviews" :key="category" type="button"
+          class="whitespace-nowrap rounded-sm border px-3.5 py-1.5 text-sm font-medium transition-colors duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-stone-400/60"
+          :class="selectedCategories.includes(category)
+            ? 'border-stone-900 bg-stone-900 text-white shadow-sm dark:border-stone-100 dark:bg-stone-100 dark:text-stone-900'
+            : 'border-stone-200 bg-transparent text-stone-700 hover:border-stone-300 hover:bg-white dark:border-stone-800 dark:text-stone-300 dark:hover:border-stone-700'
+            " :aria-pressed="selectedCategories.includes(category)" @click="selectedCategories = selectedCategories.includes(category)
+              ? selectedCategories.filter((c) => c !== category)
+              : [...selectedCategories, category]">
           {{ mapCategory(category) }}
         </button>
       </div>
@@ -136,12 +131,12 @@ watch([selectedCategories, selectedTag], () => {
       class="not-prose mt-6 grid grid-cols-[repeat(auto-fit,minmax(20rem,1fr))] gap-3">
       <template v-for="(interview, index) in visibleInterviews" :key="interview.uri">
         <div :ref="(el) => {
-            if (index === 0) {
-              firstInterviewRef = el as HTMLElement
-              if (el) (el as HTMLElement).style.scrollMarginTop = '8rem'
-            }
-            el && handleItemVisibility(el as HTMLElement, interview.uri)
+          if (index === 0) {
+            firstInterviewRef = el as HTMLElement
+            if (el) (el as HTMLElement).style.scrollMarginTop = '8rem'
           }
+          el && handleItemVisibility(el as HTMLElement, interview.uri)
+        }
           " class="transition-opacity duration-500" :class="{
             'opacity-0': !isItemVisible(interview.uri),
             'opacity-100': isItemVisible(interview.uri),
@@ -154,7 +149,7 @@ watch([selectedCategories, selectedTag], () => {
 
       <!-- Loading indicator -->
       <div v-if="hasMore" ref="loaderRef" class="flex flex-col items-center py-4 gap-2">
-        <div v-if="isLoading" class="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-stone-900"></div>
+        <div v-if="isLoading" class="animate-spin rounded-sm h-8 w-8 border-t-2 border-b-2 border-stone-900"></div>
         <div class="text-sm text-stone-500">
           Showing {{ visibleInterviews.length }} of
           {{ filteredInterviews.length }} interviews
@@ -168,24 +163,24 @@ watch([selectedCategories, selectedTag], () => {
       <template v-for="(interview, index) in visibleInterviews" :key="interview.uri">
         <!-- Content for masonry grid items -->
         <div :ref="(el) => {
-            if (index === 0) {
-              firstInterviewRef = el as HTMLElement
-              if (el) (el as HTMLElement).style.scrollMarginTop = '8rem'
-            }
-            el && handleItemVisibility(el as HTMLElement, interview.uri)
+          if (index === 0) {
+            firstInterviewRef = el as HTMLElement
+            if (el) (el as HTMLElement).style.scrollMarginTop = '8rem'
           }
+          el && handleItemVisibility(el as HTMLElement, interview.uri)
+        }
           " class="transition-opacity duration-500 break-inside-avoid inline-block w-full"
           :style="{ breakInside: 'avoid' }" :class="{
             'opacity-0': !isItemVisible(interview.uri),
             'opacity-100': isItemVisible(interview.uri),
           }">
           <InterviewPhoto :interview="interview" :format-date="formatDateShort" />
-          </div>
+        </div>
       </template>
 
       <!-- Loading indicator -->
       <div v-if="hasMore" ref="loaderRef" class="flex flex-col items-center py-4 gap-2">
-        <div v-if="isLoading" class="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-stone-900"></div>
+        <div v-if="isLoading" class="animate-spin rounded-sm h-8 w-8 border-t-2 border-b-2 border-stone-900"></div>
         <div class="text-sm text-stone-500">
           Showing {{ visibleInterviews.length }} of
           {{ filteredInterviews.length }} interviews
@@ -203,6 +198,12 @@ watch([selectedCategories, selectedTag], () => {
 </style>
 <style scoped>
 /* Hide horizontal scrollbar for the pill container across browsers */
-.no-scrollbar::-webkit-scrollbar { display: none; }
-.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
 </style>
