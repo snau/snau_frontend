@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { KirbyBlock } from '#nuxt-kql'
-import { computed, nextTick, ref, watch } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { useFormatDate } from '~/composables/useFormatDate'
 import { useInfiniteScroll } from '~/composables/useInfiniteScroll'
 import { useInterviewData } from '~/composables/useInterviewData'
@@ -18,6 +18,7 @@ const props = defineProps<{
     | 'card_layout'
     | 'gap'
     | 'item_size'
+    | 'categories'
   >
 }>()
 
@@ -34,14 +35,14 @@ const { processedInterviews } = useInterviewData(props.block)
 // Handle interview filtering
 // Use destructuring to rename unused variables with underscore prefix
 const {
-  selectedCategory,
+  selectedCategories,
   selectedTag,
-  showCategoryFilter: _showCategoryFilter,
+  showCategoryFilter,
   showTagsFilter: _showTagsFilter,
   filteredInterviews,
-  categoriesWithInterviews: _categoriesWithInterviews,
+  categoriesWithInterviews,
   tagsWithInterviews: _tagsWithInterviews,
-  mapCategory: _mapCategory,
+  mapCategory,
   mapTag: _mapTag,
 } = useInterviewFilters(processedInterviews, props.block)
 
@@ -94,22 +95,37 @@ watch(visibleInterviews, (newValue) => {
 })
 
 // Reset pagination and grid when filters change
-watch([selectedCategory, selectedTag], () => {
+watch([selectedCategories, selectedTag], () => {
+  // Reset pagination but do not scroll the window
   currentPage.value = 1
   hasMore.value = true
-
-  // Smooth scroll to the first interview after a short delay to ensure the DOM has updated
-  nextTick(() => {
-    firstInterviewRef.value?.scrollIntoView({
-      behavior: 'smooth',
-      block: 'start',
-    })
-  })
 })
 </script>
 
 <template>
   <div class="max-w-screen-4xl mx-auto pb-32">
+    <div v-if="showCategoryFilter" class="mb-4">
+      <div class="no-scrollbar -mx-2 flex w-auto gap-2 overflow-x-auto px-2 [scrollbar-width:none] [-ms-overflow-style:none]" role="group" aria-label="Filter categories">
+        <button
+          v-for="category in categoriesWithInterviews"
+          :key="category"
+          type="button"
+          class="whitespace-nowrap rounded-full border px-3.5 py-1.5 text-sm font-medium transition-colors duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-stone-400/60"
+          :class="
+            selectedCategories.includes(category)
+              ? 'border-stone-900 bg-stone-900 text-white shadow-sm dark:border-stone-100 dark:bg-stone-100 dark:text-stone-900'
+              : 'border-stone-200 bg-transparent text-stone-700 hover:border-stone-300 hover:bg-white dark:border-stone-800 dark:text-stone-300 dark:hover:border-stone-700'
+          "
+          :aria-pressed="selectedCategories.includes(category)"
+          @click="selectedCategories = selectedCategories.includes(category)
+            ? selectedCategories.filter((c) => c !== category)
+            : [...selectedCategories, category]"
+        >
+          {{ mapCategory(category) }}
+        </button>
+      </div>
+    </div>
+
     <!-- Add this message before the grid -->
     <div v-if="filteredInterviews.length === 0" class="mt-8 text-center text-stone-500">
       No items match the selected filters.
@@ -164,7 +180,7 @@ watch([selectedCategory, selectedTag], () => {
             'opacity-100': isItemVisible(interview.uri),
           }">
           <InterviewPhoto :interview="interview" :format-date="formatDateShort" />
-        </div>
+          </div>
       </template>
 
       <!-- Loading indicator -->
@@ -184,4 +200,9 @@ watch([selectedCategory, selectedTag], () => {
 .masonry.cards>* {
   margin-bottom: 1.5rem;
 }
+</style>
+<style scoped>
+/* Hide horizontal scrollbar for the pill container across browsers */
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 </style>

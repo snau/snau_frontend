@@ -3,13 +3,17 @@ import type { KirbyBlock } from '#nuxt-kql'
 import type { KirbyNotesResponse } from '~/queries'
 import { notesQuery } from '~/queries'
 
-defineProps<{
+const props = defineProps<{
   block: KirbyBlock<'notes-grid'>
+  categories?: string[]
 }>()
 
 const { locale } = useI18n()
 const { data } = await useKql<KirbyNotesResponse>(notesQuery, {
   language: locale.value,
+  variables: {
+    category: props.categories?.join(',') || null,
+  },
 })
 </script>
 
@@ -35,6 +39,7 @@ const { data } = await useKql<KirbyNotesResponse>(notesQuery, {
           </figure>
 
           <h4>{{ item.title }}</h4>
+          <p>Categories: {{ item.categories }}</p>
         </NuxtLink>
       </article>
     </div>

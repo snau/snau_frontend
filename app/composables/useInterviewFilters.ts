@@ -13,10 +13,11 @@ export function useInterviewFilters(
     | 'card_layout'
     | 'gap'
     | 'item_size'
+    | 'categories' // Added this line
   >,
 ) {
   // Single initialization of filters with initial values from props
-  const { selectedCategory, categoryDisplayNames, categoriesWithInterviews } =
+  const { selectedCategories, categoryDisplayNames, categoriesWithInterviews } =
     useCategories(interviews)
 
   const { selectedTag, tagDisplayNames, tagsWithInterviews } =
@@ -24,7 +25,7 @@ export function useInterviewFilters(
 
   // Initialize filters with prop values if they exist
   if (block.content.category) {
-    selectedCategory.value = block.content.category
+    selectedCategories.value = [block.content.category]
   }
   // For tags, we should only set a single tag as the selected one
   // If block.content.tags is a comma-separated string, we'll use the first tag
@@ -92,6 +93,14 @@ export function useInterviewFilters(
                 .map((t: string) => t.trim())
             : []
 
+        // Block-level categories (from props)
+        const blockCategories =
+          block.content.categories && typeof block.content.categories === 'string'
+            ? (block.content.categories as string)
+                .split(',')
+                .map((c: string) => c.trim())
+            : []
+
         // User-selected tag (from UI)
         const userSelectedTag = selectedTag.value
 
@@ -100,16 +109,31 @@ export function useInterviewFilters(
           blockTags.length === 0 ||
           blockTags.some((tag: string) => interview.tags.includes(tag))
 
+        // Matches block-level categories
+        const matchesBlockCategories =
+          blockCategories.length === 0 ||
+          blockCategories.some((category: string) =>
+            interview.categories.includes(category),
+          )
+
         // Matches user-selected tag
         const matchesUserTag =
           !userSelectedTag || interview.tags.includes(userSelectedTag)
 
-        // Matches category
+        // Matches user-selected categories (multi-select)
+        const userSelectedCategories = selectedCategories.value || []
         const matchesCategory =
-          !selectedCategory.value ||
-          interview.categories.includes(selectedCategory.value)
+          userSelectedCategories.length === 0 ||
+          userSelectedCategories.some((cat: string) =>
+            interview.categories.includes(cat),
+          )
 
-        return matchesBlockTags && matchesUserTag && matchesCategory
+        return (
+          matchesBlockTags &&
+          matchesUserTag &&
+          matchesCategory &&
+          matchesBlockCategories
+        )
       })
       .sort((a: Interview, b: Interview) => {
         if (!a.date && !b.date) return 0
@@ -128,7 +152,7 @@ export function useInterviewFilters(
     tagDisplayNames.value[tag as keyof typeof tagDisplayNames.value] || tag
 
   return {
-    selectedCategory,
+    selectedCategories,
     selectedTag,
     showCategoryFilter,
     showTagsFilter,

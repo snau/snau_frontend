@@ -1,5 +1,5 @@
 export function useCategories(interviews: Ref<any[]>) {
-  const selectedCategory = ref('')
+  const selectedCategories = ref<string[]>([])
 
   const uniqueCategories = computed(() => {
     const categories = new Set<string>([''])
@@ -12,7 +12,6 @@ export function useCategories(interviews: Ref<any[]>) {
   })
 
   const categoryDisplayNames = computed(() => ({
-    '': 'Alle Themenbereiche',
     ...Object.fromEntries(
       uniqueCategories.value.filter(Boolean).map((category) => [
         category,
@@ -26,17 +25,15 @@ export function useCategories(interviews: Ref<any[]>) {
 
   const categoriesWithInterviews = computed(() => {
     const categories = uniqueCategories.value.filter((cat) => cat !== '')
-    return [''].concat(
-      categories.filter((category) =>
-        interviews.value?.some((interview) =>
-          interview.categories.includes(category),
-        ),
+    return categories.filter((category) =>
+      interviews.value?.some((interview) =>
+        interview.categories.includes(category),
       ),
     )
   })
 
   return {
-    selectedCategory,
+    selectedCategories,
     categoryDisplayNames,
     categoriesWithInterviews,
   }
