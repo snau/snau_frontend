@@ -39,25 +39,15 @@ function getButtonClasses(style: Button['style']): string {
     <h2 v-if="block.content.title" class="text-2xl font-bold">
       {{ block.content.title }}
     </h2>
-    <div class="inline-flex flex-wrap items-center gap-6">
+    <div class="inline-flex flex-wrap items-center justify-center gap-6">
       <template v-for="(button, index) in block.content.buttons">
-        <NuxtLink
-          v-if="button.link"
-          :key="`link-${index}`"
-          :to="button.link.href"
-          :target="button.link.popup ? '_blank' : undefined"
-          class="no-underline"
-        >
+        <NuxtLink v-if="button.link" :key="`link-${index}`" :to="button.link.href"
+          :target="button.link.popup ? '_blank' : undefined" class="no-underline">
           <button :class="getButtonClasses(button.style)">
             {{ button.text }}
           </button>
         </NuxtLink>
-        <button
-          v-else
-          :key="`button-${index}`"
-          :class="getButtonClasses(button.style)"
-          disabled
-        >
+        <button v-else :key="`button-${index}`" :class="getButtonClasses(button.style)" disabled>
           {{ button.text }}
         </button>
       </template>

@@ -290,7 +290,7 @@ const imageSizes = computed(() => {
 
     <div :class="contentClasses">
       <div class="column px-12 text-center">
-        <h1 class="m-auto pb-0 md:max-w-[22ch] leaading-tight" :class="[
+        <h1 class="m-auto md:mt-24 pb-0 md:max-w-[22ch] leaading-tight" :class="[
           fontClass(content.heading_style),
           headingSizeClass(content.heading_size),
           textShadowClass,
