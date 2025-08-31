@@ -1,33 +1,44 @@
 <script setup lang="ts">
-import type { SpacingBlock, SpacingSize } from '~~/shared/types/spacing'
+import type { SpacingBlock, SpacingSize } from '~/shared/types/spacing'
 import { computed } from 'vue'
 
 const props = defineProps<{
   block: SpacingBlock
 }>()
 
+// Map for spacing classes (used for both mobile and desktop)
+const sizeClasses: Record<Exclude<SpacingSize, 'hidden'>, string> = {
+  small: 'h-6',
+  medium: 'h-16',
+  large: 'h-24',
+  xlarge: 'h-32',
+}
+
 const spacingClasses = computed(() => {
-  const sizeMap: Record<SpacingSize, { desktop: string; mobile: string }> = {
-    small: { desktop: 'h-6', mobile: 'h-4' },
-    medium: { desktop: 'h-16', mobile: 'h-8' },
-    large: { desktop: 'h-24', mobile: 'h-12' },
-    xlarge: { desktop: 'h-32', mobile: 'h-16' },
+  const desktopValue = props.block.content.desktop
+  const mobileValue = props.block.content.mobile
+
+  const classes: string[] = []
+
+  // Base (mobile) styles
+  if (mobileValue === 'hidden') {
+    classes.push('hidden')
+  } else {
+    classes.push(sizeClasses[mobileValue] || sizeClasses.medium)
   }
 
-  // Correctly access size and mobile from the nested `content` object
-  const { size, mobile } = props.block.content
-  const selectedSize = sizeMap[size] || sizeMap.medium
-
-  if (mobile === 'hidden') {
-    return `hidden md:block ${selectedSize.desktop}`
+  // Desktop overrides at md and up
+  if (desktopValue === 'hidden') {
+    classes.push('md:hidden')
+  } else {
+    classes.push(`md:${sizeClasses[desktopValue] || sizeClasses.medium}`)
+    // If mobile is hidden, ensure it becomes visible on desktop
+    if (mobileValue === 'hidden') {
+      classes.push('md:block')
+    }
   }
 
-  if (mobile === 'smaller') {
-    return `${selectedSize.mobile} md:${selectedSize.desktop}`
-  }
-
-  // Default is 'same'
-  return selectedSize.desktop
+  return classes.join(' ')
 })
 </script>
 
