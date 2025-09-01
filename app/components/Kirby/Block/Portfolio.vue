@@ -265,7 +265,7 @@ watch(
             }
             el && handleItemVisibility(el as HTMLElement, interview.uri)
           }
-            " class="duration-300 break-inside-avoid inline-block w-full" :style="{ breakInside: 'avoid-column' }">
+            " class="duration-300 break-inside-avoid block w-full" :style="{ breakInside: 'avoid-column' }">
             <InterviewPhoto :interview="interview" :format-date="formatDateShort" />
           </div>
         </template>
@@ -283,6 +283,12 @@ watch(
 /* Ensure a bit of spacing between items in columns layout (photo layout) */
 .masonry.cards>* {
   margin-bottom: 1.5rem;
+  display: block;
+  width: 100%;
+  /* Improve cross-browser column breaking */
+  break-inside: avoid;
+  -webkit-column-break-inside: avoid;
+  page-break-inside: avoid;
 }
 </style>
 <style scoped>
