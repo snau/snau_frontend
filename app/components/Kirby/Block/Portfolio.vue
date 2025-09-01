@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { KirbyBlock } from '#nuxt-kql'
 import { computed, ref, watch, onMounted } from 'vue'
-import { useRoute, useRouter } from '#imports'
+import { useRoute, useRouter, onBeforeRouteLeave } from '#imports'
 import { useFormatDate } from '~/composables/useFormatDate'
 import { useInfiniteScroll } from '~/composables/useInfiniteScroll'
 import { useInterviewData } from '~/composables/useInterviewData'
@@ -198,6 +198,17 @@ watch(
     }
   },
 )
+
+// When navigating away via main navigation (or any route change),
+// clear category-related query params from this page's history entry
+// so that returning does not restore a stale filter selection.
+onBeforeRouteLeave(() => {
+  if (process.client) {
+    const url = route.fullPath.split('?')[0]
+    // Replace current history entry without query params
+    window.history.replaceState(window.history.state, '', url)
+  }
+})
 </script>
 
 <template>
