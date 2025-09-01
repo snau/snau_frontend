@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { KirbyBlock } from '#nuxt-kql'
-import { computed, ref, watch } from 'vue'
+import { computed, ref, watch, onMounted } from 'vue'
+import { useRoute, useRouter } from '#imports'
 import { useFormatDate } from '~/composables/useFormatDate'
 import { useInfiniteScroll } from '~/composables/useInfiniteScroll'
 import { useInterviewData } from '~/composables/useInterviewData'
@@ -107,6 +108,96 @@ watch([selectedCategories, selectedTag], () => {
   currentPage.value = 1
   hasMore.value = true
 })
+
+// Sync category selection with the URL query and vice versa
+const route = useRoute()
+const router = useRouter()
+
+// Helper: read categories from various query formats
+const readCategoriesFromQuery = () => {
+  const q = route.query as Record<string, string | string[] | undefined>
+  let cats: string[] = []
+
+  const qCategory = q.category
+  const qCategories = q.categories
+  const qCat = q.cat
+
+  if (Array.isArray(qCategory)) {
+    cats = qCategory as string[]
+  } else if (typeof qCategory === 'string' && qCategory) {
+    cats = qCategory.split(',').map((s) => s.trim()).filter(Boolean)
+  } else if (Array.isArray(qCategories)) {
+    cats = qCategories as string[]
+  } else if (typeof qCategories === 'string' && qCategories) {
+    cats = qCategories.split(',').map((s) => s.trim()).filter(Boolean)
+  } else if (typeof qCat === 'string' && qCat) {
+    cats = qCat.split(',').map((s) => s.trim()).filter(Boolean)
+  } else {
+    // Non-standard support: `?Foto` becomes { Foto: '' }
+    const keys = Object.keys(q)
+    if (keys.length === 1 && (q[keys[0]] === '' || q[keys[0]] === undefined)) {
+      cats = [keys[0]]
+    }
+  }
+
+  // Only keep valid categories
+  const valid = new Set(categoriesWithInterviews.value)
+  return cats.filter((c) => valid.has(c))
+}
+
+// Initialize selection from query when data is ready
+const initSelectionFromQuery = () => {
+  const cats = readCategoriesFromQuery()
+  if (cats.length) {
+    selectedCategories.value = cats
+  }
+}
+
+onMounted(() => {
+  initSelectionFromQuery()
+})
+
+// Re-evaluate when available categories change (e.g., after data load)
+watch(categoriesWithInterviews, () => {
+  initSelectionFromQuery()
+})
+
+// Keep URL in sync when selection changes
+watch(
+  selectedCategories,
+  (cats) => {
+    const nextQuery: Record<string, any> = { ...route.query }
+    if (cats.length === 0) {
+      // Remove category query params when none selected
+      delete nextQuery.category
+      delete nextQuery.categories
+      delete nextQuery.cat
+    } else {
+      // Use `category` as canonical key; allow multiple values
+      nextQuery.category = cats
+      // Clean up alternates to avoid duplication
+      delete nextQuery.categories
+      delete nextQuery.cat
+    }
+    router.replace({ query: nextQuery })
+  },
+  { deep: false },
+)
+
+// Update selection if user navigates with back/forward changing the query
+watch(
+  () => route.query,
+  () => {
+    const fromQuery = readCategoriesFromQuery()
+    const current = selectedCategories.value
+    if (
+      fromQuery.length !== current.length ||
+      fromQuery.some((c) => !current.includes(c))
+    ) {
+      selectedCategories.value = fromQuery
+    }
+  },
+)
 </script>
 
 <template>
