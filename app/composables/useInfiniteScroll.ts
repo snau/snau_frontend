@@ -1,4 +1,4 @@
-import { onMounted, onUnmounted, ref } from 'vue'
+import { onMounted, onUnmounted, ref, watch } from 'vue'
 
 export function useInfiniteScroll(options: {
   threshold?: number
@@ -77,6 +77,23 @@ export function useInfiniteScroll(options: {
       if (loaderRef.value) {
         loadMoreObserver.observe(loaderRef.value)
       }
+
+      // Re-observe when the loader element is re-rendered (e.g., after filters)
+      watch(
+        loaderRef,
+        (el, oldEl) => {
+          if (!loadMoreObserver) return
+          if (oldEl) {
+            try {
+              loadMoreObserver.unobserve(oldEl)
+            } catch {}
+          }
+          if (el) {
+            loadMoreObserver.observe(el)
+          }
+        },
+        { flush: 'post' },
+      )
     }
   })
 

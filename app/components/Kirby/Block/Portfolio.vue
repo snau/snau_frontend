@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { KirbyBlock } from '#nuxt-kql'
-import { computed, ref, watch, onMounted } from 'vue'
+import { computed, watch, onMounted } from 'vue'
 import { useRoute, useRouter, onBeforeRouteLeave } from '#imports'
 import { useFormatDate } from '~/composables/useFormatDate'
 import { useInfiniteScroll } from '~/composables/useInfiniteScroll'
@@ -8,6 +8,7 @@ import { useInterviewData } from '~/composables/useInterviewData'
 import { useInterviewFilters } from '~/composables/useInterviewFilters'
 import InterviewCard from './Interview/Card.vue'
 import InterviewPhoto from './Interview/Photo.vue'
+import FadeIn from '../../FadeIn.vue'
 
 const props = defineProps<{
   block: KirbyBlock<
@@ -25,8 +26,7 @@ const props = defineProps<{
 
 const { formatDateShort } = useFormatDate()
 
-// Add ref for the first interview element
-const firstInterviewRef = ref<HTMLElement | null>(null)
+// Removed unused element refs to reduce complexity
 
 // No JS masonry: use CSS multi-column responsive masonry instead
 
@@ -69,8 +69,6 @@ const {
   hasMore,
   currentPage,
   itemsPerPage,
-  visibleItems,
-  observeItem,
 } = useInfiniteScroll({
   distance: 200,
   threshold: 0.1,
@@ -89,13 +87,7 @@ const containerKey = computed(() => {
   return `${cats}|${tag}`
 })
 
-// Items should render visible immediately to avoid layout gaps on filter changes
-const isItemVisible = (_uri: string) => true
-
-// Function to handle item visibility
-const handleItemVisibility = (el: HTMLElement, uri: string) => {
-  observeItem(el, uri)
-}
+// Removed per-item visibility observer calls (not used elsewhere)
 
 // Update hasMore when we reach the end of the list
 watch(visibleInterviews, (newValue) => {
@@ -239,18 +231,11 @@ onBeforeRouteLeave(() => {
     <div v-if="filteredInterviews.length > 0 && !usePhotoLayout" ref="containerRef" :key="containerKey"
       class="not-prose mt-6 grid grid-cols-[repeat(auto-fit,minmax(20rem,1fr))] gap-3">
       <template v-for="(interview, index) in visibleInterviews" :key="interview.uri">
-        <div :ref="(el) => {
-          if (index === 0) {
-            firstInterviewRef = el as HTMLElement
-            if (el) (el as HTMLElement).style.scrollMarginTop = '8rem'
-          }
-          el && handleItemVisibility(el as HTMLElement, interview.uri)
-        }
-          " class="duration-300">
+        <FadeIn>
           <div class="h-full">
             <InterviewCard :interview="interview" :format-date="formatDateShort" />
           </div>
-        </div>
+        </FadeIn>
       </template>
 
       <!-- Loading indicator -->
@@ -268,16 +253,9 @@ onBeforeRouteLeave(() => {
       <div ref="containerRef" :key="containerKey"
         class="not-prose cards masonry mt-6 columns-1 sm:columns-2 lg:columns-3" :style="{ columnGap: gapValue }">
         <template v-for="(interview, index) in visibleInterviews" :key="interview.uri">
-          <!-- Content for masonry grid items -->
-          <div :ref="(el) => {
-            if (index === 0) {
-              firstInterviewRef = el as HTMLElement
-              if (el) (el as HTMLElement).style.scrollMarginTop = '8rem'
-            }
-            el && handleItemVisibility(el as HTMLElement, interview.uri)
-          }
-            " class="duration-300 break-inside-avoid block w-full" :style="{ breakInside: 'avoid-column' }">
-            <InterviewPhoto :interview="interview" :format-date="formatDateShort" />
+          <!-- Photo items animate internally; avoid double FadeIn -->
+          <div class="break-inside-avoid block w-full" :style="{ breakInside: 'avoid-column' }">
+            <InterviewPhoto :interview="interview" :format-date="formatDateShort" :index="index" />
           </div>
         </template>
       </div>

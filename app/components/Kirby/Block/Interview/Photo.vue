@@ -29,10 +29,12 @@ interface Props {
 const imageEl = ref<HTMLImageElement | null>(null)
 const imageLoaded = ref(false)
 const isVisible = ref(false)
+const prefersReducedMotion = ref(false)
 
 // Calculate a more irregular animation delay based on index and a random factor
 // Using much shorter delays to allow multiple items to fade in simultaneously
 const animationDelay = computed(() => {
+  if (prefersReducedMotion.value) return '0ms'
   if (props.index === undefined) return '0ms'
 
   // Create a pseudo-random delay based on the index
@@ -46,6 +48,7 @@ const animationDelay = computed(() => {
 
 // Calculate a small random offset for the starting position
 const randomOffset = computed(() => {
+  if (prefersReducedMotion.value) return 0
   if (props.index === undefined) return 0
   // Generate a value between 5 and 15 based on the index
   return 10 + ((props.index * 17) % 11) - 5
@@ -69,6 +72,9 @@ function handleImageLoad() {
 }
 
 onMounted(() => {
+  if (typeof window !== 'undefined') {
+    prefersReducedMotion.value = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  }
   // If the image is already cached, the load event might not fire
   // So we check if the image is complete
   if (imageEl.value && imageEl.value.complete) {
@@ -91,22 +97,28 @@ onMounted(() => {
 <template>
   <NuxtLink :to="localePath(`/${props.interview.uri}`)">
     <div class="relative cursor-pointer overflow-hidden group" :style="{
-      transition: 'opacity 0.3s ease-out, transform 0.3s ease-out',
+      transition: prefersReducedMotion ? 'none' : 'opacity 0.3s ease-out, transform 0.3s ease-out',
       'transition-delay': animationDelay,
-      opacity: isVisible ? '1' : '0',
-      transform: isVisible
-        ? 'translateY(0)'
-        : `translateY(${randomOffset}px)`,
+      opacity: prefersReducedMotion ? '1' : (isVisible ? '1' : '0'),
+      transform: prefersReducedMotion
+        ? 'none'
+        : (isVisible ? 'translateY(0)' : `translateY(${randomOffset}px)`),
       'will-change': 'opacity, transform',
     }">
-      <!-- Regular photo display -->
-      <div class="overflow-hidden">
+      <!-- Regular photo display with stable aspect ratio -->
+      <div class="aspect-[4/3] overflow-hidden">
         <!-- Placeholder while image is loading -->
-        <div v-if="!imageLoaded" class="w-full aspect-[4/3] bg-stone-200 animate-pulse"></div>
+        <div v-if="!imageLoaded" class="w-full h-full bg-stone-200 animate-pulse"></div>
 
-        <img ref="imageEl" :src="props.interview.cover?.url || ''" :alt="props.interview.cover?.alt"
+        <img
+          ref="imageEl"
+          :src="props.interview.cover?.url || ''"
+          :alt="props.interview.cover?.alt"
+          loading="lazy"
           class="w-full h-full object-contain transition-all duration-300 ease-out hover:scale-105"
-          :class="{ 'opacity-0': !imageLoaded, 'opacity-100': imageLoaded }" @load="handleImageLoad" />
+          :class="{ 'opacity-0': !imageLoaded, 'opacity-100': imageLoaded }"
+          @load="handleImageLoad"
+        />
       </div>
 
       <p

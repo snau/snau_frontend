@@ -2,6 +2,7 @@
 import { useFadeIn } from '~/composables/useFadeIn'
 
 const { target, isVisible } = useFadeIn()
+defineExpose({ target })
 </script>
 
 <template>

@@ -39,7 +39,7 @@ const quotedIntro = computed(() => {
       // 'view-transition-name': `card-interview-uri`,
     }">
       <div class="aspect-[4/6] overflow-hidden">
-        <img :src="props.interview.cover?.url || ''" :alt="props.interview.cover?.alt" :style="{
+        <img loading="lazy" :src="props.interview.cover?.url || ''" :alt="props.interview.cover?.alt" :style="{
           // 'view-transition-name': `image-interview-uri`,
         }" class="w-full h-full object-cover transition-all duration-1000 ease-out hover:scale-102" />
         <!-- Gradient overlay: top right to bottom left, 25% opacity, covers about 1/4 of the card -->
