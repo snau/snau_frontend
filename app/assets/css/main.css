@@ -201,7 +201,7 @@ h3,
 h4,
 h5,
 h6,
-p {
+.prose p {
   font-size: clamp(
     var(--base-min-font-size),
     var(--base-preferred-font-size),

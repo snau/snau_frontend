@@ -90,39 +90,27 @@ onMounted(() => {
 
 <template>
   <NuxtLink :to="localePath(`/${props.interview.uri}`)">
-    <div
-      class="relative cursor-pointer overflow-hidden group"
-      :style="{
-        transition: 'opacity 0.3s ease-out, transform 0.3s ease-out',
-        'transition-delay': animationDelay,
-        opacity: isVisible ? '1' : '0',
-        transform: isVisible
-          ? 'translateY(0)'
-          : `translateY(${randomOffset}px)`,
-        'will-change': 'opacity, transform',
-      }"
-    >
+    <div class="relative cursor-pointer overflow-hidden group" :style="{
+      transition: 'opacity 0.3s ease-out, transform 0.3s ease-out',
+      'transition-delay': animationDelay,
+      opacity: isVisible ? '1' : '0',
+      transform: isVisible
+        ? 'translateY(0)'
+        : `translateY(${randomOffset}px)`,
+      'will-change': 'opacity, transform',
+    }">
       <!-- Regular photo display -->
       <div class="overflow-hidden">
         <!-- Placeholder while image is loading -->
-        <div
-          v-if="!imageLoaded"
-          class="w-full aspect-[4/3] bg-stone-200 animate-pulse"
-        ></div>
+        <div v-if="!imageLoaded" class="w-full aspect-[4/3] bg-stone-200 animate-pulse"></div>
 
-        <img
-          ref="imageEl"
-          :src="props.interview.cover?.url || ''"
-          :alt="props.interview.cover?.alt"
+        <img ref="imageEl" :src="props.interview.cover?.url || ''" :alt="props.interview.cover?.alt"
           class="w-full h-full object-contain transition-all duration-300 ease-out hover:scale-105"
-          :class="{ 'opacity-0': !imageLoaded, 'opacity-100': imageLoaded }"
-          @load="handleImageLoad"
-        />
+          :class="{ 'opacity-0': !imageLoaded, 'opacity-100': imageLoaded }" @load="handleImageLoad" />
       </div>
 
       <p
-        class="caption mt-4 transition-opacity duration-300 opacity-100 md:opacity-0 md:group-hover:opacity-100"
-      >
+        class="caption mt-4 font-mono text-base transition-opacity duration-300 opacity-100 md:opacity-0 md:group-hover:opacity-100">
         {{ props.interview.title }}
       </p>
     </div>
